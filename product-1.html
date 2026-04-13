@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products – Harvel Electric</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;background:#fbf8ff;color:#1a1a2e;}
+    html{scroll-behavior:smooth;}
+
+    .site-header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(91,33,182,.08);}
+    .header-container{max-width:1400px;margin:0 auto;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;}
+    .header-logo{display:flex;align-items:center;gap:12px;cursor:pointer;text-decoration:none;}
+    .header-logo-text{display:flex;flex-direction:column;}
+    .header-logo-text span:first-child{font-size:18px;font-weight:800;color:#1a1a2e;letter-spacing:-.5px;}
+    .header-logo-text span:last-child{font-size:12px;font-weight:500;color:#7c3aed;margin-left:4px;letter-spacing:.05em;}
+    .logo-mark{width:36px;height:36px;background:linear-gradient(135deg,#5b21b6,#7c3aed);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:18px;box-shadow:0 4px 12px rgba(91,33,182,.35);}
+    .header-nav{display:flex;gap:36px;align-items:center;}
+    .nav-link-header{position:relative;font-weight:500;color:#4b5563;transition:color .2s;padding:6px 0;cursor:pointer;text-decoration:none;}
+    .nav-link-header::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:#5b21b6;transition:width .25s;border-radius:2px;}
+    .nav-link-header:hover,.nav-link-header.active{color:#5b21b6;}
+    .nav-link-header:hover::after,.nav-link-header.active::after{width:100%;}
+    .header-actions{display:flex;align-items:center;gap:12px;}
+    .btn-primary{display:inline-flex;align-items:center;gap:8px;background:#5b21b6;color:white;padding:10px 22px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;transition:all .2s;box-shadow:0 8px 24px rgba(91,33,182,.3);cursor:pointer;border:none;font-family:'DM Sans',sans-serif;}
+    .btn-primary:hover{background:#4c1d95;transform:translateY(-2px);}
+    .menu-toggle{display:none;background:none;border:none;font-size:24px;cursor:pointer;}
+    .mobile-actions{display:none;flex-direction:column;gap:12px;}
+    .header-cart{display:flex;align-items:center;cursor:pointer;margin-left:10px;position:relative;}
+    .header-cart svg{width:24px;height:24px;color:#1a1a2e;transition:color .2s;}
+    .header-cart:hover svg{color:#5b21b6;}
+    #cartCount{position:absolute;top:-6px;right:-10px;background:#ff0000;color:#fff;border-radius:50%;padding:2px 6px;font-size:12px;font-weight:bold;display:none;}
+    #profileIcon{width:40px;height:40px;border-radius:50%;background:#5b21b6;color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;cursor:pointer;}
+    /* profile-dropdown display handled by header.css */
+    .logout-button{border:none;width:100%;padding:5px;border-radius:5px;}
+    @media(max-width:1024px){
+      .header-nav{display:none;flex-direction:column;gap:24px;position:fixed;top:70px;right:0;width:240px;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-left:1px solid rgba(91,33,182,.08);padding:24px;z-index:200;}
+      .header-nav.active{display:flex;}
+      .menu-toggle{display:block;}
+      .desktop-only{display:none;}
+      .mobile-actions{display:flex;}
+    }
+    @media(max-width:640px){.header-container{padding:0 16px;}}
+
+    .products-hero{background:linear-gradient(135deg,#1e0845 0%,#2d1b69 40%,#4c1d95 100%);padding:48px 24px;position:relative;overflow:hidden;}
+    .products-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:40px 40px;}
+    .hero-inner{max-width:1400px;margin:0 auto;position:relative;z-index:1;}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(8px);border-radius:100px;padding:6px 16px;font-size:13px;font-weight:600;color:#e9d5ff;letter-spacing:.05em;margin-bottom:16px;}
+    .hero-title{font-family:'Fraunces',serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:900;color:white;line-height:1.15;margin:0 0 12px;}
+    .hero-title em{color:#c4b5fd;font-style:normal;}
+    .hero-sub{font-size:1rem;color:#c4b5fd;line-height:1.7;max-width:520px;margin:0 0 24px;}
+    .search-bar{display:flex;gap:0;max-width:500px;background:white;border-radius:12px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.2);}
+    .search-bar input{flex:1;border:none;outline:none;padding:14px 18px;font-size:15px;font-family:'DM Sans',sans-serif;color:#1a1a2e;}
+    .search-bar button{background:#5b21b6;border:none;padding:14px 20px;cursor:pointer;transition:background .2s;}
+    .search-bar button:hover{background:#4c1d95;}
+    .search-bar button svg{width:18px;height:18px;fill:white;}
+
+    .products-layout{max-width:1400px;margin:0 auto;padding:32px 24px;display:grid;grid-template-columns:280px 1fr;gap:28px;align-items:start;}
+    @media(max-width:900px){.products-layout{grid-template-columns:1fr;}}
+
+    .sidebar{position:sticky;top:86px;background:white;border-radius:16px;border:1px solid #ede9fe;overflow:hidden;box-shadow:0 4px 20px rgba(91,33,182,.06);}
+    .sidebar-header{padding:20px 20px 16px;border-bottom:1px solid #f3f0ff;}
+    .sidebar-header h2{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:#1a1a2e;margin:0;}
+    .sidebar-header p{font-size:12px;color:#9ca3af;margin:2px 0 0;font-weight:500;}
+    .cat-group{border-bottom:1px solid #f8f5ff;}
+    .cat-group:last-child{border-bottom:none;}
+    .cat-parent{display:flex;align-items:center;gap:10px;padding:14px 20px;cursor:pointer;transition:background .15s;font-weight:600;font-size:14px;color:#374151;text-decoration:none;user-select:none;}
+    .cat-parent:hover{background:#faf7ff;color:#5b21b6;}
+    .cat-parent.active{background:#f3e8ff;color:#5b21b6;}
+    .cat-parent .cat-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:#f3e8ff;}
+    .cat-parent.active .cat-icon{background:#ddd6fe;}
+    .cat-parent .cat-arrow{margin-left:auto;transition:transform .2s;font-size:11px;color:#9ca3af;}
+    .cat-parent.open .cat-arrow{transform:rotate(90deg);}
+    .cat-children{display:none;background:#faf7ff;}
+    .cat-children.open{display:block;}
+    .cat-child{display:flex;align-items:center;gap:8px;padding:10px 20px 10px 52px;font-size:13px;color:#6b7280;cursor:pointer;transition:all .15s;text-decoration:none;}
+    .cat-child:hover{color:#5b21b6;background:#f3e8ff;}
+    .cat-child.active{color:#5b21b6;font-weight:600;background:#ede9fe;}
+    .cat-child::before{content:'›';font-size:14px;color:#c4b5fd;}
+    .sidebar-filter{padding:16px 20px;border-top:1px solid #f3f0ff;}
+    .sidebar-filter h4{font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
+    .price-range-row{display:flex;gap:8px;align-items:center;}
+    .price-input{flex:1;border:1px solid #e5e7eb;border-radius:8px;padding:8px 10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;color:#1a1a2e;}
+    .price-input:focus{border-color:#7c3aed;}
+    .apply-filter{width:100%;margin-top:10px;background:#5b21b6;color:white;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif;}
+    .apply-filter:hover{background:#4c1d95;}
+    .clear-filter{width:100%;margin-top:6px;background:none;color:#7c3aed;border:1px solid #ddd6fe;border-radius:8px;padding:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+    .clear-filter:hover{background:#f3e8ff;}
+    @media(max-width:900px){.sidebar{position:static;}}
+
+    .area-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+    .area-title{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:700;color:#1a1a2e;}
+    .results-count{font-size:13px;color:#9ca3af;font-weight:500;}
+    .sort-select{border:1px solid #e5e7eb;border-radius:8px;padding:8px 12px;font-size:13px;font-family:'DM Sans',sans-serif;color:#374151;outline:none;cursor:pointer;background:white;}
+    .sort-select:focus{border-color:#7c3aed;}
+
+    .cat-section{margin-bottom:48px;scroll-margin-top:100px;}
+    .cat-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid #f0e8ff;}
+    .cat-section-title{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:700;color:#1a1a2e;display:flex;align-items:center;gap:10px;}
+    .cat-section-title .section-icon{width:36px;height:36px;background:linear-gradient(135deg,#5b21b6,#7c3aed);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;}
+    .subsection-label{font-size:13px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.08em;margin:20px 0 12px;display:flex;align-items:center;gap:8px;}
+    .subsection-label::after{content:'';flex:1;height:1px;background:#ede9fe;}
+
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;}
+    .product-card{background:white;border-radius:14px;border:1px solid #f0e8ff;overflow:hidden;display:flex;flex-direction:column;transition:all .25s;position:relative;}
+    .product-card:hover{border-color:#7c3aed;box-shadow:0 12px 32px rgba(91,33,182,.14);transform:translateY(-4px);}
+    .card-img-wrap{position:relative;overflow:hidden;background:#fbf8ff;height:200px;display:flex;align-items:center;justify-content:center;}
+    .card-img-wrap img{width:100%;height:100%;object-fit:contain;padding:12px;transition:transform .3s;}
+    .product-card:hover .card-img-wrap img{transform:scale(1.05);}
+    .card-badge{position:absolute;top:10px;left:10px;background:#5b21b6;color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.04em;}
+    .card-badge.sale{background:#ef4444;}
+    .card-badge.new{background:#10b981;}
+    .card-body{padding:14px;display:flex;flex-direction:column;flex:1;}
+    .card-name{font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:4px;line-height:1.35;}
+    .card-desc{font-size:12px;color:#9ca3af;line-height:1.5;margin-bottom:10px;flex:1;}
+    .card-price{font-size:17px;font-weight:800;color:#5b21b6;margin-bottom:12px;}
+    .card-price span{font-size:12px;color:#d1d5db;text-decoration:line-through;font-weight:500;margin-left:6px;}
+    .card-actions{display:flex;gap:8px;}
+    .btn-shop{flex:1;background:#5b21b6;color:white;border:none;border-radius:8px;padding:10px 0;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;text-decoration:none;text-align:center;display:inline-flex;align-items:center;justify-content:center;}
+    .btn-shop:hover{background:#4c1d95;transform:translateY(-1px);color:white;}
+    .btn-cart{width:38px;height:38px;background:#f3e8ff;color:#5b21b6;border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;}
+    .btn-cart:hover{background:#5b21b6;color:white;}
+    .btn-cart svg{width:16px;height:16px;fill:currentColor;}
+
+    .no-results{text-align:center;padding:80px 24px;color:#9ca3af;}
+    .no-results svg{width:64px;height:64px;fill:#ddd6fe;margin-bottom:16px;}
+    .no-results h3{font-size:1.2rem;font-weight:700;color:#374151;margin-bottom:8px;}
+
+    .toast{position:fixed;bottom:28px;right:28px;background:#5b21b6;color:white;padding:14px 24px;border-radius:12px;font-weight:600;font-size:14px;box-shadow:0 8px 32px rgba(91,33,182,.4);z-index:9999;transform:translateY(100px);opacity:0;transition:all .4s cubic-bezier(.175,.885,.32,1.275);}
+    .toast.show{transform:translateY(0);opacity:1;}
+
+    .overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:1000;}
+    .popup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.9);background:#fff;padding:25px;width:90%;max-width:350px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:1001;transition:all .3s ease;}
+    .popup.active{display:block;transform:translate(-50%,-50%) scale(1);}
+    .popup h3{text-align:center;margin-bottom:15px;}
+    .popup input{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #ccc;font-family:'DM Sans',sans-serif;}
+    .popup a.action,.popup button.action{display:inline-flex;align-items:center;justify-content:center;width:100%;gap:8px;background:#5b21b6;color:white;padding:14px 0;border-radius:10px;font-weight:700;font-size:15px;text-decoration:none;transition:all .2s;box-shadow:0 8px 24px rgba(91,33,182,.4);cursor:pointer;border:none;text-align:center;font-family:'DM Sans',sans-serif;}
+    .popup a.action:hover,.popup button.action:hover{background:#4c1d95;transform:translateY(-2px);}
+    .divider{display:flex;align-items:center;text-align:center;margin:15px 0;}
+    .divider::before,.divider::after{content:'';flex:1;border-bottom:1px solid #ddd;}
+    .divider span{padding:0 10px;color:#777;font-size:14px;}
+    .popup .switch-btn{display:block;text-align:center;margin-top:10px;color:#2a5298;text-decoration:none;background:none;border:none;cursor:pointer;font-size:14px;font-family:'DM Sans',sans-serif;}
+    .popup .switch-btn:hover{text-decoration:underline;}
+
+    .site-footer{background:#0f0721;color:#a78bfa;padding:64px 24px 32px;margin-top:80px;}
+    .footer-container{max-width:1400px;margin:0 auto;}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:48px;margin-bottom:48px;}
+    .footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+    .footer-logo span{font-size:16px;font-weight:800;color:white;}
+    .footer-desc{color:#6b7280;font-size:14px;line-height:1.7;max-width:260px;margin:0 0 24px;}
+    .footer-title{color:white;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px;}
+    .footer-links{display:flex;flex-direction:column;gap:12px;}
+    .footer-link{color:#9ca3af;font-size:14px;text-decoration:none;cursor:pointer;transition:color .2s;}
+    .footer-link:hover{color:#a78bfa;}
+    .footer-socials{display:flex;gap:10px;}
+    .social-btn{width:36px;height:36px;background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#ffffff;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s,border-color .2s,transform .2s;}
+    .social-btn:hover{background:rgba(255,255,255,.12);border-color:#a78bfa;transform:translateY(-2px);}
+    .social-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;}
+    .footer-contact{display:flex;flex-direction:column;gap:10px;}
+    .contact-item{display:flex;gap:10px;font-size:13px;color:#6b7280;}
+    .email{color:#7c3aed;text-decoration:none;}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+    .footer-bottom p{color:#4b5563;font-size:13px;margin:0;}
+    @media(max-width:1024px){.footer-grid{grid-template-columns:1fr 1fr;gap:32px;}}
+    @media(max-width:640px){.footer-grid{grid-template-columns:1fr;gap:32px;}.footer-bottom{flex-direction:column;text-align:center;}}
+
+    .sidebar-mobile-toggle{display:none;align-items:center;gap:10px;background:white;border:1px solid #ede9fe;border-radius:12px;padding:12px 18px;font-size:14px;font-weight:600;color:#5b21b6;cursor:pointer;margin-bottom:16px;width:100%;}
+    .sidebar-mobile-toggle svg{width:18px;height:18px;fill:currentColor;}
+    @media(max-width:900px){.sidebar-mobile-toggle{display:flex;}.sidebar{display:none;}.sidebar.mobile-open{display:block;}}
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="header.css">
+</head>
+<body>
+
+<header class="site-header" id="hdr">
+  <div class="hdr">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">H</div>
+      <div class="logo-text">
+        <span class="logo-name">HARVEL</span>
+        <span class="logo-sub">Electric</span>
+      </div>
+    </a>
+    <nav class="nav" id="mainNav">
+      <a href="index.html" class="nav-link" data-page="index">Home</a>
+      <a href="product-1.html" class="nav-link" data-page="product-1">Products</a>
+      <a href="about.html" class="nav-link" data-page="about">About Us</a>
+      <a href="contact.html" class="nav-link" data-page="contact">Contact</a>
+      <a href="faq.html" class="nav-link" data-page="faq">FAQ</a>
+    </nav>
+    <div class="hdr-r">
+      <button class="icon-btn" aria-label="Cart" onclick="window.location='cart.html'">
+        <svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2v2h2l3.6 7.59-1.35 2.44C7.52 18.37 8.48 20 10 20h9v-2h-8.42c-.14 0-.25-.11-.25-.25l.03-.12L11.1 16h5.45c.75 0 1.41-.41 1.75-1.03L21 9H7.42l-.94-2zM7 20a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4z"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <div id="authBtns" style="display:flex;gap:8px">
+        <button class="btn btn-gp btn-sm" onclick="openAuthModal('login')">Login</button>
+        <button class="btn btn-p btn-sm" onclick="openAuthModal('signup')">Sign Up</button>
+      </div>
+      <div id="profileArea" style="display:none">
+        <div class="profile-wrap">
+          <button class="profile-btn" onclick="toggleProfileDropdown()">
+            <div class="profile-avatar" id="profileAvatar">U</div>
+            <span class="profile-name-btn" id="profileNameBtn">User</span>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="pd-header">
+              <div class="pd-name" id="pdName">User Name</div>
+              <div class="pd-email" id="pdEmail">user@email.com</div>
+            </div>
+            <button class="pd-item" onclick="showProfileInfo()">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              My Profile
+            </button>
+            <div class="pd-divider"></div>
+            <button class="pd-item danger" onclick="logoutUser()">
+              <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+      <button class="burger" id="burger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mob" id="mob">
+    <a href="index.html" class="nav-link" data-page="index">Home</a>
+    <a href="product-1.html" class="nav-link" data-page="product-1">Products</a>
+    <a href="about.html" class="nav-link" data-page="about">About Us</a>
+    <a href="contact.html" class="nav-link" data-page="contact">Contact</a>
+    <a href="faq.html" class="nav-link" data-page="faq">FAQ</a>
+    <div class="mob-btns" id="mobAuthBtns">
+      <button class="btn btn-gp" onclick="openAuthModal('login')">Login</button>
+      <button class="btn btn-p" onclick="openAuthModal('signup')">Sign Up</button>
+    </div>
+    <div id="mobProfileArea" style="display:none;margin-top:16px;padding:14px;background:var(--bgs);border-radius:var(--r2)">
+      <div style="font-weight:800;font-size:14px;color:var(--ink)" id="mobPdName">User</div>
+      <div style="font-size:12px;color:var(--inkl);margin-bottom:12px" id="mobPdEmail">email</div>
+      <button class="btn btn-gp btn-sm" style="width:100%;justify-content:center" onclick="logoutUser()">Sign Out</button>
+    </div>
+  </div>
+</header>
+
+<!-- Auth Modal -->
+<div class="auth-overlay" id="authOverlay" onclick="handleOverlayClick(event)">
+  <div class="auth-modal" id="authModal">
+    <div class="auth-modal-head">
+      <button class="auth-close" onclick="closeAuthModal()">&#x2715;</button>
+      <div class="logo-mark" style="width:38px;height:38px;font-size:17px;margin-bottom:14px">H</div>
+      <div class="auth-modal-title" id="authTitle">Welcome <em>back</em></div>
+      <div class="auth-modal-sub" id="authSub">Login to your Harvel Electric account</div>
+    </div>
+    <div class="auth-modal-body" id="authBody"></div>
+  </div>
+</div>
+<div class="auth-overlay" id="profileOverlay" onclick="handleProfileOverlayClick(event)">
+  <div class="auth-modal" id="profileModal">
+    <div class="auth-modal-head" style="background:linear-gradient(135deg,#0f0e24,#2a1060)">
+      <button class="auth-close" onclick="closeProfileModal()">&#x2715;</button>
+      <div class="logo-mark" style="width:38px;height:38px;font-size:17px;margin-bottom:14px" id="profileModalAvatar">U</div>
+      <div class="auth-modal-title">My <em>Profile</em></div>
+      <div class="auth-modal-sub" id="profileModalEmail">user@email.com</div>
+    </div>
+    <div class="auth-modal-body">
+      <div class="auth-field"><div class="auth-label">Full Name</div><div id="piName" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink);font-weight:600"></div></div>
+      <div class="auth-field"><div class="auth-label">Email</div><div id="piEmail" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <div class="auth-field"><div class="auth-label">Phone Number</div><div id="piPhone" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <div class="auth-field"><div class="auth-label">Member Since</div><div id="piDate" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <button class="auth-submit" onclick="logoutUser();closeProfileModal()" style="background:#dc2626;box-shadow:0 6px 22px rgba(220,38,38,.3);margin-top:4px">Sign Out</button>
+    </div>
+  </div>
+</div>
+<div class="hdr-toast" id="hdrToast">
+  <svg viewBox="0 0 24 24" width="16" height="16"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+  <span id="hdrToastMsg"></span>
+</div>
+
+<section class="products-hero">
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span style="width:6px;height:6px;background:#f59e0b;border-radius:50%;display:inline-block;"></span>
+      Premium Quality
+    </div>
+    <h1 class="hero-title">All Products — <em>Every Category</em></h1>
+    <p class="hero-sub">Browse our full range of home appliances. Six categories, one trusted name — built for Pakistan's homes.</p>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search products, categories…" oninput="handleSearch(this.value)">
+      <button><svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<div class="products-layout">
+
+  <div style="display:none;" id="mobileSidebarArea">
+    <button class="sidebar-mobile-toggle" onclick="toggleMobileSidebar()">
+      <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      Browse Categories
+    </button>
+  </div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>Categories</h2>
+      <p>Browse by product type</p>
+    </div>
+
+    <div class="cat-group">
+      <a class="cat-parent" href="#tv" onclick="openGroup(this)" data-group="tv">
+        <span class="cat-icon">📺</span> Televisions
+        <span class="cat-arrow">›</span>
+      </a>
+      <div class="cat-children" id="group-tv">
+        <a class="cat-child" href="#tv-smart">Smart LEDs</a>
+        <a class="cat-child" href="#tv-standard">Standard LEDs</a>
+      </div>
+    </div>
+
+    <div class="cat-group">
+      <a class="cat-parent" href="#fan" onclick="openGroup(this)" data-group="fan">
+        <span class="cat-icon">💨</span> Ceiling Fans
+        <span class="cat-arrow">›</span>
+      </a>
+    </div>
+
+    <div class="cat-group">
+      <a class="cat-parent" href="#refrigerators" onclick="openGroup(this)" data-group="fridge">
+        <span class="cat-icon">🧊</span> Refrigerators
+        <span class="cat-arrow">›</span>
+      </a>
+      <div class="cat-children" id="group-fridge">
+        <a class="cat-child" href="#ref-multi-door">Multi Door</a>
+        <a class="cat-child" href="#ref-deep-freezer">Deep Freezers</a>
+        <a class="cat-child" href="#ref-standard">Top Freezer</a>
+      </div>
+    </div>
+
+    <div class="cat-group">
+      <a class="cat-parent" href="#geyser" onclick="openGroup(this)" data-group="geyser">
+        <span class="cat-icon">🔥</span> Geysers
+        <span class="cat-arrow">›</span>
+      </a>
+    </div>
+
+    <div class="cat-group">
+      <a class="cat-parent" href="#ac" onclick="openGroup(this)" data-group="ac">
+        <span class="cat-icon">❄️</span> Air Conditioners
+        <span class="cat-arrow">›</span>
+      </a>
+      <div class="cat-children" id="group-ac">
+        <a class="cat-child" href="#ac-split">Split AC</a>
+        <a class="cat-child" href="#ac-floor-st">Floor Standing AC</a>
+      </div>
+    </div>
+
+    <div class="cat-group">
+      <a class="cat-parent" href="#laundry" onclick="openGroup(this)" data-group="laundry">
+        <span class="cat-icon">🫧</span> Washing Machines
+        <span class="cat-arrow">›</span>
+      </a>
+      <div class="cat-children" id="group-laundry">
+        <a class="cat-child" href="#front-auto">Front Load Auto</a>
+        <a class="cat-child" href="#top-auto">Top Load Auto</a>
+        <a class="cat-child" href="#semi-auto">Semi Automatic</a>
+      </div>
+    </div>
+
+    <div class="sidebar-filter">
+      <h4>Filter by Price (PKR)</h4>
+      <div class="price-range-row">
+        <input class="price-input" type="number" id="minPrice" placeholder="Min" min="0">
+        <span style="color:#9ca3af;font-size:13px;">—</span>
+        <input class="price-input" type="number" id="maxPrice" placeholder="Max" min="0">
+      </div>
+      <button class="apply-filter" onclick="applyPriceFilter()">Apply Filter</button>
+      <button class="clear-filter" onclick="clearFilter()">Clear Filter</button>
+    </div>
+  </aside>
+
+  <main class="products-area">
+    <div class="area-topbar">
+      <div>
+        <div class="area-title">All Products</div>
+        <div class="results-count" id="resultsCount">Showing all products</div>
+      </div>
+      <select class="sort-select" id="sortSelect" onchange="sortProducts(this.value)">
+        <option value="default">Sort: Default</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="name-asc">Name: A–Z</option>
+      </select>
+    </div>
+
+    <div id="productsContent">
+
+      <section class="cat-section" id="tv">
+        <div class="cat-section-header">
+          <div class="cat-section-title">
+            <span class="section-icon">📺</span> Televisions
+          </div>
+        </div>
+
+        <div class="subsection-label" id="tv-smart">Smart LEDs</div>
+        <div class="products-grid">
+          <div class="product-card" data-id="1" data-price="165000" data-name="GalaxyView 55&quot; 4K">
+            <div class="card-img-wrap"><img src="product images/LED tvs/smart 1.1.webp" alt="GalaxyView 55&quot; 4K"><span class="card-badge new">4K Smart</span></div>
+            <div class="card-body">
+              <div class="card-name">GalaxyView 55" 4K</div>
+              <div class="card-desc">4K UHD, HDR10, built-in apps, voice control, sleek design.</div>
+              <div class="card-price">PKR 165,000</div>
+              <div class="card-actions">
+                <a href="product.html?id=1" class="btn-shop">View Details</a>
+                <button class="btn-cart" onclick="addToCart(1,'GalaxyView 55&quot; 4K',165000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <div class="product-card" data-id="2" data-price="155000" data-name="NovaTech 50&quot; QLED">
+            <div class="card-img-wrap"><img src="product images/LED tvs/smart 2.1.webp" alt="NovaTech 50&quot; QLED"></div>
+            <div class="card-body">
+              <div class="card-name">NovaTech 50" QLED</div>
+              <div class="card-desc">Quantum Dot colors, 4K, Dolby Atmos, smart streaming.</div>
+              <div class="card-price">PKR 155,000</div>
+              <div class="card-actions">
+                <a href="product.html?id=2" class="btn-shop">View Details</a>
+                <button class="btn-cart" onclick="addToCart(2,'NovaTech 50&quot; QLED',155000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <div class="product-card" data-id="3" data-price="210000" data-name="Orion 65&quot; UHD">
+            <div class="card-img-wrap"><img src="product images/LED tvs/smart 3.1.webp" alt="Orion 65&quot; UHD"><span class="card-badge">Premium</span></div>
+            <div class="card-body">
+              <div class="card-name">Orion 65" UHD</div>
+              <div class="card-desc">65" screen, AI picture, 4K, multiple HDMI/USB ports.</div>
+              <div class="card-price">PKR 210,000</div>
+              <div class="card-actions">
+                <a href="product.html?id=3" class="btn-shop">View Details</a>
+                <button class="btn-cart" onclick="addToCart(3,'Orion 65&quot; UHD',210000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection-label" id="tv-standard">Standard LEDs</div>
+        <div class="products-grid">
+          <div class="product-card" data-id="4" data-price="85000" data-name="Horizon 43&quot; LED TV">
+            <div class="card-img-wrap"><img src="product images/LED tvs/standard 1.1.webp" alt="Horizon 43&quot; LED TV"></div>
+            <div class="card-body">
+              <div class="card-name">Horizon 43" LED TV</div>
+              <div class="card-desc">Full HD, HDMI/USB ready, easy setup.</div>
+              <div class="card-price">PKR 85,000</div>
+              <div class="card-actions">
+                <a href="product.html?id=4" class="btn-shop">View Details</a>
+                <button class="btn-cart" onclick="addToCart(4,'Horizon 43&quot; LED TV',85000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <div class="product-card" data-id="5" data-price="95000" data-name="ClearView 50&quot; HD TV">
+            <div class="card-img-wrap"><img src="product images/LED tvs/standard 2.1.webp" alt="ClearView 50&quot; HD TV"></div>
+            <div class="card-body">
+              <div class="card-name">ClearView 50" HD TV</div>
+              <div class="card-desc">HD display, solid contrast, multiple input options.</div>
+              <div class="card-price">PKR 95,000</div>
+              <div class="card-actions">
+                <a href="product.html?id=5" class="btn-shop">View Details</a>
+                <button class="btn-cart" onclick="addToCart(5,'ClearView 50&quot; HD TV',95000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <div class="product-card" data-id="6" data-price="60000" data-name="Titan 32&quot; Compact TV">
+            <div class="card-img-wrap"><img src="product images/LED tvs/standard 3.1.webp" alt="Titan 32&quot; Compact TV"></div>
+            <div class="card-body">
+              <div class="card-name">Titan 32" Compact TV</div>
+              <div class="card-desc">32" HD, energy-efficient, lightweight, simple controls.</div>
+              <div class="card-price">PKR 60,000</div>
+              <div class="card-actions">
+                <a href="product.html?id=6" class="btn-shop">View Details</a>
+                <button class="btn-cart" onclick="addToCart(6,'Titan 32&quot; Compact TV',60000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cat-section" id="fan">
+        <div class="cat-section-header">
+          <div class="cat-section-title"><span class="section-icon">💨</span> Ceiling Fans</div>
+        </div>
+        <div class="products-grid">
+          <div class="product-card" data-id="13" data-price="9500" data-name="AeroBreeze 1200">
+            <div class="card-img-wrap"><img src="product images/fans/ceiling fan 1.2.png" alt="AeroBreeze 1200"><span class="card-badge sale">Best Seller</span></div>
+            <div class="card-body"><div class="card-name">AeroBreeze 1200</div><div class="card-desc">Powerful airflow, energy-efficient motor, sleek modern design.</div><div class="card-price">PKR 9,500</div><div class="card-actions"><a href="product.html?id=13" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(13,'AeroBreeze 1200',9500)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div>
+          </div>
+          <div class="product-card" data-id="14" data-price="10500" data-name="WindMaster 56">
+            <div class="card-img-wrap"><img src="product images/fans/ceiling fan 2.2.png" alt="WindMaster 56"></div>
+            <div class="card-body"><div class="card-name">WindMaster 56</div><div class="card-desc">Wide blade span, quiet operation, long-lasting durability.</div><div class="card-price">PKR 10,500</div><div class="card-actions"><a href="product.html?id=14" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(14,'WindMaster 56',10500)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div>
+          </div>
+          <div class="product-card" data-id="15" data-price="12000" data-name="UltraBreeze 56&quot; 5-Blade">
+            <div class="card-img-wrap"><img src="product images/fans/ceiling fan 3.2.webp" alt="UltraBreeze 5-Blade"></div>
+            <div class="card-body"><div class="card-name">UltraBreeze 56" 5-Blade</div><div class="card-desc">Enhanced airflow, 5 aerodynamic blades, whisper-quiet.</div><div class="card-price">PKR 12,000</div><div class="card-actions"><a href="product.html?id=15" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(15,'UltraBreeze 5-Blade',12000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div>
+          </div>
+          <div class="product-card" data-id="16" data-price="8500" data-name="CoolFlow 48&quot;">
+            <div class="card-img-wrap"><img src="product images/fans/ceiling fan 5.1.webp" alt="CoolFlow 48&quot;"></div>
+            <div class="card-body"><div class="card-name">CoolFlow 48"</div><div class="card-desc">Smooth rotation, low noise, ideal for bedrooms.</div><div class="card-price">PKR 8,500</div><div class="card-actions"><a href="product.html?id=16" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(16,'CoolFlow 48&quot;',8500)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div>
+          </div>
+          <div class="product-card" data-id="17" data-price="11000" data-name="BreezeMax 54&quot;">
+            <div class="card-img-wrap"><img src="product images/fans/ceiling fan 6.2.png" alt="BreezeMax 54&quot;"></div>
+            <div class="card-body"><div class="card-name">BreezeMax 54"</div><div class="card-desc">Efficient airflow, quiet operation, stylish design.</div><div class="card-price">PKR 11,000</div><div class="card-actions"><a href="product.html?id=17" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(17,'BreezeMax 54&quot;',11000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cat-section" id="geyser">
+        <div class="cat-section-header">
+          <div class="cat-section-title"><span class="section-icon">🔥</span> Geysers</div>
+        </div>
+        <div class="products-grid">
+          <div class="product-card" data-id="7" data-price="32000" data-name="AquaHeat 15L Electric"><div class="card-img-wrap"><img src="product images/geysers/geyser 2.webp" alt="AquaHeat 15L"></div><div class="card-body"><div class="card-name">AquaHeat 15L Electric</div><div class="card-desc">Fast heating, 15L capacity, energy-efficient, corrosion-resistant tank.</div><div class="card-price">PKR 32,000</div><div class="card-actions"><a href="product.html?id=7" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(7,'AquaHeat 15L',32000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="8" data-price="45000" data-name="HeatPro 25L Geyser"><div class="card-img-wrap"><img src="product images/geysers/geyser 3.webp" alt="HeatPro 25L"></div><div class="card-body"><div class="card-name">HeatPro 25L Geyser</div><div class="card-desc">Large 25L tank, thermostatic control, durable steel body.</div><div class="card-price">PKR 45,000</div><div class="card-actions"><a href="product.html?id=8" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(8,'HeatPro 25L',45000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="9" data-price="18000" data-name="EcoFlow Instant Heater"><div class="card-img-wrap"><img src="product images/geysers/geyser 4.1.webp" alt="EcoFlow Instant"><span class="card-badge new">Compact</span></div><div class="card-body"><div class="card-name">EcoFlow Instant Heater</div><div class="card-desc">Instant hot water, compact design, energy-saving.</div><div class="card-price">PKR 18,000</div><div class="card-actions"><a href="product.html?id=9" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(9,'EcoFlow Instant',18000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="10" data-price="38000" data-name="PowerHeat 20L Geyser"><div class="card-img-wrap"><img src="product images/geysers/geyser 5.1.webp" alt="PowerHeat 20L"></div><div class="card-body"><div class="card-name">PowerHeat 20L Geyser</div><div class="card-desc">Reliable 20L storage, adjustable thermostat, rust-proof tank.</div><div class="card-price">PKR 38,000</div><div class="card-actions"><a href="product.html?id=10" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(10,'PowerHeat 20L',38000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="11" data-price="25000" data-name="ThermoMax 10L Mini"><div class="card-img-wrap"><img src="product images/geysers/geyser 6.1.webp" alt="ThermoMax 10L"></div><div class="card-body"><div class="card-name">ThermoMax 10L Mini</div><div class="card-desc">Quick heat, compact size, perfect for small bathrooms.</div><div class="card-price">PKR 25,000</div><div class="card-actions"><a href="product.html?id=11" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(11,'ThermoMax 10L',25000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="12" data-price="42000" data-name="Horizon 25L Horizontal"><div class="card-img-wrap"><img src="product images/geysers/geyser  7.webp" alt="Horizon 25L"></div><div class="card-body"><div class="card-name">Horizon 25L Horizontal</div><div class="card-desc">Space-saving horizontal design, 25L capacity, fast heating.</div><div class="card-price">PKR 42,000</div><div class="card-actions"><a href="product.html?id=12" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(12,'Horizon 25L',42000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+        </div>
+      </section>
+
+      <section class="cat-section" id="refrigerators">
+        <div class="cat-section-header">
+          <div class="cat-section-title"><span class="section-icon">🧊</span> Refrigerators</div>
+        </div>
+        <div class="subsection-label" id="ref-multi-door">Multi Door</div>
+        <div class="products-grid">
+          <div class="product-card" data-id="18" data-price="120000" data-name="ArcticLine"><div class="card-img-wrap"><img src="product images/fridges/double door/double door 1.1.webp" alt="ArcticLine"></div><div class="card-body"><div class="card-name">ArcticLine</div><div class="card-desc">Compact yet roomy, frost-free, energy-saving, flexible storage.</div><div class="card-price">PKR 120,000</div><div class="card-actions"><a href="product.html?id=18" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(18,'ArcticLine',120000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="19" data-price="180000" data-name="FrostTech 4-Door"><div class="card-img-wrap"><img src="product images/fridges/double door/double door 2.1.webp" alt="FrostTech 4-Door"></div><div class="card-body"><div class="card-name">FrostTech 4-Door</div><div class="card-desc">Spacious 4-door design, energy-efficient, adjustable shelves.</div><div class="card-price">PKR 180,000</div><div class="card-actions"><a href="product.html?id=19" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(19,'FrostTech 4-Door',180000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="20" data-price="200000" data-name="CoolMax French Door"><div class="card-img-wrap"><img src="product images/fridges/double door/double door 3.1.webp" alt="CoolMax French Door"><span class="card-badge">Premium</span></div><div class="card-body"><div class="card-name">CoolMax French Door</div><div class="card-desc">Elegant French doors, large capacity, fast cooling.</div><div class="card-price">PKR 200,000</div><div class="card-actions"><a href="product.html?id=20" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(20,'CoolMax French Door',200000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+        </div>
+        <div class="subsection-label" id="ref-deep-freezer">Deep Freezers</div>
+        <div class="products-grid">
+          <div class="product-card" data-id="21" data-price="70000" data-name="FrostKing 200L"><div class="card-img-wrap"><img src="product images/fridges/deep freezer/deep freezer 1.2.webp" alt="FrostKing 200L"></div><div class="card-body"><div class="card-name">FrostKing 200L</div><div class="card-desc">Large capacity, fast freezing, energy-efficient, durable build.</div><div class="card-price">PKR 70,000</div><div class="card-actions"><a href="product.html?id=21" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(21,'FrostKing 200L',70000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="22" data-price="55000" data-name="ArcticCool 150L Freezer"><div class="card-img-wrap"><img src="product images/fridges/deep freezer/deep freezer 2.2.webp" alt="ArcticCool 150L"></div><div class="card-body"><div class="card-name">ArcticCool 150L Freezer</div><div class="card-desc">Compact design, low power consumption, reliable performance.</div><div class="card-price">PKR 55,000</div><div class="card-actions"><a href="product.html?id=22" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(22,'ArcticCool 150L',55000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="23" data-price="95000" data-name="IceMaster 300L Upright"><div class="card-img-wrap"><img src="product images/fridges/deep freezer/deep freezer 3.2.webp" alt="IceMaster 300L"></div><div class="card-body"><div class="card-name">IceMaster 300L Upright</div><div class="card-desc">High-capacity upright design, quick freeze, adjustable shelves.</div><div class="card-price">PKR 95,000</div><div class="card-actions"><a href="product.html?id=23" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(23,'IceMaster 300L',95000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+        </div>
+        <div class="subsection-label" id="ref-standard">Top Freezer Design</div>
+        <div class="products-grid">
+          <div class="product-card" data-id="24" data-price="85000" data-name="FrostLine 250L"><div class="card-img-wrap"><img src="product images/fridges/single door/fridge 1.2.webp" alt="FrostLine 250L"></div><div class="card-body"><div class="card-name">FrostLine 250L</div><div class="card-desc">Classic top freezer design, spacious compartments, energy-efficient.</div><div class="card-price">PKR 85,000</div><div class="card-actions"><a href="product.html?id=24" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(24,'FrostLine 250L',85000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="25" data-price="75000" data-name="CoolMate 200L"><div class="card-img-wrap"><img src="product images/fridges/single door/fridge 2.2.webp" alt="CoolMate 200L"></div><div class="card-body"><div class="card-name">CoolMate 200L</div><div class="card-desc">Durable build, adjustable shelves, frost-free operation.</div><div class="card-price">PKR 75,000</div><div class="card-actions"><a href="product.html?id=25" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(25,'CoolMate 200L',75000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="26" data-price="95000" data-name="ArcticStar 300L"><div class="card-img-wrap"><img src="product images/fridges/single door/fridge 3.2.webp" alt="ArcticStar 300L"></div><div class="card-body"><div class="card-name">ArcticStar 300L</div><div class="card-desc">Large capacity, consistent cooling, simple design.</div><div class="card-price">PKR 95,000</div><div class="card-actions"><a href="product.html?id=26" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(26,'ArcticStar 300L',95000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+        </div>
+      </section>
+
+      <section class="cat-section" id="ac">
+        <div class="cat-section-header">
+          <div class="cat-section-title"><span class="section-icon">❄️</span> Air Conditioners</div>
+        </div>
+        <div class="subsection-label" id="ac-split">Split AC</div>
+        <div class="products-grid">
+          <div class="product-card" data-id="27" data-price="155000" data-name="ChillPro 1.5 Ton"><div class="card-img-wrap"><img src="product images/ac/wall ac/ac 2.2.webp" alt="ChillPro 1.5 Ton"><span class="card-badge sale">Eid 20% Off</span></div><div class="card-body"><div class="card-name">ChillPro 1.5 Ton</div><div class="card-desc">Fast cooling, energy-efficient, quiet operation, sleek design.</div><div class="card-price">PKR 155,000</div><div class="card-actions"><a href="product.html?id=27" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(27,'ChillPro 1.5 Ton',155000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="28" data-price="210000" data-name="ArcticBreeze 2 Ton"><div class="card-img-wrap"><img src="product images/ac/wall ac/ac 3.2.webp" alt="ArcticBreeze 2 Ton"></div><div class="card-body"><div class="card-name">ArcticBreeze 2 Ton</div><div class="card-desc">Powerful performance, inverter technology, auto temperature control.</div><div class="card-price">PKR 210,000</div><div class="card-actions"><a href="product.html?id=28" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(28,'ArcticBreeze 2 Ton',210000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="29" data-price="165000" data-name="FrostLine 1.5 Ton Inverter"><div class="card-img-wrap"><img src="product images/ac/wall ac/ac 4.2.webp" alt="FrostLine Inverter"><span class="card-badge new">Inverter</span></div><div class="card-body"><div class="card-name">FrostLine 1.5 Ton Inverter</div><div class="card-desc">Energy-saving inverter, rapid cooling, anti-bacterial filter.</div><div class="card-price">PKR 165,000</div><div class="card-actions"><a href="product.html?id=29" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(29,'FrostLine Inverter',165000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="30" data-price="120000" data-name="CoolAir 1 Ton"><div class="card-img-wrap"><img src="product images/ac/wall ac/ac 4.3.webp" alt="CoolAir 1 Ton"></div><div class="card-body"><div class="card-name">CoolAir 1 Ton</div><div class="card-desc">Compact design, efficient cooling, smart airflow, durable compressor.</div><div class="card-price">PKR 120,000</div><div class="card-actions"><a href="product.html?id=30" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(30,'CoolAir 1 Ton',120000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+        </div>
+        <div class="subsection-label" id="ac-floor-st">Floor Standing AC</div>
+        <div class="products-grid">
+          <div class="product-card" data-id="31" data-price="260000" data-name="ArcticFlow 2T Floor AC"><div class="card-img-wrap"><img src="product images/ac/floor stand ac/floor standing ac 1.1.webp" alt="ArcticFlow 2T"><span class="card-badge">Large Room</span></div><div class="card-body"><div class="card-name">ArcticFlow 2T Floor AC</div><div class="card-desc">Powerful cooling, energy-efficient, wide airflow, ideal for large rooms.</div><div class="card-price">PKR 260,000</div><div class="card-actions"><a href="product.html?id=31" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(31,'ArcticFlow 2T',260000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="32" data-price="320000" data-name="ChillMaster 3 Ton"><div class="card-img-wrap"><img src="product images/ac/floor stand ac/floor standing ac 2.2.webp" alt="ChillMaster 3 Ton"></div><div class="card-body"><div class="card-name">ChillMaster 3 Ton</div><div class="card-desc">Large coverage, energy-saving, sleek design, reliable performance.</div><div class="card-price">PKR 320,000</div><div class="card-actions"><a href="product.html?id=32" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(32,'ChillMaster 3 Ton',320000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="33" data-price="290000" data-name="CoolBreeze 2.5 Ton"><div class="card-img-wrap"><img src="product images/ac/floor stand ac/floor standing ac 3.1.webp" alt="CoolBreeze 2.5 Ton"></div><div class="card-body"><div class="card-name">CoolBreeze 2.5 Ton</div><div class="card-desc">Rapid cooling, adjustable vents, inverter technology.</div><div class="card-price">PKR 290,000</div><div class="card-actions"><a href="product.html?id=33" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(33,'CoolBreeze 2.5 Ton',290000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+        </div>
+      </section>
+
+      <section class="cat-section" id="laundry">
+        <div class="cat-section-header">
+          <div class="cat-section-title"><span class="section-icon">🫧</span> Washing Machines</div>
+        </div>
+        <div class="subsection-label" id="front-auto">Front Load Automatic</div>
+        <div class="products-grid">
+          <div class="product-card" data-id="34" data-price="110000" data-name="WashPro Front Load"><div class="card-img-wrap"><img src="product images/washing machines/front load automatic/front load automatic 1.1.webp" alt="WashPro"></div><div class="card-body"><div class="card-name">WashPro Front Load</div><div class="card-desc">Efficient cleaning, energy-saving, gentle on clothes.</div><div class="card-price">PKR 110,000</div><div class="card-actions"><a href="product.html?id=34" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(34,'WashPro Front Load',110000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="35" data-price="125000" data-name="AquaClean 8kg"><div class="card-img-wrap"><img src="product images/washing machines/front load automatic/front load automatic 2.1.webp" alt="AquaClean 8kg"></div><div class="card-body"><div class="card-name">AquaClean 8kg</div><div class="card-desc">Multiple wash programs, quick wash, durable drum, low noise.</div><div class="card-price">PKR 125,000</div><div class="card-actions"><a href="product.html?id=35" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(35,'AquaClean 8kg',125000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="36" data-price="95000" data-name="EcoWash 6kg F/L"><div class="card-img-wrap"><img src="product images/washing machines/front load automatic/front load automatic 3.2.webp" alt="EcoWash 6kg"><span class="card-badge new">Eco</span></div><div class="card-body"><div class="card-name">EcoWash 6kg F/L</div><div class="card-desc">Compact design, water-efficient, smooth spin, easy digital panel.</div><div class="card-price">PKR 95,000</div><div class="card-actions"><a href="product.html?id=36" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(36,'EcoWash 6kg',95000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="37" data-price="132000" data-name="TurboWash"><div class="card-img-wrap"><img src="product images/washing machines/front load automatic/front load automatic 4.2.webp" alt="TurboWash"></div><div class="card-body"><div class="card-name">TurboWash</div><div class="card-desc">High-capacity, fast wash cycles, anti-vibration technology.</div><div class="card-price">PKR 132,000</div><div class="card-actions"><a href="product.html?id=37" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(37,'TurboWash',132000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="38" data-price="140000" data-name="SmartClean"><div class="card-img-wrap"><img src="product images/washing machines/front load automatic/front load automatic 5.3.webp" alt="SmartClean"></div><div class="card-body"><div class="card-name">SmartClean</div><div class="card-desc">Inverter motor, intelligent wash programs, quiet operation.</div><div class="card-price">PKR 140,000</div><div class="card-actions"><a href="product.html?id=38" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(38,'SmartClean',140000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+        </div>
+        <div class="subsection-label" id="top-auto">Top Load Automatic</div>
+        <div class="products-grid">
+          <div class="product-card" data-id="39" data-price="65000" data-name="AquaSpin 7kg Top-Load"><div class="card-img-wrap"><img src="product images/washing machines/Top load automatic/top load automatic 1.1.webp" alt="AquaSpin 7kg"></div><div class="card-body"><div class="card-name">AquaSpin 7kg Top-Load</div><div class="card-desc">Fast, efficient washing, durable drum, energy-saving design.</div><div class="card-price">PKR 65,000</div><div class="card-actions"><a href="product.html?id=39" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(39,'AquaSpin 7kg',65000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="40" data-price="75000" data-name="WashMate 8kg Top-Load"><div class="card-img-wrap"><img src="product images/washing machines/Top load automatic/top load automatic 2.1.webp" alt="WashMate 8kg"></div><div class="card-body"><div class="card-name">WashMate 8kg Top-Load</div><div class="card-desc">Multiple wash programs, quick cycles, easy-to-use controls.</div><div class="card-price">PKR 75,000</div><div class="card-actions"><a href="product.html?id=40" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(40,'WashMate 8kg',75000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="41" data-price="60000" data-name="TurboClean"><div class="card-img-wrap"><img src="product images/washing machines/Top load automatic/top load automatic 4.1.webp" alt="TurboClean"></div><div class="card-body"><div class="card-name">TurboClean</div><div class="card-desc">Compact, water-efficient, smooth operation, ideal for small households.</div><div class="card-price">PKR 60,000</div><div class="card-actions"><a href="product.html?id=41" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(41,'TurboClean',60000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="42" data-price="80000" data-name="SmartWash"><div class="card-img-wrap"><img src="product images/washing machines/Top load automatic/top load automatic 5.1.webp" alt="SmartWash"></div><div class="card-body"><div class="card-name">SmartWash</div><div class="card-desc">High-capacity, energy-saving, gentle on clothes, vibration-free spin.</div><div class="card-price">PKR 80,000</div><div class="card-actions"><a href="product.html?id=42" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(42,'SmartWash',80000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+        </div>
+        <div class="subsection-label" id="semi-auto">Semi Automatic</div>
+        <div class="products-grid">
+          <div class="product-card" data-id="43" data-price="40000" data-name="TwinWash Semi-Auto"><div class="card-img-wrap"><img src="product images/washing machines/semi automatic/semi auto washing machine 1.1.webp" alt="TwinWash"></div><div class="card-body"><div class="card-name">TwinWash Semi-Auto</div><div class="card-desc">Dual tub design, powerful wash, low water usage, budget-friendly.</div><div class="card-price">PKR 40,000</div><div class="card-actions"><a href="product.html?id=43" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(43,'TwinWash',40000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="44" data-price="38000" data-name="PowerClean"><div class="card-img-wrap"><img src="product images/washing machines/semi automatic/semi auto washing machine 2.1.webp" alt="PowerClean"></div><div class="card-body"><div class="card-name">PowerClean</div><div class="card-desc">Strong motor, quick wash cycles, durable body, easy operation.</div><div class="card-price">PKR 38,000</div><div class="card-actions"><a href="product.html?id=44" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(44,'PowerClean',38000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="45" data-price="35000" data-name="EcoTwin 6.5kg"><div class="card-img-wrap"><img src="product images/washing machines/semi automatic/semi auto washing machine 3.2.webp" alt="EcoTwin 6.5kg"></div><div class="card-body"><div class="card-name">EcoTwin 6.5kg</div><div class="card-desc">Compact size, energy-efficient, separate wash and spin tubs.</div><div class="card-price">PKR 35,000</div><div class="card-actions"><a href="product.html?id=45" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(45,'EcoTwin 6.5kg',35000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="46" data-price="42000" data-name="TurboSpin"><div class="card-img-wrap"><img src="product images/washing machines/semi automatic/semi auto washing machine single 1.2.webp" alt="TurboSpin"></div><div class="card-body"><div class="card-name">TurboSpin</div><div class="card-desc">Large capacity, fast drying, heavy-duty performance.</div><div class="card-price">PKR 42,000</div><div class="card-actions"><a href="product.html?id=46" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(46,'TurboSpin',42000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+          <div class="product-card" data-id="47" data-price="30000" data-name="WashEasy"><div class="card-img-wrap"><img src="product images/washing machines/semi automatic/semi auto washing machine single 2.2.webp" alt="WashEasy"></div><div class="card-body"><div class="card-name">WashEasy</div><div class="card-desc">Simple controls, efficient cleaning, low maintenance.</div><div class="card-price">PKR 30,000</div><div class="card-actions"><a href="product.html?id=47" class="btn-shop">View Details</a><button class="btn-cart" onclick="addToCart(47,'WashEasy',30000)"><svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2h-4v2h2l3.6 7.59-1.35 2.44c-.16.28-.25.61-.25.97 0 1.1.9 2 2 2h12v-2h-11.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.3.12-.46 0-.55-.45-1-1-1h-14z"/></svg></button></div></div></div>
+        </div>
+      </section>
+
+      <div class="no-results" id="noResults" style="display:none;">
+        <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" stroke="#ddd6fe" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+        <h3>No products found</h3>
+        <p>Try adjusting your search or price filter.</p>
+        <button onclick="clearFilter()" style="margin-top:12px;background:#5b21b6;color:white;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-weight:600;font-family:'DM Sans',sans-serif;">Clear Filter</button>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <div class="logo-mark">H</div>
+          <span>HARVEL ELECTRIC</span>
+        </div>
+        <p class="footer-desc">Providing innovative and sustainable electrical appliances for modern living spaces since 1998.</p>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/" class="social-btn" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a4 4 0 0 0-4 4v3H8v4h3v8h4v-8h3l1-4h-4V6a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/" class="social-btn" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-title">Quick Links</h4>
+        <div class="footer-links">
+          <a href="index.html" class="footer-link">Home</a>
+          <a href="product-1.html" class="footer-link">Products</a>
+          <a href="contact.html" class="footer-link">Contact Us</a>
+          <a href="faq.html" class="footer-link">FAQ</a>
+          <a href="reviews.html" class="footer-link">Reviews</a>
+        </div>
+      </div>
+    
+      <div>
+        <h4 class="footer-title">Contact</h4>
+        <div class="footer-contact">
+          <div class="contact-item">North Nazimabad, Karachi, Pakistan</div>
+          <div class="contact-item">+92 (021) 2345-6789</div>
+          <a href="mailto:service@harvelelectric.com" class="contact-item email">service@harvelelectric.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Harvel Electric. All rights reserved.</p>
+      <div>
+        <a href="Harvel_Electronics_Full_Pricelist.pdf" download class="footer-link">Download Price List</a>
+      <a href="product detailed list.pdf" download class="footer-link">Download Detailed Products list</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+
+const mobileBreak = window.matchMedia('(max-width: 900px)');
+function checkMobile(){
+  document.getElementById('mobileSidebarArea').style.display = mobileBreak.matches ? 'block' : 'none';
+}
+checkMobile(); mobileBreak.addEventListener('change', checkMobile);
+function toggleMobileSidebar(){
+  document.getElementById('sidebar').classList.toggle('mobile-open');
+}
+
+function openGroup(el){
+  const group = el.dataset.group;
+  const childDiv = document.getElementById('group-'+group);
+  const isOpen = el.classList.contains('open');
+  el.classList.toggle('open');
+  el.classList.toggle('active', !isOpen);
+  if(childDiv){ childDiv.classList.toggle('open'); }
+}
+
+window.addEventListener('DOMContentLoaded', ()=>{
+  const hash = window.location.hash;
+  if(hash){
+    const target = document.querySelector(hash);
+    if(target) setTimeout(()=>{ target.scrollIntoView({behavior:'smooth', block:'start'}); }, 300);
+    // Open relevant sidebar group
+    const groupMap = {tv:'tv','tv-smart':'tv','tv-standard':'tv',fan:'fan',geyser:'geyser',refrigerators:'fridge','ref-multi-door':'fridge','ref-deep-freezer':'fridge','ref-standard':'fridge',ac:'ac','ac-split':'ac','ac-floor-st':'ac',laundry:'laundry','front-auto':'laundry','top-auto':'laundry','semi-auto':'laundry'};
+    const h = hash.replace('#','');
+    if(groupMap[h]){
+      const parentEl = document.querySelector(`[data-group="${groupMap[h]}"]`);
+      if(parentEl) openGroup(parentEl);
+    }
+  }
+
+  updateCartCount();
+});
+
+const sections = document.querySelectorAll('.cat-section, .subsection-label[id]');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{ if(window.scrollY >= s.offsetTop - 120) cur=s.id; });
+  document.querySelectorAll('.cat-child, .cat-parent').forEach(a=>{
+    a.classList.remove('active');
+    const href = a.getAttribute('href');
+    if(href && href === '#'+cur) a.classList.add('active');
+  });
+});
+
+function handleSearch(q){
+  const query = q.toLowerCase().trim();
+  let visible = 0;
+  document.querySelectorAll('.product-card').forEach(card=>{
+    const name = card.dataset.name?.toLowerCase()||'';
+    const desc = card.querySelector('.card-desc')?.textContent.toLowerCase()||'';
+    const match = !query || name.includes(query) || desc.includes(query);
+    card.style.display = match ? '' : 'none';
+    if(match) visible++;
+  });
+
+  document.querySelectorAll('.cat-section').forEach(sec=>{
+    const hasVisible = [...sec.querySelectorAll('.product-card')].some(c=>c.style.display!=='none');
+    sec.style.display = hasVisible ? '' : 'none';
+  });
+  document.getElementById('noResults').style.display = visible===0 ? 'flex' : 'none';
+  document.getElementById('resultsCount').textContent = query ? `${visible} result${visible!==1?'s':''} for "${q}"` : 'Showing all products';
+}
+
+function applyPriceFilter(){
+  const min = parseInt(document.getElementById('minPrice').value)||0;
+  const max = parseInt(document.getElementById('maxPrice').value)||Infinity;
+  let visible = 0;
+  document.querySelectorAll('.product-card').forEach(card=>{
+    const price = parseInt(card.dataset.price)||0;
+    const match = price >= min && price <= max;
+    card.style.display = match ? '' : 'none';
+    if(match) visible++;
+  });
+  document.querySelectorAll('.cat-section').forEach(sec=>{
+    const hasVisible = [...sec.querySelectorAll('.product-card')].some(c=>c.style.display!=='none');
+    sec.style.display = hasVisible ? '' : 'none';
+  });
+  document.getElementById('noResults').style.display = visible===0 ? 'flex' : 'none';
+  document.getElementById('resultsCount').textContent = `${visible} product${visible!==1?'s':''} in price range`;
+  showToast('Price filter applied');
+}
+
+function clearFilter(){
+  document.getElementById('minPrice').value='';
+  document.getElementById('maxPrice').value='';
+  document.getElementById('searchInput').value='';
+  document.querySelectorAll('.product-card').forEach(c=>c.style.display='');
+  document.querySelectorAll('.cat-section').forEach(s=>s.style.display='');
+  document.getElementById('noResults').style.display='none';
+  document.getElementById('resultsCount').textContent='Showing all products';
+}
+
+function sortProducts(method){
+  const sections = document.querySelectorAll('.cat-section');
+  sections.forEach(sec=>{
+    const grids = sec.querySelectorAll('.products-grid');
+    grids.forEach(grid=>{
+      const cards = [...grid.querySelectorAll('.product-card')];
+      cards.sort((a,b)=>{
+        if(method==='price-asc') return a.dataset.price - b.dataset.price;
+        if(method==='price-desc') return b.dataset.price - a.dataset.price;
+        if(method==='name-asc') return (a.dataset.name||'').localeCompare(b.dataset.name||'');
+        return 0;
+      });
+      cards.forEach(c=>grid.appendChild(c));
+    });
+  });
+}
+
+function addToCart(id, name, price){
+  const cart = JSON.parse(localStorage.getItem('harvelCart')||'[]');
+  const existing = cart.find(i=>i.id===id);
+  if(existing){ existing.qty++; }
+  else{ cart.push({id, name, price, qty:1, img:''}); }
+  localStorage.setItem('harvelCart', JSON.stringify(cart));
+  updateCartCount();
+  showToast(`${name} added to cart!`);
+}
+function updateCartCount(){
+  const c=JSON.parse(localStorage.getItem('harvelCart')||'[]');
+  const t=c.reduce((s,i)=>s+i.qty,0);
+  const el=document.getElementById('cartCount');
+  if(el){ el.textContent=t; el.style.display=t>0?'block':'none'; }
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ /* old profileIcon dropdown removed */
+
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="auth.js"></script>
+</body>
+</html>

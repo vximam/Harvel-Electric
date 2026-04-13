@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details – Harvel Electric</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;background:#fbf8ff;color:#1a1a2e;}
+    html{scroll-behavior:smooth;}
+
+    .site-header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(91,33,182,.08);}
+    .header-container{max-width:1280px;margin:0 auto;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;}
+    .header-logo{display:flex;align-items:center;gap:12px;cursor:pointer;text-decoration:none;}
+    .header-logo-text{display:flex;flex-direction:column;}
+    .header-logo-text span:first-child{font-size:18px;font-weight:800;color:#1a1a2e;letter-spacing:-.5px;}
+    .header-logo-text span:last-child{font-size:12px;font-weight:500;color:#7c3aed;margin-left:4px;letter-spacing:.05em;}
+    .logo-mark{width:36px;height:36px;background:linear-gradient(135deg,#5b21b6,#7c3aed);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:18px;box-shadow:0 4px 12px rgba(91,33,182,.35);}
+    .header-nav{display:flex;gap:36px;align-items:center;}
+    .nav-link-h{position:relative;font-weight:500;color:#4b5563;transition:color .2s;padding:6px 0;cursor:pointer;text-decoration:none;}
+    .nav-link-h::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:#5b21b6;transition:width .25s;border-radius:2px;}
+    .nav-link-h:hover,.nav-link-h.active{color:#5b21b6;}
+    .nav-link-h:hover::after,.nav-link-h.active::after{width:100%;}
+    .header-actions{display:flex;align-items:center;gap:12px;}
+    .btn-primary{display:inline-flex;align-items:center;gap:8px;background:#5b21b6;color:white;padding:14px 28px;border-radius:10px;font-weight:700;font-size:15px;text-decoration:none;transition:all .2s;box-shadow:0 8px 24px rgba(91,33,182,.4);cursor:pointer;border:none;font-family:'DM Sans',sans-serif;}
+    .btn-primary:hover{background:#4c1d95;transform:translateY(-2px);}
+    .menu-toggle{display:none;background:none;border:none;font-size:24px;cursor:pointer;}
+    .mobile-actions{display:none;flex-direction:column;gap:12px;}
+    .header-cart{display:flex;align-items:center;cursor:pointer;margin-left:10px;position:relative;}
+    .header-cart svg{width:24px;height:24px;color:#1a1a2e;transition:color .2s;}
+    .header-cart:hover svg{color:#5b21b6;}
+    #cartCount{position:absolute;top:-6px;right:-10px;background:#ff0000;color:#fff;border-radius:50%;padding:2px 6px;font-size:12px;font-weight:bold;display:none;}
+    #profileIcon{width:40px;height:40px;border-radius:50%;background:#5b21b6;color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;cursor:pointer;}
+    /* profile-dropdown display handled by header.css */
+    .logout-button{border:none;width:100%;padding:5px;border-radius:5px;}
+    @media(max-width:1024px){
+      .header-nav{display:none;flex-direction:column;gap:24px;position:fixed;top:70px;right:0;width:240px;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-left:1px solid rgba(91,33,182,.08);padding:24px;z-index:200;}
+      .header-nav.active{display:flex;}
+      .menu-toggle{display:block;}
+      .desktop-only{display:none;}
+      .mobile-actions{display:flex;}
+    }
+    @media(max-width:640px){.header-container{padding:0 16px;}}
+
+    .breadcrumb-bar{background:white;border-bottom:1px solid #f0e8ff;padding:12px 0;}
+    .breadcrumb-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:8px;font-size:13px;color:#6b7280;flex-wrap:wrap;}
+    .breadcrumb-inner a{color:#7c3aed;text-decoration:none;}
+    .breadcrumb-inner a:hover{text-decoration:underline;}
+
+    .product-section{max-width:1280px;margin:0 auto;padding:40px 24px;}
+    .product-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+    @media(max-width:900px){.product-grid{grid-template-columns:1fr;gap:32px;}}
+
+    .gallery-main{width:100%;aspect-ratio:1;background:white;border-radius:20px;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px solid #f0e8ff;position:relative;}
+    .gallery-main img{width:100%;height:100%;object-fit:contain;transition:opacity .3s;}
+    .gallery-thumbs{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
+    .thumb{width:72px;height:72px;border-radius:10px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border .2s;background:white;}
+    .thumb img{width:100%;height:100%;object-fit:contain;}
+    .thumb.active,.thumb:hover{border-color:#5b21b6;}
+
+    .product-badge{display:inline-flex;align-items:center;gap:6px;background:#f3e8ff;color:#7c3aed;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:12px;}
+    .product-name{font-family:'Fraunces',serif;font-size:2rem;font-weight:700;color:#1a1a2e;line-height:1.2;margin-bottom:8px;}
+    .product-rating{display:flex;align-items:center;gap:8px;margin-bottom:16px;}
+    .stars{color:#f59e0b;font-size:16px;}
+    .rating-count{font-size:13px;color:#6b7280;}
+    .product-price{font-size:2rem;font-weight:800;color:#5b21b6;margin-bottom:4px;}
+    .product-price-original{font-size:14px;color:#9ca3af;text-decoration:line-through;margin-bottom:16px;}
+    .price-save{display:inline-block;background:#dcfce7;color:#16a34a;font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:8px;}
+    .product-desc{color:#4b5563;line-height:1.7;margin-bottom:24px;font-size:15px;}
+
+    .specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;}
+    .spec-item{background:white;border:1px solid #f0e8ff;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:2px;}
+    .spec-label{font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;font-weight:600;}
+    .spec-value{font-size:14px;color:#1a1a2e;font-weight:600;}
+
+    .qty-row{display:flex;align-items:center;gap:16px;margin-bottom:24px;}
+    .qty-label{font-size:14px;font-weight:600;color:#374151;}
+    .qty-ctrl{display:flex;align-items:center;gap:0;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;}
+    .qty-btn{width:40px;height:40px;background:none;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#5b21b6;font-weight:700;transition:background .2s;}
+    .qty-btn:hover{background:#f3e8ff;}
+    .qty-val{width:48px;text-align:center;font-weight:700;font-size:16px;border:none;outline:none;background:transparent;}
+
+    .action-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+    .btn-quickbuy{flex:1;min-width:140px;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#5b21b6,#7c3aed);color:white;padding:16px 24px;border-radius:12px;font-weight:700;font-size:15px;border:none;cursor:pointer;transition:all .2s;box-shadow:0 8px 24px rgba(91,33,182,.4);}
+    .btn-quickbuy:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(91,33,182,.5);}
+    .btn-addcart{flex:1;min-width:140px;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:white;color:#5b21b6;padding:16px 24px;border-radius:12px;font-weight:700;font-size:15px;border:2px solid #5b21b6;cursor:pointer;transition:all .2s;}
+    .btn-addcart:hover{background:#f3e8ff;transform:translateY(-2px);}
+
+    .trust-row{display:flex;gap:16px;flex-wrap:wrap;padding-top:20px;border-top:1px solid #f0e8ff;}
+    .trust-item{display:flex;align-items:center;gap:8px;font-size:12px;color:#4b5563;font-weight:500;}
+    .trust-icon{font-size:18px;}
+
+    .related-section{max-width:1280px;margin:0 auto;padding:40px 24px;}
+    .section-title{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:700;margin-bottom:24px;color:#1a1a2e;}
+    .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;}
+    .related-card{background:white;border-radius:14px;overflow:hidden;border:1px solid #f0e8ff;transition:all .2s;cursor:pointer;text-decoration:none;display:block;}
+    .related-card:hover{border-color:#5b21b6;box-shadow:0 8px 24px rgba(91,33,182,.15);transform:translateY(-2px);}
+    .related-card img{width:100%;height:160px;object-fit:contain;background:#fbf8ff;}
+    .related-card-body{padding:12px;}
+    .related-card-name{font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:4px;}
+    .related-card-price{font-size:15px;font-weight:800;color:#5b21b6;}
+
+    .site-footer{background:#0f0721;color:#a78bfa;padding:64px 24px 32px;margin-top:80px;}
+    .footer-container{max-width:1280px;margin:0 auto;}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:48px;margin-bottom:48px;}
+    .footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+    .footer-logo span{font-size:16px;font-weight:800;color:white;}
+    .footer-desc{color:#6b7280;font-size:14px;line-height:1.7;max-width:260px;margin:0 0 24px;}
+    .footer-title{color:white;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px;}
+    .footer-links{display:flex;flex-direction:column;gap:12px;}
+    .footer-link{color:#9ca3af;font-size:14px;text-decoration:none;cursor:pointer;transition:color .2s;}
+    .footer-link:hover{color:#a78bfa;}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+    .footer-bottom p{color:#4b5563;font-size:13px;margin:0;}
+    @media(max-width:1024px){.footer-grid{grid-template-columns:1fr 1fr;gap:32px;}}
+    @media(max-width:640px){.footer-grid{grid-template-columns:1fr;gap:32px;}.footer-bottom{flex-direction:column;text-align:center;}}
+
+    .toast-msg{position:fixed;bottom:28px;right:28px;background:#5b21b6;color:white;padding:14px 24px;border-radius:12px;font-weight:600;font-size:14px;box-shadow:0 8px 32px rgba(91,33,182,.4);z-index:9999;transform:translateY(100px);opacity:0;transition:all .4s cubic-bezier(.175,.885,.32,1.275);}
+    .toast-msg.show{transform:translateY(0);opacity:1;}
+
+    .overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:1000;}
+    .popup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.9);background:#fff;padding:25px;width:90%;max-width:350px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:1001;transition:all .3s ease;}
+    .popup.active{display:block;transform:translate(-50%,-50%) scale(1);}
+    .popup h3{text-align:center;margin-bottom:15px;}
+    .popup input{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #ccc;}
+    .popup a.action,.popup button.action{display:inline-flex;align-items:center;justify-content:center;width:100%;gap:8px;background:#5b21b6;color:white;padding:14px 0;border-radius:10px;font-weight:700;font-size:15px;text-decoration:none;transition:all .2s;box-shadow:0 8px 24px rgba(91,33,182,.4);cursor:pointer;border:none;text-align:center;}
+    .popup a.action:hover,.popup button.action:hover{background:#4c1d95;transform:translateY(-2px);}
+    .divider{display:flex;align-items:center;text-align:center;margin:15px 0;}
+    .divider::before,.divider::after{content:'';flex:1;border-bottom:1px solid #ddd;}
+    .divider span{padding:0 10px;color:#777;font-size:14px;}
+    .popup .switch-btn{display:block;text-align:center;margin-top:10px;color:#2a5298;text-decoration:none;background:none;border:none;cursor:pointer;font-size:14px;}
+    .popup .switch-btn:hover{text-decoration:underline;}
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="header.css">
+</head>
+<body>
+
+<header class="site-header" id="hdr">
+  <div class="hdr">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">H</div>
+      <div class="logo-text">
+        <span class="logo-name">HARVEL</span>
+        <span class="logo-sub">Electric</span>
+      </div>
+    </a>
+    <nav class="nav" id="mainNav">
+      <a href="index.html" class="nav-link" data-page="index">Home</a>
+      <a href="product-1.html" class="nav-link" data-page="product-1">Products</a>
+      <a href="about.html" class="nav-link" data-page="about">About Us</a>
+      <a href="contact.html" class="nav-link" data-page="contact">Contact</a>
+      <a href="faq.html" class="nav-link" data-page="faq">FAQ</a>
+    </nav>
+    <div class="hdr-r">
+      <button class="icon-btn" aria-label="Cart" onclick="window.location='cart.html'">
+        <svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2v2h2l3.6 7.59-1.35 2.44C7.52 18.37 8.48 20 10 20h9v-2h-8.42c-.14 0-.25-.11-.25-.25l.03-.12L11.1 16h5.45c.75 0 1.41-.41 1.75-1.03L21 9H7.42l-.94-2zM7 20a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4z"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <div id="authBtns" style="display:flex;gap:8px">
+        <button class="btn btn-gp btn-sm" onclick="openAuthModal('login')">Login</button>
+        <button class="btn btn-p btn-sm" onclick="openAuthModal('signup')">Sign Up</button>
+      </div>
+      <div id="profileArea" style="display:none">
+        <div class="profile-wrap">
+          <button class="profile-btn" onclick="toggleProfileDropdown()">
+            <div class="profile-avatar" id="profileAvatar">U</div>
+            <span class="profile-name-btn" id="profileNameBtn">User</span>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="pd-header">
+              <div class="pd-name" id="pdName">User Name</div>
+              <div class="pd-email" id="pdEmail">user@email.com</div>
+            </div>
+            <button class="pd-item" onclick="showProfileInfo()">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              My Profile
+            </button>
+            <div class="pd-divider"></div>
+            <button class="pd-item danger" onclick="logoutUser()">
+              <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+      <button class="burger" id="burger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mob" id="mob">
+    <a href="index.html" class="nav-link" data-page="index">Home</a>
+    <a href="product-1.html" class="nav-link" data-page="product-1">Products</a>
+    <a href="about.html" class="nav-link" data-page="about">About Us</a>
+    <a href="contact.html" class="nav-link" data-page="contact">Contact</a>
+    <a href="faq.html" class="nav-link" data-page="faq">FAQ</a>
+    <div class="mob-btns" id="mobAuthBtns">
+      <button class="btn btn-gp" onclick="openAuthModal('login')">Login</button>
+      <button class="btn btn-p" onclick="openAuthModal('signup')">Sign Up</button>
+    </div>
+    <div id="mobProfileArea" style="display:none;margin-top:16px;padding:14px;background:var(--bgs);border-radius:var(--r2)">
+      <div style="font-weight:800;font-size:14px;color:var(--ink)" id="mobPdName">User</div>
+      <div style="font-size:12px;color:var(--inkl);margin-bottom:12px" id="mobPdEmail">email</div>
+      <button class="btn btn-gp btn-sm" style="width:100%;justify-content:center" onclick="logoutUser()">Sign Out</button>
+    </div>
+  </div>
+</header>
+
+<!-- Auth Modal -->
+<div class="auth-overlay" id="authOverlay" onclick="handleOverlayClick(event)">
+  <div class="auth-modal" id="authModal">
+    <div class="auth-modal-head">
+      <button class="auth-close" onclick="closeAuthModal()">&#x2715;</button>
+      <div class="logo-mark" style="width:38px;height:38px;font-size:17px;margin-bottom:14px">H</div>
+      <div class="auth-modal-title" id="authTitle">Welcome <em>back</em></div>
+      <div class="auth-modal-sub" id="authSub">Login to your Harvel Electric account</div>
+    </div>
+    <div class="auth-modal-body" id="authBody"></div>
+  </div>
+</div>
+<div class="auth-overlay" id="profileOverlay" onclick="handleProfileOverlayClick(event)">
+  <div class="auth-modal" id="profileModal">
+    <div class="auth-modal-head" style="background:linear-gradient(135deg,#0f0e24,#2a1060)">
+      <button class="auth-close" onclick="closeProfileModal()">&#x2715;</button>
+      <div class="logo-mark" style="width:38px;height:38px;font-size:17px;margin-bottom:14px" id="profileModalAvatar">U</div>
+      <div class="auth-modal-title">My <em>Profile</em></div>
+      <div class="auth-modal-sub" id="profileModalEmail">user@email.com</div>
+    </div>
+    <div class="auth-modal-body">
+      <div class="auth-field"><div class="auth-label">Full Name</div><div id="piName" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink);font-weight:600"></div></div>
+      <div class="auth-field"><div class="auth-label">Email</div><div id="piEmail" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <div class="auth-field"><div class="auth-label">Phone Number</div><div id="piPhone" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <div class="auth-field"><div class="auth-label">Member Since</div><div id="piDate" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <button class="auth-submit" onclick="logoutUser();closeProfileModal()" style="background:#dc2626;box-shadow:0 6px 22px rgba(220,38,38,.3);margin-top:4px">Sign Out</button>
+    </div>
+  </div>
+</div>
+<div class="hdr-toast" id="hdrToast">
+  <svg viewBox="0 0 24 24" width="16" height="16"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+  <span id="hdrToastMsg"></span>
+</div>
+
+<div class="breadcrumb-bar">
+  <div class="breadcrumb-inner">
+    <a href="index.html">Home</a>
+    <span>›</span>
+    <a href="product-1.html">Products</a>
+    <span>›</span>
+    <span id="breadcrumbName">Loading...</span>
+  </div>
+</div>
+
+<div class="product-section">
+  <div class="product-grid">
+    <div>
+      <div class="gallery-main">
+        <img id="mainImg" src="" alt="Product Image">
+      </div>
+      <div class="gallery-thumbs" id="galleryThumbs"></div>
+    </div>
+
+    <div>
+      <div class="product-badge" id="productCategory">⚡ Electronics</div>
+      <h1 class="product-name" id="productName">Loading...</h1>
+      <div class="product-rating">
+        <span class="stars">★★★★★</span>
+        <span class="rating-count">(128 reviews)</span>
+      </div>
+      <div class="product-price" id="productPrice">Rs. 0</div>
+      <div class="product-price-original" id="productPriceOrig" style="display:none"></div>
+      <p class="product-desc" id="productDesc">Loading product details...</p>
+
+      <div class="specs-grid" id="specsGrid"></div>
+
+      <div class="qty-row">
+        <span class="qty-label">Quantity:</span>
+        <div class="qty-ctrl">
+          <button class="qty-btn" onclick="changeQty(-1)">−</button>
+          <input class="qty-val" id="qtyInput" value="1" min="1" max="99" type="number" readonly>
+          <button class="qty-btn" onclick="changeQty(1)">+</button>
+        </div>
+      </div>
+
+      <div class="action-btns">
+        <button class="btn-quickbuy" onclick="quickBuy()">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V8h16v10zm-5-8v2.5c0 .83-.67 1.5-1.5 1.5S12 13.33 12 12.5V10h-2v2.5c0 1.93 1.57 3.5 3.5 3.5S17 14.43 17 12.5V10h-2z"/></svg>
+          Quick Buy
+        </button>
+        <button class="btn-addcart" onclick="addToCart()">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020 4H5.21L4.27 2H1v2h2l3.6 7.59z"/></svg>
+          Add to Cart
+        </button>
+      </div>
+
+      <div class="trust-row">
+        <div class="trust-item"><span class="trust-icon">🚚</span> Free Delivery</div>
+        <div class="trust-item"><span class="trust-icon">🔄</span> Easy Returns</div>
+        <div class="trust-item"><span class="trust-icon">✅</span> Genuine Product</div>
+        <div class="trust-item"><span class="trust-icon">💳</span> Cash on Delivery</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="related-section">
+  <h2 class="section-title">You Might Also Like</h2>
+  <div class="related-grid" id="relatedGrid"></div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <div class="logo-mark" style="width:32px;height:32px;font-size:16px;">H</div>
+          <span>Harvel Electric</span>
+        </div>
+        <p class="footer-desc">Premium home appliances for every Pakistani household. Quality you can trust, prices you'll love.</p>
+      </div>
+      <div>
+        <p class="footer-title">Quick Links</p>
+        <div class="footer-links">
+          <a href="index.html" class="footer-link">Home</a>
+          <a href="product-1.html" class="footer-link">Products</a>
+          <a href="about.html" class="footer-link">About Us</a>
+          <a href="contact.html" class="footer-link">Contact</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Categories</p>
+        <div class="footer-links">
+          <a href="product-1.html#led" class="footer-link">LED TVs</a>
+          <a href="product-1.html#ac" class="footer-link">Air Conditioners</a>
+          <a href="product-1.html#fridge" class="footer-link">Refrigerators</a>
+          <a href="product-1.html#laundry" class="footer-link">Washing Machines</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Contact</p>
+        <p style="color:#6b7280;font-size:13px;">📞 +92 300 0000000</p>
+        <p style="color:#6b7280;font-size:13px;margin-top:8px;">📧 info@harvelelectric.pk</p>
+        <p style="color:#6b7280;font-size:13px;margin-top:8px;">📍 Karachi, Pakistan</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Harvel Electric. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-msg" id="toastMsg"></div>
+
+<script>
+
+const PRODUCTS = {
+  1:  { name:'GalaxyView 55" 4K Smart TV',     cat:'LED TV',            price:89999,  orig:109999, desc:'Crystal-clear 4K UHD display with HDR10 support. Built-in streaming apps, voice control, and a super-slim bezeless design that transforms your living room.',  images:['product images/LED tvs/smart 1.1.webp','product images/LED tvs/smart 1.2.webp','product images/LED tvs/smart 1.3.webp'], specs:[['Screen','55"'],['Resolution','4K UHD'],['HDR','HDR10'],['Connectivity','WiFi + BT']] },
+  2:  { name:'NovaTech 50" QLED Smart TV',      cat:'LED TV',            price:79999,  orig:95000,  desc:'Quantum Dot color technology delivers breathtaking visuals. Dolby Atmos audio, 4K upscaling, and seamless smart streaming built in.',                               images:['product images/LED tvs/smart 2.1.webp','product images/LED tvs/smart 2.2.webp','product images/LED tvs/smart 2.3.webp'], specs:[['Screen','50"'],['Tech','QLED'],['Audio','Dolby Atmos'],['OS','Smart TV']] },
+  3:  { name:'Orion 65" UHD AI Smart TV',       cat:'LED TV',            price:119999, orig:145000, desc:'65-inch screen with AI-powered picture enhancement. Multiple HDMI and USB ports, 4K native resolution, and an immersive cinema experience at home.',               images:['product images/LED tvs/smart 3.1.webp','product images/LED tvs/smart 3.2.webp','product images/LED tvs/smart 3.3.webp'], specs:[['Screen','65"'],['Resolution','4K'],['AI Picture','Yes'],['Ports','4×HDMI']] },
+  4:  { name:'Horizon 43" Full HD LED TV',      cat:'LED TV',            price:35999,  orig:44000,  desc:'Full HD 1080p display with sharp contrast and vivid colors. HDMI and USB-ready with straightforward controls — great for bedrooms and small spaces.',               images:['product images/LED tvs/standard 1.1.webp','product images/LED tvs/standard 1.2.webp','product images/LED tvs/standard 1.3.webp'], specs:[['Screen','43"'],['Resolution','Full HD'],['HDMI','2×'],['USB','2×']] },
+  5:  { name:'ClearView 50" HD TV',             cat:'LED TV',            price:45999,  orig:55000,  desc:'HD display with solid contrast and multiple input options. A reliable everyday TV perfect for the living room or guest room.',                                        images:['product images/LED tvs/standard 2.1.webp','product images/LED tvs/standard 2.2.webp','product images/LED tvs/standard 2.3.webp'], specs:[['Screen','50"'],['Resolution','HD'],['Inputs','HDMI + USB'],['Design','Slim']] },
+  6:  { name:'Titan 32" Compact LED TV',        cat:'LED TV',            price:24999,  orig:30000,  desc:'Compact 32-inch HD set that is energy-efficient and lightweight. Simple, intuitive controls make it ideal for kitchens, bedrooms, or offices.',                    images:['product images/LED tvs/standard 3.1.webp','product images/LED tvs/standard 3.2.webp','product images/LED tvs/standard 3.3.webp'], specs:[['Screen','32"'],['Resolution','HD'],['Energy','A+ Rated'],['Weight','Light']] },
+  7:  { name:'AquaHeat 15L Electric Geyser',    cat:'Geyser',            price:12500,  orig:16000,  desc:'Fast-heating 15L storage geyser with corrosion-resistant inner tank. Energy-efficient design keeps your electricity bills low without compromising on hot water.',   images:['product images/geysers/geyser 2.webp','product images/geysers/geyser 2.webp'], specs:[['Capacity','15 Litres'],['Heating','Fast'],['Tank','Anti-Rust'],['Safety','Yes']] },
+  8:  { name:'HeatPro 25L Geyser',              cat:'Geyser',            price:16500,  orig:20000,  desc:'Large 25L thermostatic geyser with a durable steel body. Adjustable temperature, automatic cut-off, and corrosion-resistant tank for years of reliable use.',       images:['product images/geysers/geyser 3.webp','product images/geysers/geyser 3.webp'], specs:[['Capacity','25 Litres'],['Control','Thermostat'],['Body','Steel'],['Cut-off','Auto']] },
+  9:  { name:'EcoFlow Instant Heater',          cat:'Geyser',            price:9999,   orig:13000,  desc:'On-demand instant hot water without storing — saves energy and space. Compact wall-mount design with easy installation, ideal for small apartments.',                images:['product images/geysers/geyser 4.1.webp','product images/geysers/geyser 4.1.webp'], specs:[['Type','Instant'],['Capacity','On-Demand'],['Mount','Wall'],['Savings','High']] },
+  10: { name:'PowerHeat 20L Geyser',            cat:'Geyser',            price:14000,  orig:17500,  desc:'Reliable 20L storage with adjustable thermostat, rust-proof inner tank, and safety pressure relief valves. Built to handle Pakistani water conditions.',            images:['product images/geysers/geyser 5.1.webp','product images/geysers/geyser 5.1.webp'], specs:[['Capacity','20 Litres'],['Thermostat','Adjustable'],['Safety Valve','Yes'],['Tank','Rust-Proof']] },
+  11: { name:'ThermoMax 10L Mini Geyser',       cat:'Geyser',            price:8500,   orig:11000,  desc:'Compact 10L geyser with rapid heating — perfect for a single bathroom or small flat. Energy-saving operation keeps running costs minimal.',                          images:['product images/geysers/geyser 6.1.webp','product images/geysers/geyser 6.1.webp'], specs:[['Capacity','10 Litres'],['Heating','Rapid'],['Size','Mini'],['Energy','Low']] },
+  12: { name:'Horizon 25L Horizontal Geyser',   cat:'Geyser',            price:15500,  orig:19000,  desc:'Space-saving horizontal mounting ideal for low-ceiling spaces. 25L capacity with full thermostat control and durable enamel-lined tank.',                            images:['product images/geysers/geyser  7.webp','product images/geysers/geyser  7.webp'], specs:[['Capacity','25 Litres'],['Mount','Horizontal'],['Tank','Enamel'],['Control','Thermostat']] },
+  13: { name:'AeroBreeze 1200 Ceiling Fan',     cat:'Ceiling Fan',       price:7500,   orig:10000,  desc:'56-inch 3-blade ceiling fan with a powerful 1200 RPM motor. Whisper-quiet operation, energy-saving design, and a classic finish that suits any décor.',             images:['product images/fans/ceiling fan 1.2.png','product images/fans/ceiling fan 1.2.png'], specs:[['Blade','56"'],['Speed','1200 RPM'],['Blades','3'],['Noise','Low']] },
+  14: { name:'WindMaster 56 Ceiling Fan',       cat:'Ceiling Fan',       price:8500,   orig:11000,  desc:'High-performance 56-inch fan with strong airflow and a sleek contemporary look. Remote-compatible and suitable for both homes and offices.',                         images:['product images/fans/ceiling fan 2.2.png','product images/fans/ceiling fan 2.2.png'], specs:[['Blade','56"'],['Remote','Compatible'],['Finish','Modern'],['Airflow','High']] },
+  15: { name:'UltraBreeze 56" 5-Blade Fan',     cat:'Ceiling Fan',       price:11000,  orig:14000,  desc:'Premium 5-blade design delivers maximum airflow with minimal noise. Elegant brushed finish, multiple speed settings, and a built-in energy saver mode.',             images:['product images/fans/ceiling fan 3.2.webp','product images/fans/ceiling fan 3.2.webp'], specs:[['Blade','56" × 5'],['Motor','Premium'],['Finish','Brushed'],['Speeds','3']] },
+  16: { name:'CoolFlow 48" Ceiling Fan',        cat:'Ceiling Fan',       price:6500,   orig:8500,   desc:'Compact 48-inch fan ideal for smaller rooms. Efficient motor keeps airflow consistent all day. Easy installation and classic white finish.',                          images:['product images/fans/ceiling fan 5.1.webp','product images/fans/ceiling fan 5.1.webp'], specs:[['Blade','48"'],['Blades','3'],['Finish','White'],['Install','Easy']] },
+  17: { name:'BreezeMax 54" Ceiling Fan',       cat:'Ceiling Fan',       price:9500,   orig:12500,  desc:'54-inch fan with a powerful yet quiet motor. Suitable for medium to large rooms. Comes with a wall controller and decorative blade finish.',                        images:['product images/fans/ceiling fan 6.2.png','product images/fans/ceiling fan 6.2.png'], specs:[['Blade','54"'],['Controller','Wall'],['Rooms','Medium–Large'],['Motor','Quiet']] },
+  18: { name:'ArcticLine Double Door Fridge',   cat:'Refrigerator',      price:69999,  orig:85000,  desc:'Spacious double-door fridge with frost-free cooling, separate crisper drawers, and LED interior lighting. Perfect for a family of 4–6.',                           images:['product images/fridges/double door/double door 1.1.webp','product images/fridges/double door/double door 1.2.webp','product images/fridges/double door/double door 1.3.webp'], specs:[['Type','Double Door'],['Cooling','Frost-Free'],['Light','LED'],['Capacity','300L']] },
+  19: { name:'FrostTech 4-Door Refrigerator',   cat:'Refrigerator',      price:89999,  orig:110000, desc:'Premium 4-door design with dedicated zones for fresh food, frozen goods, and beverages. Inverter compressor for ultra-low electricity consumption.',                images:['product images/fridges/double door/double door 2.1.webp','product images/fridges/double door/double door 2.2.webp','product images/fridges/double door/double door 2.3.webp'], specs:[['Type','4-Door'],['Compressor','Inverter'],['Zones','3'],['Capacity','400L+']] },
+  20: { name:'CoolMax French Door Fridge',      cat:'Refrigerator',      price:105000, orig:130000, desc:'Wide French-door design with bottom freezer drawer. Full-width refrigerator section, digital temperature control, and a water dispenser ready setup.',               images:['product images/fridges/double door/double door 3.1.webp','product images/fridges/double door/double door 3.2.webp','product images/fridges/double door/double door 3.3.webp'], specs:[['Type','French Door'],['Freezer','Bottom Drawer'],['Control','Digital'],['Width','Wide']] },
+  21: { name:'FrostKing 200L Deep Freezer',     cat:'Deep Freezer',      price:39999,  orig:50000,  desc:'200-litre chest deep freezer ideal for bulk storage. Thick insulation locks in cold for power cut resilience. Perfect for meat, dairy, and frozen goods.',           images:['product images/fridges/deep freezer/deep freezer 1.1.webp','product images/fridges/deep freezer/deep freezer 1.2.webp'], specs:[['Capacity','200 Litres'],['Type','Chest'],['Insulation','Thick'],['Lid','Top-Open']] },
+  22: { name:'ArcticCool 150L Chest Freezer',   cat:'Deep Freezer',      price:29999,  orig:38000,  desc:'Compact 150L chest freezer for homes and small shops. Energy-efficient compressor, adjustable thermostat, and a durable rust-resistant exterior.',                  images:['product images/fridges/deep freezer/deep freezer 2.1.webp','product images/fridges/deep freezer/deep freezer 2.2.webp','product images/fridges/deep freezer/deep freezer 2.3.webp'], specs:[['Capacity','150 Litres'],['Exterior','Rust-Resistant'],['Thermostat','Adjustable'],['Energy','Efficient']] },
+  23: { name:'IceMaster 300L Upright Freezer',  cat:'Deep Freezer',      price:55000,  orig:68000,  desc:'Tall upright 300L freezer with multiple shelves for organized storage. Frost-free system, door alarm, and glass shelves make retrieving items effortless.',         images:['product images/fridges/deep freezer/deep freezer 3.1.webp','product images/fridges/deep freezer/deep freezer 3.2.webp','product images/fridges/deep freezer/deep freezer 3.3.webp'], specs:[['Capacity','300 Litres'],['Type','Upright'],['Frost-Free','Yes'],['Alarm','Door']] },
+  24: { name:'FrostLine 250L Single Door Fridge',cat:'Refrigerator',     price:34999,  orig:43000,  desc:'Single-door 250L fridge with a large freezer compartment. Direct-cool technology, adjustable glass shelves, and a vegetable crisper for fresh produce.',            images:['product images/fridges/single door/fridge 1.1.webp','product images/fridges/single door/fridge 1.2.webp','product images/fridges/single door/fridge 1.3.webp'], specs:[['Type','Single Door'],['Capacity','250L'],['Cooling','Direct Cool'],['Shelves','Glass']] },
+  25: { name:'CoolMate 200L Refrigerator',      cat:'Refrigerator',      price:27999,  orig:35000,  desc:'Affordable 200L single-door fridge with reliable cooling and a toughened glass shelf. Great starter fridge for small families or apartments.',                       images:['product images/fridges/single door/fridge 2.1.webp','product images/fridges/single door/fridge 2.2.webp','product images/fridges/single door/fridge 2.3.webp'], specs:[['Capacity','200L'],['Shelves','Toughened Glass'],['Ideal For','Small Family'],['Lock','Door']] },
+  26: { name:'ArcticStar 300L Single Door',     cat:'Refrigerator',      price:42999,  orig:54000,  desc:'Large 300L single door fridge with an integrated freezer, egg tray, multiple door shelves, and efficient direct-cool technology.',                                  images:['product images/fridges/single door/fridge 3.1.webp','product images/fridges/single door/fridge 3.2.webp','product images/fridges/single door/fridge 3.3.webp'], specs:[['Capacity','300L'],['Freezer','Built-in'],['Egg Tray','Yes'],['Tech','Direct Cool']] },
+  27: { name:'ChillPro 1.5 Ton Split AC',       cat:'Air Conditioner',   price:79999,  orig:97000,  desc:'1.5-ton inverter split AC with ultra-fast cooling, auto-cleaning filter, sleep mode, and WiFi control. Energy-star rated for maximum savings on your electricity bill.',images:['product images/ac/wall ac/ac 2.1.webp','product images/ac/wall ac/ac 2.2.webp','product images/ac/wall ac/ac 2.3.webp'], specs:[['Capacity','1.5 Ton'],['Type','Inverter'],['WiFi','Yes'],['Energy','5-Star']] },
+  28: { name:'ArcticBreeze 2 Ton Split AC',     cat:'Air Conditioner',   price:99999,  orig:120000, desc:'Powerful 2-ton AC with turbo cooling, dehumidification mode, child lock, and a 4-way auto-swing. Handles even the hottest Karachi summers with ease.',             images:['product images/ac/wall ac/ac 3.1.webp','product images/ac/wall ac/ac 3.2.webp','product images/ac/wall ac/ac 3.3.webp'], specs:[['Capacity','2 Ton'],['Swing','4-Way'],['Mode','Dehumidify'],['Child Lock','Yes']] },
+  29: { name:'FrostLine 1.5 Ton Inverter AC',   cat:'Air Conditioner',   price:85000,  orig:105000, desc:'Inverter-driven 1.5-ton AC that adjusts its compressor speed for consistent temperature and up to 65% energy savings. Self-diagnosis and auto-restart after outage.', images:['product images/ac/wall ac/ac 4.1.webp','product images/ac/wall ac/ac 4.2.webp','product images/ac/wall ac/ac 4.3.webp'], specs:[['Capacity','1.5 Ton'],['Tech','Inverter'],['Saving','65%'],['Auto Restart','Yes']] },
+  30: { name:'CoolAir 1 Ton Split AC',          cat:'Air Conditioner',   price:59999,  orig:74000,  desc:'Compact 1-ton split AC for small rooms and offices. Fast cooling, quiet indoor unit, and a simple remote control. Great entry-level option for new homeowners.',    images:['product images/ac/wall ac/ac 4.3.webp','product images/ac/wall ac/ac 4.2.webp'], specs:[['Capacity','1 Ton'],['Noise','Low'],['Remote','Yes'],['Rooms','Small–Medium']] },
+  31: { name:'ArcticFlow 2T Floor Standing AC', cat:'Floor AC',          price:129999, orig:160000, desc:'2-ton floor-standing AC with wide-angle air throw and powerful blower. Ideal for large halls and shops. 4-way louver control and auto self-clean function.',         images:['product images/ac/floor stand ac/floor standing ac 1.1.webp','product images/ac/floor stand ac/floor standing ac 1.2.webp','product images/ac/floor stand ac/floor standing ac 1.3.webp'], specs:[['Capacity','2 Ton'],['Type','Floor Standing'],['Louver','4-Way'],['Self-Clean','Yes']] },
+  32: { name:'ChillMaster 3 Ton Floor AC',      cat:'Floor AC',          price:169999, orig:210000, desc:'Heavy-duty 3-ton floor AC engineered for large commercial spaces. Triple-stage filtration, turbo mode, and a wide 180° airflow throw.',                             images:['product images/ac/floor stand ac/floor standing ac 2.1.webp','product images/ac/floor stand ac/floor standing ac 2.2.webp','product images/ac/floor stand ac/floor standing ac 2.3.webp'], specs:[['Capacity','3 Ton'],['Filter','Triple-Stage'],['Airflow','180°'],['Turbo','Yes']] },
+  33: { name:'CoolBreeze 2.5 Ton Floor AC',     cat:'Floor AC',          price:149999, orig:185000, desc:'2.5-ton floor-standing AC with inverter technology for large rooms. Ultra-quiet operation, self-diagnosis, and a touch panel with remote control.',                  images:['product images/ac/floor stand ac/floor standing ac 3.1.webp','product images/ac/floor stand ac/floor standing ac 3.2.webp','product images/ac/floor stand ac/floor standing ac 3.3.webp'], specs:[['Capacity','2.5 Ton'],['Tech','Inverter'],['Control','Touch + Remote'],['Noise','Ultra-Quiet']] },
+  34: { name:'WashPro Front Load 7kg',          cat:'Washing Machine',   price:59999,  orig:74000,  desc:'7kg front-load automatic washer with 15 wash programs, steam hygiene cycle, and a large porthole door. 1400 RPM spin extracts more water for faster drying.',       images:['product images/washing machines/front load automatic/front load automatic 1.1.webp','product images/washing machines/front load automatic/front load automatic 1.2.webp','product images/washing machines/front load automatic/front load automatic 1.3.webp'], specs:[['Load','7 kg'],['Type','Front Load'],['Programs','15'],['Spin','1400 RPM']] },
+  35: { name:'AquaClean 8kg Front Load',        cat:'Washing Machine',   price:69999,  orig:85000,  desc:'8kg front-loader with inverter motor for super-quiet operation. Built-in heater sanitizes laundry, and a delay start lets you set it on your schedule.',             images:['product images/washing machines/front load automatic/front load automatic 2.1.webp','product images/washing machines/front load automatic/front load automatic 2.2.webp'], specs:[['Load','8 kg'],['Motor','Inverter'],['Heater','Built-in'],['Delay Start','Yes']] },
+  36: { name:'EcoWash 6kg Front Load',          cat:'Washing Machine',   price:49999,  orig:62000,  desc:'Energy-efficient 6kg front-loader with quick-wash mode. Child lock, tub-clean cycle, and a transparent door for easy monitoring during the wash.',                  images:['product images/washing machines/front load automatic/front load automatic 3.2.webp','product images/washing machines/front load automatic/front load automatic 3.2.webp'], specs:[['Load','6 kg'],['Quick Wash','Yes'],['Child Lock','Yes'],['Energy','A++']] },
+  37: { name:'TurboWash 9kg Front Load',        cat:'Washing Machine',   price:79999,  orig:98000,  desc:'High-capacity 9kg front-loader with TurboWash technology that cleans a full load in 39 minutes. Direct-drive motor, allergy care cycle, and WiFi-enabled.',         images:['product images/washing machines/front load automatic/front load automatic 4.1.webp','product images/washing machines/front load automatic/front load automatic 4.2.webp','product images/washing machines/front load automatic/front load automatic 4.3.webp'], specs:[['Load','9 kg'],['Wash Time','39 min'],['WiFi','Yes'],['Allergy Care','Yes']] },
+  38: { name:'SmartClean 10kg Front Load',      cat:'Washing Machine',   price:89999,  orig:110000, desc:'Super-capacity 10kg front-loader with AI wash detection and automatic detergent dosing. Steam refresh, wrinkle care, and a 1600 RPM spin speed.',                   images:['product images/washing machines/front load automatic/front load automatic 5.1.webp','product images/washing machines/front load automatic/front load automatic 5.2.webp','product images/washing machines/front load automatic/front load automatic 5.3.webp'], specs:[['Load','10 kg'],['AI','Yes'],['Spin','1600 RPM'],['Steam','Yes']] },
+  39: { name:'AquaSpin 7kg Top-Load',           cat:'Washing Machine',   price:42999,  orig:55000,  desc:'7kg top-loading automatic washer with a pulsator wash system for gentle yet effective cleaning. 8 wash programs and a lint filter for pristine results.',            images:['product images/washing machines/Top load automatic/top load automatic 1.1.webp','product images/washing machines/Top load automatic/top load automatic 1.2.webp','product images/washing machines/Top load automatic/top load automatic 1.3.webp'], specs:[['Load','7 kg'],['Type','Top Load'],['Programs','8'],['Filter','Lint']] },
+  40: { name:'WashMate 8kg Top-Load',           cat:'Washing Machine',   price:49999,  orig:62000,  desc:'8kg top-loader with a powerful waterfall wash system for even detergent distribution. Auto balance, child lock, and a stainless steel drum.',                       images:['product images/washing machines/Top load automatic/top load automatic 2.1.webp','product images/washing machines/Top load automatic/top load automatic 2.2.webp','product images/washing machines/Top load automatic/top load automatic 2.3.webp'], specs:[['Load','8 kg'],['Drum','Stainless Steel'],['Child Lock','Yes'],['Auto Balance','Yes']] },
+  41: { name:'TurboClean 10kg Top-Load',        cat:'Washing Machine',   price:59999,  orig:74000,  desc:'Large 10kg top-loader with turbo wash and a powerful 750W motor. Soak function, speed wash, and soft-close lid make laundry day easier.',                          images:['product images/washing machines/Top load automatic/top load automatic 4.1.webp','product images/washing machines/Top load automatic/top load automatic 4.2.webp','product images/washing machines/Top load automatic/top load automatic 4.3.webp'], specs:[['Load','10 kg'],['Motor','750W'],['Soak','Yes'],['Lid','Soft-Close']] },
+  42: { name:'SmartWash 12kg Top-Load',         cat:'Washing Machine',   price:69999,  orig:86000,  desc:'Premium 12kg top-loader with a built-in heater and 12 wash cycles. Magic filter removes lint and fluff, and the large drum handles bedsheets and curtains easily.', images:['product images/washing machines/Top load automatic/top load automatic 5.1.webp','product images/washing machines/Top load automatic/top load automatic 5.2.webp','product images/washing machines/Top load automatic/top load automatic 5.3.webp'], specs:[['Load','12 kg'],['Heater','Built-in'],['Cycles','12'],['Filter','Magic']] },
+  43: { name:'TwinWash Semi-Auto 8kg',          cat:'Washing Machine',   price:22999,  orig:30000,  desc:'Twin-tub semi-automatic washer — wash in one tub while spinning in the other simultaneously. 8kg wash capacity with strong agitator and quick rinse cycle.',        images:['product images/washing machines/semi automatic/semi auto washing machine 1.1.webp','product images/washing machines/semi automatic/semi auto washing machine  1.2.webp','product images/washing machines/semi automatic/semi auto washing machine 1.3.webp'], specs:[['Load','8 kg'],['Type','Twin Tub'],['Rinse','Quick'],['Agitator','Strong']] },
+  44: { name:'PowerClean Semi-Auto 10kg',       cat:'Washing Machine',   price:26999,  orig:34000,  desc:'Heavy-duty 10kg semi-auto twin-tub designed for large families. Robust pulsator motor, stainless steel spinner, and transparent lid for easy monitoring.',           images:['product images/washing machines/semi automatic/semi auto washing machine 2.1.webp','product images/washing machines/semi automatic/semi auto washing machine 2.2.webp','product images/washing machines/semi automatic/semi auto washing machine  2.3.webp'], specs:[['Load','10 kg'],['Spinner','Stainless Steel'],['Lid','Transparent'],['Motor','Robust']] },
+  45: { name:'EcoTwin 6.5kg Semi-Auto',         cat:'Washing Machine',   price:18999,  orig:25000,  desc:'Budget-friendly 6.5kg twin-tub semi-auto with a gentle wash cycle for delicate fabrics. Compact footprint, water-saving design, and easy water inlet.',             images:['product images/washing machines/semi automatic/semi auto washing machine 3.2.webp','product images/washing machines/semi automatic/semi auto washing machine 3.3.webp'], specs:[['Load','6.5 kg'],['Type','Twin Tub'],['Delicate Mode','Yes'],['Water Save','Yes']] },
+  46: { name:'TurboSpin Single Tub Washer',     cat:'Washing Machine',   price:14999,  orig:20000,  desc:'Single-tub semi-auto with powerful agitator and separate spin controls. Lightweight and portable — plug in anywhere and start washing immediately.',                images:['product images/washing machines/semi automatic/semi auto washing machine single 1.1.webp','product images/washing machines/semi automatic/semi auto washing machine single  1.2.webp','product images/washing machines/semi automatic/semi auto washing machine single 1.3.webp'], specs:[['Type','Single Tub'],['Control','Manual'],['Portable','Yes'],['Spin','Separate']] },
+  47: { name:'WashEasy Single Tub 5kg',         cat:'Washing Machine',   price:12999,  orig:17000,  desc:'Entry-level 5kg single-tub washer that is perfect for small households. Very easy to operate, quick wash cycles, and a compact body that fits anywhere.',            images:['product images/washing machines/semi automatic/semi auto washing machine single 2.1.webp','product images/washing machines/semi automatic/semi auto washing machine single 2.2.webp','product images/washing machines/semi automatic/semi auto washing machine single 2.3.webp'], specs:[['Load','5 kg'],['Type','Single Tub'],['Cycles','Quick'],['Size','Compact']] }
+};
+
+const COUPONS = { 'HARVEL10': 10, 'SAVE15': 15, 'NEWUSER20': 20 };
+function getCart(){ return JSON.parse(localStorage.getItem('harvelCart')||'[]'); }
+function saveCart(c){ localStorage.setItem('harvelCart',JSON.stringify(c)); updateCartCount(); }
+function updateCartCount(){
+  const c=getCart(); const t=c.reduce((s,i)=>s+i.qty,0);
+  const el=document.getElementById('cartCount');
+  if(el){ el.textContent=t; el.style.display=t>0?'block':'none'; }
+}
+
+function addToCartItem(id, qty=1){
+  const p=PRODUCTS[id]; if(!p) return;
+  let c=getCart();
+  const ex=c.find(i=>i.id==id);
+  if(ex){ ex.qty+=qty; } else { c.push({id,name:p.name,price:p.price,image:p.images[0],qty}); }
+  saveCart(c);
+}
+
+const urlId=parseInt(new URLSearchParams(location.search).get('id'));
+const product=PRODUCTS[urlId];
+
+window.onload=function(){
+  updateCartCount();
+  checkAuth();
+  if(!product){ document.getElementById('productName').textContent='Product not found.'; return; }
+  renderProduct();
+  renderRelated();
+};
+
+function renderProduct(){
+  document.title=product.name+' – Harvel Electric';
+  document.getElementById('breadcrumbName').textContent=product.name;
+  document.getElementById('productCategory').textContent='⚡ '+product.cat;
+  document.getElementById('productName').textContent=product.name;
+  document.getElementById('productDesc').textContent=product.desc;
+
+  const savings=Math.round((1-product.price/product.orig)*100);
+  document.getElementById('productPrice').innerHTML=
+    'Rs. '+product.price.toLocaleString()+
+    '<span class="price-save">-'+savings+'%</span>';
+  const origEl=document.getElementById('productPriceOrig');
+  origEl.textContent='Rs. '+product.orig.toLocaleString();
+  origEl.style.display='block';
+
+  const main=document.getElementById('mainImg');
+  const thumbsEl=document.getElementById('galleryThumbs');
+  main.src=product.images[0];
+  main.alt=product.name;
+  thumbsEl.innerHTML='';
+  product.images.forEach((src,i)=>{
+    const t=document.createElement('div');
+    t.className='thumb'+(i===0?' active':'');
+    t.innerHTML=`<img src="${src}" alt="thumb ${i+1}">`;
+    t.onclick=()=>{
+      main.style.opacity=0;
+      setTimeout(()=>{main.src=src;main.style.opacity=1;},200);
+      document.querySelectorAll('.thumb').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+    };
+    thumbsEl.appendChild(t);
+  });
+
+  const sg=document.getElementById('specsGrid');
+  sg.innerHTML='';
+  product.specs.forEach(([label,val])=>{
+    sg.innerHTML+=`<div class="spec-item"><span class="spec-label">${label}</span><span class="spec-value">${val}</span></div>`;
+  });
+}
+
+function renderRelated(){
+  const same=Object.entries(PRODUCTS)
+    .filter(([id,p])=>p.cat===product.cat && parseInt(id)!==urlId)
+    .slice(0,4);
+  const grid=document.getElementById('relatedGrid');
+  grid.innerHTML='';
+  same.forEach(([id,p])=>{
+    grid.innerHTML+=`
+      <a href="product.html?id=${id}" class="related-card">
+        <img src="${p.images[0]}" alt="${p.name}">
+        <div class="related-card-body">
+          <div class="related-card-name">${p.name}</div>
+          <div class="related-card-price">Rs. ${p.price.toLocaleString()}</div>
+        </div>
+      </a>`;
+  });
+}
+
+function changeQty(d){
+  const inp=document.getElementById('qtyInput');
+  let v=parseInt(inp.value)+d;
+  if(v<1)v=1; if(v>99)v=99;
+  inp.value=v;
+}
+
+function getQty(){ return parseInt(document.getElementById('qtyInput').value)||1; }
+
+function addToCart(){
+  addToCartItem(urlId, getQty());
+  showToast('✓ Added to cart!');
+}
+
+function quickBuy(){
+  const qty=getQty();
+  const item={id:urlId,name:product.name,price:product.price,image:product.images[0],qty};
+  sessionStorage.setItem('quickBuyItem',JSON.stringify(item));
+  window.location='checkout.html?mode=quickbuy';
+}
+
+function showToast(msg){
+  const t=document.getElementById('toastMsg');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+function checkAuth(){
+  /* Auth is now handled by auth.js */
+}
+
+
+/* old profileIcon/openPopup listeners removed */
+
+
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

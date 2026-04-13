@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout – Harvel Electric</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;background:#fbf8ff;color:#1a1a2e;}
+    .site-header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(91,33,182,.08);}
+    .header-container{max-width:1280px;margin:0 auto;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;}
+    .header-logo{display:flex;align-items:center;gap:12px;cursor:pointer;text-decoration:none;}
+    .header-logo-text{display:flex;flex-direction:column;}
+    .header-logo-text span:first-child{font-size:18px;font-weight:800;color:#1a1a2e;letter-spacing:-.5px;}
+    .header-logo-text span:last-child{font-size:12px;font-weight:500;color:#7c3aed;margin-left:4px;letter-spacing:.05em;}
+    .logo-mark{width:36px;height:36px;background:linear-gradient(135deg,#5b21b6,#7c3aed);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:18px;box-shadow:0 4px 12px rgba(91,33,182,.35);}
+    .btn-primary{display:inline-flex;align-items:center;gap:8px;background:#5b21b6;color:white;padding:14px 28px;border-radius:10px;font-weight:700;font-size:15px;text-decoration:none;transition:all .2s;box-shadow:0 8px 24px rgba(91,33,182,.4);cursor:pointer;border:none;font-family:'DM Sans',sans-serif;}
+    .btn-primary:hover{background:#4c1d95;transform:translateY(-2px);}
+
+    .steps-bar{background:white;border-bottom:1px solid #f0e8ff;padding:16px 24px;}
+    .steps-inner{max-width:700px;margin:0 auto;display:flex;align-items:center;gap:0;}
+    .step{display:flex;align-items:center;gap:8px;flex:1;}
+    .step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:#e5e7eb;color:#6b7280;flex-shrink:0;}
+    .step.active .step-num{background:#5b21b6;color:white;}
+    .step.done .step-num{background:#16a34a;color:white;}
+    .step-label{font-size:13px;font-weight:600;color:#6b7280;}
+    .step.active .step-label{color:#5b21b6;}
+    .step.done .step-label{color:#16a34a;}
+    .step-line{flex:1;height:2px;background:#e5e7eb;margin:0 8px;}
+    .step-line.done{background:#16a34a;}
+    @media(max-width:480px){.step-label{display:none;}}
+
+    .checkout-page{max-width:1100px;margin:0 auto;padding:40px 24px;}
+    .checkout-layout{display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:start;}
+    @media(max-width:900px){.checkout-layout{grid-template-columns:1fr;}}
+
+    .form-card{background:white;border-radius:20px;padding:28px;border:1px solid #f0e8ff;}
+    .form-card-title{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;margin-bottom:20px;color:#1a1a2e;display:flex;align-items:center;gap:10px;}
+    .form-group{margin-bottom:16px;}
+    label{display:block;font-size:13px;font-weight:700;color:#374151;margin-bottom:6px;}
+    label span.req{color:#ef4444;}
+    input,textarea,select{width:100%;padding:12px 16px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:15px;font-family:'DM Sans',sans-serif;outline:none;transition:border .2s;background:white;color:#1a1a2e;}
+    input:focus,textarea:focus,select:focus{border-color:#7c3aed;}
+    input::placeholder,textarea::placeholder{color:#9ca3af;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    @media(max-width:600px){.form-row{grid-template-columns:1fr;}}
+
+    .payment-options{display:flex;flex-direction:column;gap:12px;margin-top:4px;}
+    .pay-option{display:flex;align-items:center;gap:14px;padding:14px 16px;border:2px solid #e5e7eb;border-radius:12px;cursor:pointer;transition:all .2s;position:relative;}
+    .pay-option:hover{border-color:#7c3aed;background:#faf5ff;}
+    .pay-option.selected{border-color:#5b21b6;background:#faf5ff;}
+    .pay-option input[type=radio]{display:none;}
+    .pay-radio{width:20px;height:20px;border-radius:50%;border:2px solid #d1d5db;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
+    .pay-option.selected .pay-radio{border-color:#5b21b6;background:#5b21b6;}
+    .pay-option.selected .pay-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:white;}
+    .pay-icon{font-size:24px;flex-shrink:0;}
+    .pay-label{font-weight:700;font-size:15px;color:#1a1a2e;}
+    .pay-sub{font-size:12px;color:#6b7280;}
+
+    .coupon-box{background:#f3e8ff;border-radius:12px;padding:16px;margin-bottom:20px;}
+    .coupon-label{font-size:13px;font-weight:700;color:#5b21b6;margin-bottom:8px;}
+    .coupon-input-row{display:flex;gap:8px;}
+    .coupon-input{flex:1;border:1px solid #d8b4fe;border-radius:8px;padding:10px 12px;font-size:14px;outline:none;}
+    .coupon-apply-btn{background:#5b21b6;color:white;border:none;border-radius:8px;padding:10px 16px;font-weight:700;font-size:13px;cursor:pointer;}
+    .coupon-apply-btn:hover{background:#4c1d95;}
+    .coupon-msg{font-size:12px;margin-top:6px;font-weight:600;}
+    .coupon-msg.ok{color:#16a34a;}
+    .coupon-msg.err{color:#ef4444;}
+
+    .order-summary{background:white;border-radius:20px;padding:24px;border:1px solid #f0e8ff;position:sticky;top:90px;}
+    .summary-title{font-size:18px;font-weight:800;margin-bottom:16px;}
+    .order-items{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;max-height:300px;overflow-y:auto;}
+    .order-item{display:flex;gap:12px;align-items:center;}
+    .order-item img{width:50px;height:50px;object-fit:contain;border-radius:8px;background:#fbf8ff;flex-shrink:0;}
+    .order-item-info{flex:1;min-width:0;}
+    .order-item-name{font-size:13px;font-weight:700;color:#1a1a2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .order-item-qty{font-size:12px;color:#6b7280;}
+    .order-item-price{font-size:14px;font-weight:700;color:#5b21b6;white-space:nowrap;}
+    .summary-divider{border:none;border-top:1px solid #f0e8ff;margin:12px 0;}
+    .summary-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:14px;color:#4b5563;}
+    .summary-row.total{font-size:18px;font-weight:800;color:#1a1a2e;padding-top:12px;margin-top:4px;border-top:2px solid #f0e8ff;}
+    .summary-row.discount{color:#16a34a;font-weight:600;}
+    .summary-row.delivery{color:#2563eb;font-weight:600;}
+
+    .place-btn{width:100%;padding:18px;font-size:16px;border-radius:12px;margin-top:20px;justify-content:center;}
+
+    .success-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:2000;align-items:center;justify-content:center;}
+    .success-overlay.active{display:flex;}
+    .success-modal{background:white;border-radius:24px;padding:40px;max-width:480px;width:90%;text-align:center;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);}
+    @keyframes popIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+    .success-check{font-size:72px;margin-bottom:16px;}
+    .success-title{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:700;color:#1a1a2e;margin-bottom:8px;}
+    .success-sub{color:#6b7280;font-size:15px;margin-bottom:24px;}
+    .tracking-box{background:#f3e8ff;border-radius:14px;padding:20px;margin-bottom:24px;}
+    .tracking-label{font-size:12px;font-weight:700;color:#7c3aed;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;}
+    .tracking-id{font-size:24px;font-weight:800;color:#5b21b6;letter-spacing:.1em;font-family:monospace;}
+    .tracking-copy{background:none;border:1px solid #7c3aed;color:#7c3aed;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;margin-top:10px;transition:all .2s;}
+    .tracking-copy:hover{background:#7c3aed;color:white;}
+    .eta-box{background:#dcfce7;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:14px;color:#15803d;font-weight:600;}
+    .success-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+
+    .toast-msg{position:fixed;bottom:28px;right:28px;background:#5b21b6;color:white;padding:14px 24px;border-radius:12px;font-weight:600;font-size:14px;box-shadow:0 8px 32px rgba(91,33,182,.4);z-index:9999;transform:translateY(100px);opacity:0;transition:all .4s cubic-bezier(.175,.885,.32,1.275);}
+    .toast-msg.show{transform:translateY(0);opacity:1;}
+
+    .error-field{border-color:#ef4444 !important;}
+    .error-msg{color:#ef4444;font-size:12px;margin-top:4px;font-weight:600;}
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="header.css">
+</head>
+<body>
+
+<header class="site-header" id="hdr">
+  <div class="hdr">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">H</div>
+      <div class="logo-text">
+        <span class="logo-name">HARVEL</span>
+        <span class="logo-sub">Electric</span>
+      </div>
+    </a>
+    <nav class="nav" id="mainNav">
+      <a href="index.html" class="nav-link" data-page="index">Home</a>
+      <a href="product-1.html" class="nav-link" data-page="product-1">Products</a>
+      <a href="about.html" class="nav-link" data-page="about">About Us</a>
+      <a href="contact.html" class="nav-link" data-page="contact">Contact</a>
+      <a href="faq.html" class="nav-link" data-page="faq">FAQ</a>
+    </nav>
+    <div class="hdr-r">
+      <button class="icon-btn" aria-label="Cart" onclick="window.location='cart.html'">
+        <svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2v2h2l3.6 7.59-1.35 2.44C7.52 18.37 8.48 20 10 20h9v-2h-8.42c-.14 0-.25-.11-.25-.25l.03-.12L11.1 16h5.45c.75 0 1.41-.41 1.75-1.03L21 9H7.42l-.94-2zM7 20a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4z"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <div id="authBtns" style="display:flex;gap:8px">
+        <button class="btn btn-gp btn-sm" onclick="openAuthModal('login')">Login</button>
+        <button class="btn btn-p btn-sm" onclick="openAuthModal('signup')">Sign Up</button>
+      </div>
+      <div id="profileArea" style="display:none">
+        <div class="profile-wrap">
+          <button class="profile-btn" onclick="toggleProfileDropdown()">
+            <div class="profile-avatar" id="profileAvatar">U</div>
+            <span class="profile-name-btn" id="profileNameBtn">User</span>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="pd-header">
+              <div class="pd-name" id="pdName">User Name</div>
+              <div class="pd-email" id="pdEmail">user@email.com</div>
+            </div>
+            <button class="pd-item" onclick="showProfileInfo()">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              My Profile
+            </button>
+            <div class="pd-divider"></div>
+            <button class="pd-item danger" onclick="logoutUser()">
+              <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+      <button class="burger" id="burger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mob" id="mob">
+    <a href="index.html" class="nav-link" data-page="index">Home</a>
+    <a href="product-1.html" class="nav-link" data-page="product-1">Products</a>
+    <a href="about.html" class="nav-link" data-page="about">About Us</a>
+    <a href="contact.html" class="nav-link" data-page="contact">Contact</a>
+    <a href="faq.html" class="nav-link" data-page="faq">FAQ</a>
+    <div class="mob-btns" id="mobAuthBtns">
+      <button class="btn btn-gp" onclick="openAuthModal('login')">Login</button>
+      <button class="btn btn-p" onclick="openAuthModal('signup')">Sign Up</button>
+    </div>
+    <div id="mobProfileArea" style="display:none;margin-top:16px;padding:14px;background:var(--bgs);border-radius:var(--r2)">
+      <div style="font-weight:800;font-size:14px;color:var(--ink)" id="mobPdName">User</div>
+      <div style="font-size:12px;color:var(--inkl);margin-bottom:12px" id="mobPdEmail">email</div>
+      <button class="btn btn-gp btn-sm" style="width:100%;justify-content:center" onclick="logoutUser()">Sign Out</button>
+    </div>
+  </div>
+</header>
+
+<!-- Auth Modal -->
+<div class="auth-overlay" id="authOverlay" onclick="handleOverlayClick(event)">
+  <div class="auth-modal" id="authModal">
+    <div class="auth-modal-head">
+      <button class="auth-close" onclick="closeAuthModal()">&#x2715;</button>
+      <div class="logo-mark" style="width:38px;height:38px;font-size:17px;margin-bottom:14px">H</div>
+      <div class="auth-modal-title" id="authTitle">Welcome <em>back</em></div>
+      <div class="auth-modal-sub" id="authSub">Login to your Harvel Electric account</div>
+    </div>
+    <div class="auth-modal-body" id="authBody"></div>
+  </div>
+</div>
+<div class="auth-overlay" id="profileOverlay" onclick="handleProfileOverlayClick(event)">
+  <div class="auth-modal" id="profileModal">
+    <div class="auth-modal-head" style="background:linear-gradient(135deg,#0f0e24,#2a1060)">
+      <button class="auth-close" onclick="closeProfileModal()">&#x2715;</button>
+      <div class="logo-mark" style="width:38px;height:38px;font-size:17px;margin-bottom:14px" id="profileModalAvatar">U</div>
+      <div class="auth-modal-title">My <em>Profile</em></div>
+      <div class="auth-modal-sub" id="profileModalEmail">user@email.com</div>
+    </div>
+    <div class="auth-modal-body">
+      <div class="auth-field"><div class="auth-label">Full Name</div><div id="piName" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink);font-weight:600"></div></div>
+      <div class="auth-field"><div class="auth-label">Email</div><div id="piEmail" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <div class="auth-field"><div class="auth-label">Phone Number</div><div id="piPhone" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <div class="auth-field"><div class="auth-label">Member Since</div><div id="piDate" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <button class="auth-submit" onclick="logoutUser();closeProfileModal()" style="background:#dc2626;box-shadow:0 6px 22px rgba(220,38,38,.3);margin-top:4px">Sign Out</button>
+    </div>
+  </div>
+</div>
+<div class="hdr-toast" id="hdrToast">
+  <svg viewBox="0 0 24 24" width="16" height="16"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+  <span id="hdrToastMsg"></span>
+</div>
+
+<div class="steps-bar">
+  <div class="steps-inner">
+    <div class="step active" id="step1">
+      <div class="step-num">1</div>
+      <span class="step-label">Delivery Info</span>
+    </div>
+    <div class="step-line" id="line1"></div>
+    <div class="step" id="step2">
+      <div class="step-num">2</div>
+      <span class="step-label">Payment</span>
+    </div>
+    <div class="step-line" id="line2"></div>
+    <div class="step" id="step3">
+      <div class="step-num">3</div>
+      <span class="step-label">Confirm</span>
+    </div>
+  </div>
+</div>
+
+<div class="checkout-page">
+  <div class="checkout-layout">
+    <div style="display:flex;flex-direction:column;gap:24px;">
+
+      <div class="form-card">
+        <div class="form-card-title">📦 Delivery Information</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name <span class="req">*</span></label>
+            <input type="text" id="fname" placeholder="e.g. Ali Hassan">
+            <div class="error-msg" id="err-fname"></div>
+          </div>
+          <div class="form-group">
+            <label>Phone Number <span class="req">*</span></label>
+            <input type="tel" id="fphone" placeholder="e.g. 0300-1234567">
+            <div class="error-msg" id="err-fphone"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Full Delivery Address <span class="req">*</span></label>
+          <textarea id="faddress" rows="2" placeholder="House/Flat #, Street, Area, City"></textarea>
+          <div class="error-msg" id="err-faddress"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>City <span class="req">*</span></label>
+            <input type="text" id="fcity" placeholder="e.g. Karachi">
+            <div class="error-msg" id="err-fcity"></div>
+          </div>
+          <div class="form-group">
+            <label>Nearby Landmark</label>
+            <input type="text" id="flandmark" placeholder="e.g. Near Lucky One Mall">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-title">💳 Payment Method</div>
+        <div class="payment-options">
+          <div class="pay-option selected" id="pay-cod" onclick="selectPayment('cod')">
+            <div class="pay-radio"></div>
+            <span class="pay-icon">💵</span>
+            <div>
+              <div class="pay-label">Cash on Delivery</div>
+              <div class="pay-sub">Pay when your order arrives at your door</div>
+            </div>
+          </div>
+          <div class="pay-option" id="pay-easypaisa" onclick="selectPayment('easypaisa')">
+            <div class="pay-radio"></div>
+            <span class="pay-icon">📱</span>
+            <div>
+              <div class="pay-label">EasyPaisa</div>
+              <div class="pay-sub">Send to 0300-XXXXXXX </div>
+            </div>
+          </div>
+          <div class="pay-option" id="pay-jazzcash" onclick="selectPayment('jazzcash')">
+            <div class="pay-radio"></div>
+            <span class="pay-icon">🏦</span>
+            <div>
+              <div class="pay-label">JazzCash</div>
+              <div class="pay-sub">Send to 0307-XXXXXXX </div>
+            </div>
+          </div>
+        </div>
+        <div id="digitalPayNote" style="display:none;background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:12px 16px;margin-top:12px;font-size:13px;color:#92400e;font-weight:600;">
+          ℹ️ After placing your order, send the exact amount to the number above. Use your phone number as the payment reference. Our team will verify and confirm within 2 hours.
+        </div>
+      </div>
+
+      <div class="form-card" id="couponSection">
+        <div class="form-card-title">🏷️ Coupon Code</div>
+        <div class="coupon-input-row">
+          <input class="coupon-input" id="couponInput" placeholder="Enter coupon code (e.g. HARVEL10)">
+          <button class="coupon-apply-btn" onclick="applyCoupon()">Apply</button>
+        </div>
+        <div class="coupon-msg" id="couponMsg"></div>
+        <div style="margin-top:10px;font-size:12px;color:#6b7280;">Try: HARVEL10 · SAVE15 · NEWUSER20</div>
+      </div>
+
+    </div>
+
+    <div>
+      <div class="order-summary">
+        <div class="summary-title">Your Order</div>
+        <div class="order-items" id="orderItems"></div>
+        <hr class="summary-divider">
+        <div class="summary-row"><span>Subtotal</span><span id="sumSubtotal">Rs. 0</span></div>
+        <div class="summary-row discount" id="discountRow" style="display:none;"><span>Coupon Discount</span><span id="sumDiscount">-Rs. 0</span></div>
+        <div class="summary-row delivery"><span>🚚 Delivery</span><span>Rs. 250</span></div>
+        <div class="summary-row total"><span>Total</span><span id="sumTotal">Rs. 0</span></div>
+        <button class="btn-primary place-btn" onclick="placeOrder()">
+          ✓ Place Order
+        </button>
+        <div style="text-align:center;margin-top:12px;font-size:12px;color:#9ca3af;">🔒 Your information is safe & secure</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="success-overlay" id="successOverlay">
+  <div class="success-modal">
+    <div class="success-check">🎉</div>
+    <div class="success-title">Order Placed!</div>
+    <div class="success-sub">Thank you for shopping with Harvel Electric. Your order is confirmed!</div>
+    <div class="tracking-box">
+      <div class="tracking-label">Your Tracking ID</div>
+      <div class="tracking-id" id="trackingId">HRV-000000</div>
+      <button class="tracking-copy" onclick="copyTracking()">📋 Copy Tracking ID</button>
+    </div>
+    <div class="eta-box" id="etaBox">📅 Estimated Delivery: 2–4 business days</div>
+    <div style="font-size:13px;color:#6b7280;margin-bottom:20px;">Save your tracking ID to check your order status. We'll call you before delivery.</div>
+    <div class="success-btns">
+      <a href="product-1.html" class="btn-primary" style="font-size:14px;padding:12px 20px;">Continue Shopping</a>
+      <a href="index.html" style="display:inline-flex;align-items:center;padding:12px 20px;border:2px solid #5b21b6;color:#5b21b6;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;">Go Home</a>
+    </div>
+  </div>
+</div>
+
+<div class="toast-msg" id="toastMsg"></div>
+
+<script>
+const COUPONS = { 'HARVEL10': 10, 'SAVE15': 15, 'NEWUSER20': 20 };
+const DELIVERY_COST = 250;
+let selectedPayment = 'cod';
+let appliedDiscount = 0;
+let currentItems = [];
+
+function init(){
+  const mode=new URLSearchParams(location.search).get('mode');
+  if(mode==='cart'){
+    currentItems=JSON.parse(sessionStorage.getItem('checkoutCart')||'[]');
+    const savedDiscount=parseInt(sessionStorage.getItem('checkoutDiscount')||'0');
+    const savedCoupon=sessionStorage.getItem('checkoutCoupon')||'';
+    if(savedCoupon && savedDiscount>0){
+      appliedDiscount=savedDiscount;
+      document.getElementById('couponInput').value=savedCoupon;
+      const msg=document.getElementById('couponMsg');
+      msg.textContent='✓ '+savedCoupon+' applied ('+savedDiscount+'% off)';
+      msg.className='coupon-msg ok';
+    }
+  } else if(mode==='quickbuy'){
+    const item=JSON.parse(sessionStorage.getItem('quickBuyItem')||'null');
+    if(item) currentItems=[item];
+  }
+
+  const u=JSON.parse(localStorage.getItem('harvelUser')||'null');
+  if(u){
+    if(u.name) document.getElementById('fname').value=u.name;
+    if(u.phone) document.getElementById('fphone').value=u.phone;
+    if(u.address) document.getElementById('faddress').value=u.address;
+  }
+
+  renderSummary();
+}
+
+function renderSummary(){
+  const el=document.getElementById('orderItems');
+  el.innerHTML='';
+  currentItems.forEach(item=>{
+    el.innerHTML+=`
+      <div class="order-item">
+        <img src="${item.image}" alt="${item.name}">
+        <div class="order-item-info">
+          <div class="order-item-name">${item.name}</div>
+          <div class="order-item-qty">Qty: ${item.qty}</div>
+        </div>
+        <div class="order-item-price">Rs. ${(item.price*item.qty).toLocaleString()}</div>
+      </div>`;
+  });
+  const subtotal=currentItems.reduce((s,i)=>s+i.price*i.qty,0);
+  const discount=Math.round(subtotal*appliedDiscount/100);
+  const total=subtotal-discount+DELIVERY_COST;
+  document.getElementById('sumSubtotal').textContent='Rs. '+subtotal.toLocaleString();
+  if(discount>0){
+    document.getElementById('discountRow').style.display='flex';
+    document.getElementById('sumDiscount').textContent='-Rs. '+discount.toLocaleString();
+  } else {
+    document.getElementById('discountRow').style.display='none';
+  }
+  document.getElementById('sumTotal').textContent='Rs. '+total.toLocaleString();
+}
+
+function selectPayment(method){
+  selectedPayment=method;
+  document.querySelectorAll('.pay-option').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('pay-'+method).classList.add('selected');
+  document.getElementById('digitalPayNote').style.display=(method==='easypaisa'||method==='jazzcash')?'block':'none';
+  updateStepBar(2);
+}
+
+function applyCoupon(){
+  const code=document.getElementById('couponInput').value.trim().toUpperCase();
+  const msg=document.getElementById('couponMsg');
+  if(COUPONS[code]){
+    appliedDiscount=COUPONS[code];
+    msg.textContent='✓ '+code+' applied! '+appliedDiscount+'% off';
+    msg.className='coupon-msg ok';
+    renderSummary();
+    showToast('Coupon applied — '+appliedDiscount+'% off!');
+  } else {
+    appliedDiscount=0;
+    msg.textContent='✗ Invalid coupon code';
+    msg.className='coupon-msg err';
+    renderSummary();
+  }
+}
+
+function validate(){
+  let ok=true;
+  const fields=[
+    {id:'fname',err:'err-fname',msg:'Please enter your full name'},
+    {id:'fphone',err:'err-fphone',msg:'Please enter your phone number'},
+    {id:'faddress',err:'err-faddress',msg:'Please enter your delivery address'},
+    {id:'fcity',err:'err-fcity',msg:'Please enter your city'},
+  ];
+  fields.forEach(f=>{
+    const el=document.getElementById(f.id);
+    const errEl=document.getElementById(f.err);
+    if(!el.value.trim()){
+      el.classList.add('error-field');
+      errEl.textContent=f.msg;
+      ok=false;
+    } else {
+      el.classList.remove('error-field');
+      errEl.textContent='';
+    }
+  });
+  const phone=document.getElementById('fphone').value.trim();
+  if(phone && !/^[0-9+\-\s]{10,15}$/.test(phone)){
+    document.getElementById('fphone').classList.add('error-field');
+    document.getElementById('err-fphone').textContent='Enter a valid phone number';
+    ok=false;
+  }
+  return ok;
+}
+
+function placeOrder(){
+  if(!currentItems.length){ showToast('No items to order!'); return; }
+  if(!validate()){ showToast('Please fill in all required fields'); return; }
+
+  updateStepBar(3);
+
+  const prefix='HRV';
+  const num=Math.floor(100000+Math.random()*900000);
+  const trackId=prefix+'-'+num;
+
+  const mode=new URLSearchParams(location.search).get('mode');
+  if(mode==='cart'){ localStorage.setItem('harvelCart','[]'); }
+
+  const order={
+    trackId,
+    name:document.getElementById('fname').value,
+    phone:document.getElementById('fphone').value,
+    address:document.getElementById('faddress').value,
+    city:document.getElementById('fcity').value,
+    landmark:document.getElementById('flandmark').value,
+    payment:selectedPayment,
+    items:currentItems,
+    total:currentItems.reduce((s,i)=>s+i.price*i.qty,0)-Math.round(currentItems.reduce((s,i)=>s+i.price*i.qty,0)*appliedDiscount/100)+DELIVERY_COST,
+    date:new Date().toISOString()
+  };
+  const orders=JSON.parse(localStorage.getItem('harvelOrders')||'[]');
+  orders.push(order);
+  localStorage.setItem('harvelOrders',JSON.stringify(orders));
+
+  document.getElementById('trackingId').textContent=trackId;
+  const city=document.getElementById('fcity').value;
+  document.getElementById('etaBox').textContent=
+    (city.toLowerCase().includes('karachi')||city.toLowerCase().includes('lahore')||city.toLowerCase().includes('islamabad'))
+    ? '📅 Estimated Delivery: 1–2 business days'
+    : '📅 Estimated Delivery: 3–5 business days';
+  document.getElementById('successOverlay').classList.add('active');
+}
+
+function copyTracking(){
+  const id=document.getElementById('trackingId').textContent;
+  navigator.clipboard.writeText(id).then(()=>showToast('Tracking ID copied!')).catch(()=>{
+    const t=document.createElement('textarea');
+    t.value=id; document.body.appendChild(t); t.select();
+    document.execCommand('copy'); document.body.removeChild(t);
+    showToast('Tracking ID copied!');
+  });
+}
+function updateStepBar(step){
+  for(let i=1;i<=3;i++){
+    const s=document.getElementById('step'+i);
+    s.classList.remove('active','done');
+    if(i<step) s.classList.add('done');
+    else if(i===step) s.classList.add('active');
+  }
+  for(let i=1;i<=2;i++){
+    const l=document.getElementById('line'+i);
+    if(l){ l.classList.toggle('done',i<step); }
+  }
+}
+function showToast(msg){
+  const t=document.getElementById('toastMsg');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+window.onload=init;
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

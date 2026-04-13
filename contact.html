@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | Harvel Electric</title>
+  <link rel="stylesheet" href="styl.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #fafafa; color: #1a1a2e; overflow-x: hidden; }
+
+    .hero-section { position: relative; min-height: 320px; background: linear-gradient(135deg,#1e0845 0%,#2d1b69 40%,#4c1d95 100%); overflow: hidden; display: flex; align-items: center; }
+    .hero-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size: 50px 50px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); backdrop-filter: blur(8px); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 600; color: #e9d5ff; letter-spacing: .05em; margin-bottom: 24px; }
+    .hero-inner { max-width: 1280px; margin: 0 auto; padding: 70px 24px; width: 100%; position: relative; z-index: 1; }
+
+    .section-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #7c3aed; margin-bottom: 10px; }
+    .section-divider { width: 48px; height: 3px; background: linear-gradient(90deg,#5b21b6,#7c3aed); border-radius: 3px; margin: 14px 0 20px; }
+
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 50px; }
+    .info-card { background: white; border-radius: 14px; padding: 22px; display: flex; align-items: flex-start; gap: 16px; box-shadow: 0 2px 12px rgba(0,0,0,.05); border: 1px solid #f0eeff; transition: box-shadow .2s; }
+    .info-card:hover { box-shadow: 0 6px 24px rgba(91,33,182,.1); }
+    .info-icon { width: 46px; height: 46px; background: linear-gradient(135deg,#ede9fe,#ddd6fe); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .info-card h3 { font-size: 15px; font-weight: 700; color: #1a1a2e; margin: 0 0 6px; }
+    .info-card p { color: #6b7280; font-size: 14px; margin: 0; line-height: 1.6; }
+
+    .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+    .form-card { background: white; border-radius: 16px; padding: 36px; box-shadow: 0 2px 20px rgba(0,0,0,.06); border: 1px solid #f0eeff; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+    .form-group label { font-size: 13px; font-weight: 600; color: #374151; }
+    .form-input { width: 100%; padding: 12px 16px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; transition: border-color .2s, box-shadow .2s; outline: none; background: #fafafa; }
+    .form-input:focus { border-color: #5b21b6; box-shadow: 0 0 0 3px rgba(91,33,182,.12); background: white; }
+    textarea.form-input { resize: vertical; }
+    .btn-submit { width: 100%; justify-content: center; }
+
+    .side-col { display: flex; flex-direction: column; gap: 24px; }
+    .map-box { background: linear-gradient(135deg,#f3f0ff,#ede9fe); border-radius: 14px; height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; border: 1px solid #ddd6fe; text-align: center; padding: 24px; }
+    .map-box p { color: #5b21b6; font-weight: 700; font-size: 15px; margin: 0 0 4px; }
+    .map-box span { color: #7c3aed; font-size: 13px; }
+    .quick-box { background: white; border-radius: 14px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,.05); border: 1px solid #f0eeff; }
+    .quick-box h3 { font-weight: 700; font-size: 16px; color: #1a1a2e; margin: 0 0 16px; }
+    .quick-link { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #f5f4f8; border-radius: 10px; text-decoration: none; color: #1a1a2e; font-weight: 600; font-size: 14px; transition: background .2s; margin-bottom: 10px; }
+    .quick-link:hover { background: #ede9fe; }
+    .quick-link:last-child { margin-bottom: 0; }
+    .ql-icon { width: 36px; height: 36px; background: linear-gradient(135deg,#ede9fe,#ddd6fe); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .wa-link { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+    .wa-link:hover { background: #dcfce7; }
+    .wa-icon { background: #dcfce7; }
+    .success-msg { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 14px 18px; margin-bottom: 24px; color: #166534; font-size: 14px; font-weight: 500; display: none; }
+
+    @media (max-width: 1024px) {
+       .desktop-only { display: none; }
+    }
+    @media (max-width: 900px) {
+      .contact-layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .hamburger { display: block; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .info-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="header.css">
+</head>
+<body>
+<header class="site-header" id="hdr">
+  <div class="hdr">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">H</div>
+      <div class="logo-text">
+        <span class="logo-name">HARVEL</span>
+        <span class="logo-sub">Electric</span>
+      </div>
+    </a>
+    <nav class="nav" id="mainNav">
+      <a href="index.html" class="nav-link" data-page="index">Home</a>
+      <a href="product-1.html" class="nav-link" data-page="product-1">Products</a>
+      <a href="about.html" class="nav-link" data-page="about">About Us</a>
+      <a href="contact.html" class="nav-link" data-page="contact">Contact</a>
+      <a href="faq.html" class="nav-link" data-page="faq">FAQ</a>
+    </nav>
+    <div class="hdr-r">
+      <button class="icon-btn" aria-label="Cart" onclick="window.location='cart.html'">
+        <svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2v2h2l3.6 7.59-1.35 2.44C7.52 18.37 8.48 20 10 20h9v-2h-8.42c-.14 0-.25-.11-.25-.25l.03-.12L11.1 16h5.45c.75 0 1.41-.41 1.75-1.03L21 9H7.42l-.94-2zM7 20a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4z"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <div id="authBtns" style="display:flex;gap:8px">
+        <button class="btn btn-gp btn-sm" onclick="openAuthModal('login')">Login</button>
+        <button class="btn btn-p btn-sm" onclick="openAuthModal('signup')">Sign Up</button>
+      </div>
+      <div id="profileArea" style="display:none">
+        <div class="profile-wrap">
+          <button class="profile-btn" onclick="toggleProfileDropdown()">
+            <div class="profile-avatar" id="profileAvatar">U</div>
+            <span class="profile-name-btn" id="profileNameBtn">User</span>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="pd-header">
+              <div class="pd-name" id="pdName">User Name</div>
+              <div class="pd-email" id="pdEmail">user@email.com</div>
+            </div>
+            <button class="pd-item" onclick="showProfileInfo()">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              My Profile
+            </button>
+            <div class="pd-divider"></div>
+            <button class="pd-item danger" onclick="logoutUser()">
+              <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+      <button class="burger" id="burger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mob" id="mob">
+    <a href="index.html" class="nav-link" data-page="index">Home</a>
+    <a href="product-1.html" class="nav-link" data-page="product-1">Products</a>
+    <a href="about.html" class="nav-link" data-page="about">About Us</a>
+    <a href="contact.html" class="nav-link" data-page="contact">Contact</a>
+    <a href="faq.html" class="nav-link" data-page="faq">FAQ</a>
+    <div class="mob-btns" id="mobAuthBtns">
+      <button class="btn btn-gp" onclick="openAuthModal('login')">Login</button>
+      <button class="btn btn-p" onclick="openAuthModal('signup')">Sign Up</button>
+    </div>
+    <div id="mobProfileArea" style="display:none;margin-top:16px;padding:14px;background:var(--bgs);border-radius:var(--r2)">
+      <div style="font-weight:800;font-size:14px;color:var(--ink)" id="mobPdName">User</div>
+      <div style="font-size:12px;color:var(--inkl);margin-bottom:12px" id="mobPdEmail">email</div>
+      <button class="btn btn-gp btn-sm" style="width:100%;justify-content:center" onclick="logoutUser()">Sign Out</button>
+    </div>
+  </div>
+</header>
+
+<!-- Auth Modal -->
+<div class="auth-overlay" id="authOverlay" onclick="handleOverlayClick(event)">
+  <div class="auth-modal" id="authModal">
+    <div class="auth-modal-head">
+      <button class="auth-close" onclick="closeAuthModal()">&#x2715;</button>
+      <div class="logo-mark" style="width:38px;height:38px;font-size:17px;margin-bottom:14px">H</div>
+      <div class="auth-modal-title" id="authTitle">Welcome <em>back</em></div>
+      <div class="auth-modal-sub" id="authSub">Login to your Harvel Electric account</div>
+    </div>
+    <div class="auth-modal-body" id="authBody"></div>
+  </div>
+</div>
+<div class="auth-overlay" id="profileOverlay" onclick="handleProfileOverlayClick(event)">
+  <div class="auth-modal" id="profileModal">
+    <div class="auth-modal-head" style="background:linear-gradient(135deg,#0f0e24,#2a1060)">
+      <button class="auth-close" onclick="closeProfileModal()">&#x2715;</button>
+      <div class="logo-mark" style="width:38px;height:38px;font-size:17px;margin-bottom:14px" id="profileModalAvatar">U</div>
+      <div class="auth-modal-title">My <em>Profile</em></div>
+      <div class="auth-modal-sub" id="profileModalEmail">user@email.com</div>
+    </div>
+    <div class="auth-modal-body">
+      <div class="auth-field"><div class="auth-label">Full Name</div><div id="piName" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink);font-weight:600"></div></div>
+      <div class="auth-field"><div class="auth-label">Email</div><div id="piEmail" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <div class="auth-field"><div class="auth-label">Phone Number</div><div id="piPhone" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <div class="auth-field"><div class="auth-label">Member Since</div><div id="piDate" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <button class="auth-submit" onclick="logoutUser();closeProfileModal()" style="background:#dc2626;box-shadow:0 6px 22px rgba(220,38,38,.3);margin-top:4px">Sign Out</button>
+    </div>
+  </div>
+</div>
+<div class="hdr-toast" id="hdrToast">
+  <svg viewBox="0 0 24 24" width="16" height="16"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+  <span id="hdrToastMsg"></span>
+</div>
+<section class="hero-section">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-badge fade-up">
+      <span style="width:6px;height:6px;background:#f59e0b;border-radius:50%;display:inline-block;"></span>
+      We're Here to Help
+    </div>
+    <h1 class="fade-up-1" style="font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;line-height:1.15;margin:0 0 16px;">
+      Get in <span style="color:#c4b5fd;">Touch</span> With Us
+    </h1>
+    <p class="fade-up-2" style="font-size:1rem;color:#c4b5fd;line-height:1.75;max-width:520px;margin:0;">
+      Have a question about our products, need technical support, or want to get a quote? We'd love to hear from you.
+    </p>
+  </div>
+</section>
+<section style="padding:60px 24px 80px;background:#f5f4f8;">
+  <div style="max-width:1280px;margin:0 auto;">
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-icon">
+          <svg width="22" height="22" fill="none" stroke="#5b21b6" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <div>
+          <h3>Our Address</h3>
+          <p>123 Electric Avenue<br>Lahore, Punjab, Pakistan</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">
+          <svg width="22" height="22" fill="none" stroke="#5b21b6" stroke-width="2" viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+        </div>
+        <div>
+          <h3>Phone Number</h3>
+          <p>+92 300 1234567<br>+92 42 1234567</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">
+          <svg width="22" height="22" fill="none" stroke="#5b21b6" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+        <div>
+          <h3>Email Us</h3>
+          <p>support@harvelelectric.com<br>sales@harvelelectric.com</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">
+          <svg width="22" height="22" fill="none" stroke="#5b21b6" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <div>
+          <h3>Business Hours</h3>
+          <p>Mon – Sat: 9:00 AM – 7:00 PM<br>Sunday: 10:00 AM – 4:00 PM</p>
+        </div>
+      </div>
+    </div>
+    <div class="contact-layout">
+      <div class="form-card">
+        <div class="section-eyebrow">Send a Message</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:#1a1a2e;margin:0 0 8px;">We'll Respond Quickly</h2>
+        <div class="section-divider"></div>
+
+        <div class="success-msg" id="successMsg">
+          ✓ Thank you! Your message has been received. We'll be in touch within 24 hours.
+        </div>
+        <form id="contactForm" onsubmit="submitForm(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name *</label>
+              <input class="form-input" type="text" id="name" placeholder="Ahmed Khan" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input class="form-input" type="email" id="email" placeholder="ahmed@example.com" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input class="form-input" type="tel" id="phone" placeholder="+92 300 0000000">
+            </div>
+            <div class="form-group">
+              <label for="subject">Subject *</label>
+              <select class="form-input" id="subject" required>
+                <option value="">Select a topic</option>
+                <option>Product Inquiry</option>
+                <option>Get a Quote</option>
+                <option>Technical Support</option>
+                <option>Warranty Claim</option>
+                <option>Service Appointment</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea class="form-input" id="message" rows="5" placeholder="Tell us how we can help you..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary btn-submit">
+            Send Message
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </button>
+        </form>
+      </div>
+      <div class="side-col">
+        <div class="map-box">
+          <svg width="48" height="48" fill="none" stroke="#5b21b6" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+          <div>
+            <p>Harvel Electric Showroom</p>
+            <span>123 Electric Avenue, Lahore</span>
+          </div>
+          <a href="https://maps.google.com" target="_blank" style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid #5b21b6;color:#5b21b6;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;transition:all .2s;text-decoration:none;" onmouseover="this.style.background='#5b21b6';this.style.color='white'" onmouseout="this.style.background='transparent';this.style.color='#5b21b6'">
+              Open in Google Maps
+            </a>
+        </div>
+        <div class="quick-box">
+          <h3>Quick Contact</h3>
+          <a href="tel:+923001234567" class="quick-link">
+            <div class="ql-icon">
+              <svg width="18" height="18" fill="none" stroke="#5b21b6" stroke-width="2" viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            </div>
+            Call Us: +92 300 1234567
+          </a>
+          <a href="https://wa.me/923001234567" target="_blank" class="quick-link wa-link">
+            <div class="ql-icon wa-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#16a34a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            </div>
+            WhatsApp Us
+          </a>
+          <a href="mailto:support@harvelelectric.com" class="quick-link">
+            <div class="ql-icon">
+              <svg width="18" height="18" fill="none" stroke="#5b21b6" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            support@harvelelectric.com
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="toast" id="toast">✓ Message sent! We'll get back to you soon.</div>
+
+<section>
+     <footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <div class="logo-mark">H</div>
+          <span>HARVEL ELECTRIC</span>
+        </div>
+        <p class="footer-desc"> Providing innovative and sustainable electrical appliances for modern living spaces since 1998.</p>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/" class="social-btn" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a4 4 0 0 0-4 4v3H8v4h3v8h4v-8h3l1-4h-4V6a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/" class="social-btn" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-title">Quick Links</h4>
+        <div class="footer-links">
+          <a href="index.html" class="footer-link">Home</a>
+          <a href="product-1.html" class="footer-link">Products</a>
+          <a href="contact.html" class="footer-link">Contact Us</a>
+          <a href="faq.html" class="footer-link">FAQ</a>
+          <a href="reviews.html" class="footer-link">Reviews</a>
+        </div>
+      </div>
+      
+      <div>
+        <h4 class="footer-title">Contact</h4>
+        <div class="footer-contact">
+          <div class="contact-item align-start">
+            <svg class="icon"></svg>
+            North Nazimabad, Karachi, Pakistan
+          </div>
+          <div class="contact-item align-center">
+            <svg class="icon"></svg>
+            +92 (021) 2345-6789
+          </div>
+          <a href="mailto:service@harvelelectric.com" class="contact-item email">
+            <svg class="icon"></svg>
+            service@harvelelectric.com
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Harvel Electric. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="Harvel_Electronics_Full_Pricelist.pdf" download class="footer-link">Download Price List</a>
+      <a href="product detailed list.pdf" download class="footer-link">Download Detailed Products list</a>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+
+<script>
+
+  function submitForm(e) {
+    e.preventDefault();
+    document.getElementById('successMsg').style.display = 'block';
+    document.getElementById('contactForm').reset();
+    var toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(function(){ toast.classList.remove('show'); }, 4000);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* old profileIcon dropdown removed */
+
+
+</script>
+
+<script src="auth.js"></script>
+</body>
+</html>

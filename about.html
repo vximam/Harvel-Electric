@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | ElectroHub</title>
+    <link rel="stylesheet" href="styl.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+.scroll-element { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out;}
+.scroll-element.visible {opacity: 1; transform: translateY(0);}
+.trust-bar {display: flex; justify-content: space-around; align-items: center; padding: 60px 10%;  background-color: #dec7f8; text-align: center;border-radius: 0 0 12px 12px;}
+.trust-item { display: flex;flex-direction: column; align-items: center; gap: 15px;  transition: transform 0.3s ease;}
+.trust-item:hover {transform: translateY(-5px); }
+.trust-item svg { stroke: #5e01aa; transition: stroke 0.3s ease;}
+.trust-item p {font-size: 14px;font-weight: 500;color: #000000; max-width: 150px; line-height: 1.4;}
+@media (max-width: 768px) {
+    .trust-bar {flex-direction: column; gap: 40px;padding: 40px 5%;}
+}
+.hero { display: flex;align-items: center;padding: 80px 10%; gap: 50px; background: linear-gradient(135deg,#f3f0ff,#ede9fe);}
+.hero-content h1 { font-size: 42px; line-height: 1.2; margin-bottom: 20px; }
+.hero-content p { color: #636e72; }
+.hero-image img { width: 300px; filter: drop-shadow(0 10px 20px rgba(108, 92, 231, 0.2)); }
+.information { padding: 40px 10%; text-align: center;  }
+.info-card { background: white; border-radius: 14px; padding: 40px; box-shadow: 0 2px 12px rgba(0,0,0,.10);border: #6C5CE7 1px solid; transition: box-shadow .2s; }
+.info-card p { line-height: 1.8; color: #000000; max-width: 800px; margin: 0 auto; }
+
+.mission-vision { display: flex; gap: 30px; padding: 40px 10%; }
+.mv-card { flex: 1; padding: 40px; border: 1px solid #ffffff; border-radius: 15px; transition: all 0.3s ease; text-align: center; line-height: 1.8;}
+.mv-card{background: linear-gradient(135deg,#f3f0ff,#ede9fe);}
+.mv-card i { font-size: 30px; color: #5e01aa; margin-bottom: 20px;  }
+.mv-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); border-color: #6C5CE7;  }
+
+.core-values { padding: 60px 10%; text-align: center; }
+.section-title { margin-bottom: 40px; font-size: 14px; letter-spacing: 2px; }
+.values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.value-item { background-color: #5e01aa; color: #fff; padding: 50px 20px; border-radius: 15px; position: relative; overflow: hidden; cursor: pointer;transition: 0.3s;}
+.value-item i { font-size: 40px; margin-bottom: 15px; }
+.overlays { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #490085; display: flex; align-items: center; justify-content: center;  padding: 20px;font-size: 13px;transform: translateY(100%);transition: 0.4s ease-in-out;}
+
+.value-item:hover .overlays { transform: translateY(0); }
+
+.team { padding: 80px 10%; background-color: white; box-shadow: 0 2px 12px rgba(0,0,0,.08);}
+.team-container {  margin: 5px 0 5px 0; display: flex; align-items: center; flex-direction: column; gap: 30px; justify-content: center; padding: 8px 0 8px 0; }
+.hrline{border-bottom: #6C5CE7 2px solid;}
+.team-profile{text-align: center;}
+.team-profile img { width: 120px; border-radius: 50%; border: 5px solid #6C5CE7; margin-bottom: 10px; }
+.team-profile h4 { margin-bottom: 5px; }
+.team-profile span { color: #636e72; font-size: 14px;   }
+.team-text { display: flex; gap: 40px; text-align: left; }
+.bullet-list p { font-size: 13px; color: #636e72; margin-bottom: 10px;  }
+.hero-section { position: relative; min-height: 320px; background: linear-gradient(135deg,#1e0845 0%,#2d1b69 40%,#4c1d95 100%); overflow: hidden; display: flex; align-items: center; }
+    .hero-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size: 50px 50px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); backdrop-filter: blur(8px); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 600; color: #e9d5ff; letter-spacing: .05em; margin-bottom: 24px; }
+    .hero-inner { max-width: 1280px; margin: 0 auto; padding: 70px 24px; width: 100%; position: relative; z-index: 1; }
+    .services{padding:100px 32px;background: #f5f3fb;}
+.svc-hd{text-align:center;margin-bottom:56px; }
+.svc-hd .lead{margin:14px auto 0}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.scard{
+  background: #ffffff;border-radius:26px;padding:36px 30px;
+  border:1.5px solid #e8e2f4;position:relative;overflow:hidden;
+  transition:transform .3s cubic-bezier(.23,.86,.35,1),box-shadow .3s cubic-bezier(.23,.86,.35,1) ,border-color .3s cubic-bezier(.23,.86,.35,1); 
+  display:flex;flex-direction:column;
+}
+.scard::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#5b21b6,#7c3aed);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.23,.86,.35,1); }
+.scard:hover{transform:translateY(-8px);box-shadow:0 22px 56px rgba(91,33,182,.13);border-color:rgba(91,33,182,.2)}
+.scard:hover::before{transform:scaleX(1)}
+.scard-ico{ width:56px;height:56px;border-radius:16px;background:rgba(91,33,182,.08);display:flex;align-items:center;justify-content:center;margin-bottom:22px;}
+.scard-ico svg{stroke:#5b21b6;fill:none;stroke-width:1.75;width:26px;height:26px}
+.scard-h{font-family: 'Fraunces',serif;font-size:1.15rem;color: #0f0e24;;margin-bottom:10px}
+.scard-p{font-size:13.5px;color: #7b7a96;line-height:1.8;flex:1}
+
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--body);font-weight:700;font-size:14px;padding:14px 28px;border-radius:12px;;border:none;text-decoration: none; cursor:pointer;transition:transform .3s  cubic-bezier(.23,.86,.35,1),box-shadow .3s  cubic-bezier(.23,.86,.35,1),background .3s  cubic-bezier(.23,.86,.35,1),color .3s  cubic-bezier(.23,.86,.35,1);}
+.btn-gp{background:transparent;border:1.5px solid rgba(91,33,182,.3);color:#5b21b6}
+.btn-gp:hover{background:rgba(91,33,182,.05)}
+.btn-lg{padding:17px 38px;font-size:15px;border-radius:12px;}
+.display{ font-family:'Fraunces',serif;font-weight:300;font-size:clamp(2.1rem,4vw,3.2rem);line-height:1.08;color: #0f0e24;;}
+.display em{font-style:italic;font-weight:400;color:#5b21b6;}
+
+@media (max-width: 1024px) {
+  .footer-grid {grid-template-columns: 1fr 1fr;gap: 32px;}
+  .footer-desc {max-width: 100%;}
+}
+
+@media (max-width: 640px) {
+  .site-footer {padding: 48px 16px 24px;}
+  .footer-grid {grid-template-columns: 1fr;gap: 32px;}
+  .footer-logo { justify-content: center;}
+  .footer-desc {text-align: center;margin-left: auto;margin-right: auto;}
+.footer-socials { justify-content: center;}
+ .footer-title {text-align: center;}
+ .footer-links { align-items: center; }
+.footer-contact {align-items: center;text-align: center;}
+ .contact-item {justify-content: center;}
+ .footer-bottom { flex-direction: column;text-align: center;}
+ .footer-bottom-links { justify-content: center; flex-wrap: wrap;gap: 16px;}
+}
+
+@media (max-width: 400px) {
+  .footer-title {font-size: 12px;}
+ .footer-link {font-size: 13px;}
+ .footer-desc { font-size: 13px;}
+}
+@media (max-width: 768px) {
+    .mission-vision { flex-direction: column;  padding: 40px 5%;gap: 20px;}
+    .mv-card { width: 100%; padding: 30px 20px;}
+}
+@media (max-width: 1024px) {
+    .values-grid { grid-template-columns: repeat(2, 1fr);  gap: 15px; }
+}
+@media (max-width: 600px) {
+    .values-grid { grid-template-columns: 1fr;}
+    .value-item { padding: 40px 20px;}
+}
+@media (max-width: 1024px) {
+    .svc-grid {grid-template-columns: repeat(2, 1fr);  gap: 20px;}
+}
+@media (max-width: 768px) {
+    .services { padding: 60px 20px;}
+    .svc-hd h2 { font-size: 1.8rem; }
+    .svc-grid {grid-template-columns: 1fr; }
+    .scard { padding: 25px; }
+}
+@media (max-width: 768px) {
+    .team-container { padding: 20px 0;}
+    .team-text { flex-direction: column;  gap: 10px; text-align: center;}
+    .bullet-list p { justify-content: center;}
+}
+    </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="header.css">
+</head>
+<body>
+<header class="site-header" id="hdr">
+  <div class="hdr">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">H</div>
+      <div class="logo-text">
+        <span class="logo-name">HARVEL</span>
+        <span class="logo-sub">Electric</span>
+      </div>
+    </a>
+    <nav class="nav" id="mainNav">
+      <a href="index.html" class="nav-link" data-page="index">Home</a>
+      <a href="product-1.html" class="nav-link" data-page="product-1">Products</a>
+      <a href="about.html" class="nav-link" data-page="about">About Us</a>
+      <a href="contact.html" class="nav-link" data-page="contact">Contact</a>
+      <a href="faq.html" class="nav-link" data-page="faq">FAQ</a>
+    </nav>
+    <div class="hdr-r">
+      <button class="icon-btn" aria-label="Cart" onclick="window.location='cart.html'">
+        <svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2v2h2l3.6 7.59-1.35 2.44C7.52 18.37 8.48 20 10 20h9v-2h-8.42c-.14 0-.25-.11-.25-.25l.03-.12L11.1 16h5.45c.75 0 1.41-.41 1.75-1.03L21 9H7.42l-.94-2zM7 20a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4z"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <div id="authBtns" style="display:flex;gap:8px">
+        <button class="btn btn-gp btn-sm" onclick="openAuthModal('login')">Login</button>
+        <button class="btn btn-p btn-sm" onclick="openAuthModal('signup')">Sign Up</button>
+      </div>
+      <div id="profileArea" style="display:none">
+        <div class="profile-wrap">
+          <button class="profile-btn" onclick="toggleProfileDropdown()">
+            <div class="profile-avatar" id="profileAvatar">U</div>
+            <span class="profile-name-btn" id="profileNameBtn">User</span>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="pd-header">
+              <div class="pd-name" id="pdName">User Name</div>
+              <div class="pd-email" id="pdEmail">user@email.com</div>
+            </div>
+            <button class="pd-item" onclick="showProfileInfo()">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              My Profile
+            </button>
+            <div class="pd-divider"></div>
+            <button class="pd-item danger" onclick="logoutUser()">
+              <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+      <button class="burger" id="burger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mob" id="mob">
+    <a href="index.html" class="nav-link" data-page="index">Home</a>
+    <a href="product-1.html" class="nav-link" data-page="product-1">Products</a>
+    <a href="about.html" class="nav-link" data-page="about">About Us</a>
+    <a href="contact.html" class="nav-link" data-page="contact">Contact</a>
+    <a href="faq.html" class="nav-link" data-page="faq">FAQ</a>
+    <div class="mob-btns" id="mobAuthBtns">
+      <button class="btn btn-gp" onclick="openAuthModal('login')">Login</button>
+      <button class="btn btn-p" onclick="openAuthModal('signup')">Sign Up</button>
+    </div>
+    <div id="mobProfileArea" style="display:none;margin-top:16px;padding:14px;background:var(--bgs);border-radius:var(--r2)">
+      <div style="font-weight:800;font-size:14px;color:var(--ink)" id="mobPdName">User</div>
+      <div style="font-size:12px;color:var(--inkl);margin-bottom:12px" id="mobPdEmail">email</div>
+      <button class="btn btn-gp btn-sm" style="width:100%;justify-content:center" onclick="logoutUser()">Sign Out</button>
+    </div>
+  </div>
+</header>
+
+<!-- Auth Modal -->
+<div class="auth-overlay" id="authOverlay" onclick="handleOverlayClick(event)">
+  <div class="auth-modal" id="authModal">
+    <div class="auth-modal-head">
+      <button class="auth-close" onclick="closeAuthModal()">&#x2715;</button>
+      <div class="logo-mark" style="width:38px;height:38px;font-size:17px;margin-bottom:14px">H</div>
+      <div class="auth-modal-title" id="authTitle">Welcome <em>back</em></div>
+      <div class="auth-modal-sub" id="authSub">Login to your Harvel Electric account</div>
+    </div>
+    <div class="auth-modal-body" id="authBody"></div>
+  </div>
+</div>
+<div class="auth-overlay" id="profileOverlay" onclick="handleProfileOverlayClick(event)">
+  <div class="auth-modal" id="profileModal">
+    <div class="auth-modal-head" style="background:linear-gradient(135deg,#0f0e24,#2a1060)">
+      <button class="auth-close" onclick="closeProfileModal()">&#x2715;</button>
+      <div class="logo-mark" style="width:38px;height:38px;font-size:17px;margin-bottom:14px" id="profileModalAvatar">U</div>
+      <div class="auth-modal-title">My <em>Profile</em></div>
+      <div class="auth-modal-sub" id="profileModalEmail">user@email.com</div>
+    </div>
+    <div class="auth-modal-body">
+      <div class="auth-field"><div class="auth-label">Full Name</div><div id="piName" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink);font-weight:600"></div></div>
+      <div class="auth-field"><div class="auth-label">Email</div><div id="piEmail" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <div class="auth-field"><div class="auth-label">Phone Number</div><div id="piPhone" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <div class="auth-field"><div class="auth-label">Member Since</div><div id="piDate" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <button class="auth-submit" onclick="logoutUser();closeProfileModal()" style="background:#dc2626;box-shadow:0 6px 22px rgba(220,38,38,.3);margin-top:4px">Sign Out</button>
+    </div>
+  </div>
+</div>
+<div class="hdr-toast" id="hdrToast">
+  <svg viewBox="0 0 24 24" width="16" height="16"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+  <span id="hdrToastMsg"></span>
+</div>
+
+
+    <section class="hero-section">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-badge fade-up">
+      <span style="width:6px;height:6px;background:#f59e0b;border-radius:50%;display:inline-block;"></span>Electronics Built on Trust  </div>
+    <h1 class="fade-up-1" style="font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;line-height:1.15;margin:0 0 16px;">
+      Engineering the <span style="color:#c4b5fd;">Pulse</span> of Tomorrow.
+    </h1>
+    <p class="fade-up-2" style="font-size:1rem;color:#c4b5fd;line-height:1.75;max-width:520px;margin:0;">
+     We don't just sell electronics; we build the infrastructure for a smarter, more connected life. From the first circuit to the final product, innovation is our DNA.
+    </p>
+  </div>
+</section>
+
+<section class="hero scroll-element">
+        <div class="hero-content ">
+            <h1>ABOUT US: <br>Our Journey in <span style="color: #6C5CE7;">Innovating</span> Electronics.</h1>
+            <p>Redefining the standards of modern technology through passion and precision.</p>
+        </div>
+    </section>
+
+
+    <section class="trust-bar scroll-element">
+        
+    <div class="trust-item">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6C5CE7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <path d="M12 8v4"></path>
+            <path d="M12 16h.01"></path>
+        </svg>
+        <p>10 Years Warranty</p>
+    </div>
+    <div class="trust-item">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6C5CE7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+        </svg>
+        <p>5 Years Replacement</p>
+    </div>
+    <div class="trust-item">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6C5CE7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+        <p>100% Premium Quality</p>
+    </div>
+    <div class="trust-item">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6C5CE7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        <p>Services World Wide</p>
+    </div>
+</section>
+    <section class="information scroll-element">
+        <div class="info-card">
+              <div class="svc-hd"><h2 class="display "> <em style="font-style: normal; ">Who We Are</em></h2></div>
+            <p>ElectroHub is a forward-thinking electronics provider dedicated to bridging the gap between high-end technology and everyday accessibility. Our team of engineers and designers work tirelessly to ensure that every circuit we build contributes to a smarter, more connected world.</p>
+        </div>
+    </section>
+
+    <section class="mission-vision scroll-element">
+        <div class="mv-card">
+            <i class="fas fa-bullseye"></i>
+            <h3>OUR MISSION</h3>
+            <p>To empower global communities by providing reliable, high-performance electronics that inspire creativity and simplify daily tasks.</p>
+        </div>
+        <div class="mv-card">
+            <i class="fas fa-lightbulb"></i>
+            <h3>OUR VISION</h3>
+            <p>To become the world's most trusted name in electronics, recognized for our commitment to quality, security, and sustainable innovation.</p>
+        </div>
+    </section>
+
+    <section class="core-values scroll-element">
+        <div class="svc-hd"><h2 class="display "> <em style="font-style: normal; ">Core Values</em></h2></div>
+        <div class="values-grid">
+            <div class="value-item">
+                <i class="fas fa-microchip"></i>
+                <p>Innovation</p>
+                <div class="overlays">We constantly evolve to stay ahead of the curve.</div>
+            </div>
+            <div class="value-item">
+                <i class="fas fa-check-double"></i>
+                <p>Quality</p>
+                <div class="overlays">Rigorous testing for every single component.</div>
+            </div>
+            <div class="value-item">
+                <i class="fas fa-certificate"></i>
+                <p>Promiate</p>
+                <div class="overlays">Our promise is to deliver excellence every time.</div>
+            </div>
+            <div class="value-item">
+                <i class="fas fa-user-shield"></i>
+                <p>Security</p>
+                <div class="overlays">Protecting your data and your devices.</div>
+            </div>
+        </div>
+    </section>
+<section class="services">
+  <div class="wrap">
+    <div class="svc-hd"><h2 class="display rv d1">The Harvel <em>Experience</em></h2><p class="lead rv d2" style="margin:14px auto 0;text-align:center">More than great products — everything you need, end-to-end.</p></div>
+    <div class="svc-grid">
+      <div class="scard rv "><div class="scard-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg></div><h3 class="scard-h">24/7 Customer Care</h3><p class="scard-p">Day or night, our team is a call away. We resolve 90% of queries on first contact — no runaround.</p></div>
+      <div class="scard rv d1"><div class="scard-ico"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div><h3 class="scard-h">Free Nationwide Delivery</h3><p class="scard-p">We deliver to every corner of Pakistan — completely free. Karachi, Lahore, Islamabad, Peshawar and beyond.</p></div>
+      <div class="scard rv d2"><div class="scard-ico"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div><h3 class="scard-h">Professional Installation</h3><p class="scard-p">Certified Harvel technicians install every appliance so it runs perfectly from the moment we leave.</p></div>
+      <div class="scard rv d1"><div class="scard-ico"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><h3 class="scard-h">Energy Star A+ Certified</h3><p class="scard-p">Every product meets top energy efficiency standards — saving you money on electricity every month.</p></div>
+      <div class="scard rv d2"><div class="scard-ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3 class="scard-h">5-Year Replacement Warranty</h3><p class="scard-p">If your appliance fails, we replace it — free, within 7 days, no questions asked.</p></div>
+      <div class="scard rv d3"><div class="scard-ico"><svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><h3 class="scard-h">0% Installment Plans</h3><p class="scard-p">Own your dream appliance today with interest-free installments through all major partner banks.</p></div>
+    </div>
+    </div >
+    
+</div>
+  </div>
+</section>
+    <section class="team scroll-element">
+         <div class="svc-hd"><h2 class="display rv d1">MEET <em style="font-style: normal;">THE TEAM</em></h2></div>
+        
+        <div class="team-container hrline">
+            <div class="team-profile">
+                <img src="images/Alex rivers.jpg" alt="Founder">
+                <h4>Alex Rivers</h4>
+                <span>Chief Executive Officer / CEO</span>
+               
+            </div>
+            <div class="team-text " >
+                <div class="bullet-list">
+                    <p>● 15+ years of industry experience</p>
+                    <p>● Pioneer in green electronics</p>
+                    <p>● Lead Architect at GlobalTech</p>
+                </div>
+                <div class="bullet-list">
+                    <p>● Dedicated to ethical sourcing</p>
+                    <p>● Winner of Tech-Innovation 2024</p>
+                    <p>● Strategic visionary for ElectroHub</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="team-container hrline" >
+            <div class="team-profile">
+                <img src="images/Liam O’Connor.jpg" alt="Founder">
+                <h4>Liam O’Connor</h4>
+                <span>Chief Technology Officer / CTO</span>
+            
+            </div>
+            <div class="team-text">
+                <div class="bullet-list">
+                    <p>● 10+ years in product design</p>
+                    <p>● Expert in AI-driven solutions</p>
+                    <p>● Former Lead at InnovateX</p>
+                </div>
+                <div class="bullet-list">
+                    <p>● Passionate about sustainability</p>
+                    <p>● Developed award-winning apps</p>
+                    <p>● Mentor for startup founders</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="team-container hrline">
+            <div class="team-profile">
+                <img src="images/Sophia Müller.jpg" alt="Founder">
+                <h4>Sophia Müller</h4>
+                <span>Head of Product Development / HPD</span>              
+            </div>
+            <div class="team-text">
+                <div class="bullet-list">
+                    <p>● Specialist in cloud computing</p>
+                    <p>● Built scalable tech platforms</p>
+                    <p>● Advisor at NextGen Systems</p>
+                </div>
+                <div class="bullet-list">
+                    <p>● Focused on user experience design</p>
+                    <p>● Led multiple global projects</p>
+                    <p>● Speaker at tech conferences</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="team-container hrline ">
+            <div class="team-profile">
+                <img src="images/Isabella Rossi.jpg" alt="Founder">
+                <h4>Isabella Rossi</h4>
+                <span>Quality Assurance Director / QAD</span>              
+            </div>
+            <div class="team-text">
+                <div class="bullet-list">
+                    <p>● Advocate for renewable energy</p>
+                    <p>● Developed award-winning prototypes</p>
+                    <p>● Board Member at GreenFuture</p>
+                </div>
+                <div class="bullet-list">
+                    <p>● Skilled in blockchain development</p>
+                    <p>● Launched multiple crypto startups</p>
+                    <p>● Speaker at Global FinTech Forum</p>
+                </div>
+            </div>
+        </div>            
+        </div>
+    </section>
+
+  <section>
+     <footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <div class="logo-mark">H</div>
+          <span>HARVEL ELECTRIC</span>
+        </div>
+        <p class="footer-desc"> Providing innovative and sustainable electrical appliances for modern living spaces since 1998.</p>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/" class="social-btn" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a4 4 0 0 0-4 4v3H8v4h3v8h4v-8h3l1-4h-4V6a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/" class="social-btn" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-title">Quick Links</h4>
+        <div class="footer-links">
+          <a href="index.html" class="footer-link">Home</a>
+          <a href="product-1.html" class="footer-link">Products</a>
+          <a href="contact.html" class="footer-link">Contact Us</a>
+          <a href="faq.html" class="footer-link">FAQ</a>
+          <a href="reviews.html" class="footer-link">Reviews</a>
+        </div>
+      </div>
+      
+      <div>
+        <h4 class="footer-title">Contact</h4>
+        <div class="footer-contact">
+          <div class="contact-item align-start">
+            <svg class="icon"></svg>
+            North Nazimabad, Karachi, Pakistan
+          </div>
+          <div class="contact-item align-center">
+            <svg class="icon"></svg>
+            +92 (021) 2345-6789
+          </div>
+          <a href="mailto:service@harvelelectric.com" class="contact-item email">
+            <svg class="icon"></svg>
+            service@harvelelectric.com
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Harvel Electric. All rights reserved.</p>
+      <div class="footer-bottom-links">
+       <a href="Harvel_Electronics_Full_Pricelist.pdf" download class="footer-link">Download Price List</a>
+       <a href="product detailed list.pdf" download class="footer-link">Download Detailed Products list</a>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const scrollElements = document.querySelectorAll('.scroll-element');
+
+    const elementInView = (el, dividend = 1) => {
+        const elementTop = el.getBoundingClientRect().top;
+        return (
+            elementTop <= (window.innerHeight || document.documentElement.clientHeight) / dividend
+        );
+    };
+
+    const displayScrollElement = (element) => {
+        element.classList.add('visible');
+    };
+
+    const hideScrollElement = (element) => {
+        element.classList.remove('visible');
+    };
+
+    const handleScrollAnimation = () => {
+        scrollElements.forEach((el) => {
+            if (elementInView(el, 1.15)) {
+                displayScrollElement(el);
+            } else {
+                hideScrollElement(el);
+            }
+        })
+    }
+
+    window.addEventListener('scroll', () => {
+        handleScrollAnimation();
+    });
+
+    handleScrollAnimation();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* old profileIcon dropdown removed */
+
+
+</script>
+<script src="auth.js"></script>
+</body>
+</html>
+    
+
+
+
+

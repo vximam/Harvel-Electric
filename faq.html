@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ | Harvel Electric</title>
+  <link rel="stylesheet" href="styl.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #fafafa; color: #1a1a2e; overflow-x: hidden; }
+
+    .hero-section { position: relative; min-height: 340px; background: linear-gradient(135deg,#1e0845 0%,#2d1b69 40%,#4c1d95 100%); overflow: hidden; display: flex; align-items: center; }
+    .hero-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size: 50px 50px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); backdrop-filter: blur(8px); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 600; color: #e9d5ff; letter-spacing: .05em; margin-bottom: 24px; }
+    .hero-inner { max-width: 1280px; margin: 0 auto; padding: 70px 24px; width: 100%; position: relative; z-index: 1; }
+    .search-wrap { position: relative; max-width: 480px; margin-top: 28px; }
+    .search-wrap svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+    .search-input { width: 100%; padding: 14px 16px 14px 46px; border-radius: 12px; border: none; font-size: 14px; font-family: 'DM Sans', sans-serif; outline: none; background: rgba(255,255,255,.95); }
+
+    .section-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #7c3aed; margin-bottom: 10px; }
+    .section-divider { width: 48px; height: 3px; background: linear-gradient(90deg,#5b21b6,#7c3aed); border-radius: 3px; margin: 14px 0 20px; }
+
+    .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 36px; }
+    .filter-btn { padding: 9px 20px; border-radius: 100px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .2s; border: 1.5px solid #e5e7eb; background: white; color: #6b7280; font-family: 'DM Sans', sans-serif; }
+    .filter-btn:hover { border-color: #5b21b6; color: #5b21b6; }
+    .filter-btn.active { background: #5b21b6; color: white; border-color: #5b21b6; }
+
+    .faq-list { display: flex; flex-direction: column; gap: 12px; max-width: 860px; margin: 0 auto; }
+    .faq-item { background: white; border-radius: 12px; border: 1px solid #f0eeff; box-shadow: 0 2px 8px rgba(0,0,0,.04); overflow: hidden; transition: box-shadow .2s; }
+    .faq-item:hover { box-shadow: 0 4px 20px rgba(91,33,182,.1); }
+    .faq-question { width: 100%; text-align: left; padding: 20px 24px; background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; color: #1a1a2e; gap: 16px; }
+    .faq-badge { background: linear-gradient(135deg,#ede9fe,#ddd6fe); color: #5b21b6; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 100px; white-space: nowrap; flex-shrink: 0; }
+    .faq-icon { width: 28px; height: 28px; border-radius: 50%; background: #f3f0ff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .25s; }
+    .faq-icon svg { transition: transform .25s; }
+    .faq-item.open .faq-icon { background: #5b21b6; }
+    .faq-item.open .faq-icon svg { transform: rotate(180deg); stroke: white; }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height .35s ease, padding .35s ease; padding: 0 24px; }
+    .faq-answer.open { max-height: 300px; padding: 0 24px 20px; }
+    .faq-answer p { color: #4b5563; font-size: 14px; line-height: 1.75; margin: 0; }
+
+    .no-results { text-align: center; padding: 60px 20px; color: #9ca3af; display: none; }
+    .no-results p:first-child { font-size: 16px; font-weight: 600; color: #4b5563; margin-bottom: 8px; }
+
+    .cta-box { margin-top: 60px; background: linear-gradient(135deg,#5b21b6,#7c3aed); border-radius: 16px; padding: 40px 36px; text-align: center; color: white; position: relative; overflow: hidden; max-width: 860px; margin-left: auto; margin-right: auto; }
+    .cta-box::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px); background-size: 20px 20px; }
+    .cta-box-inner { position: relative; z-index: 1; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+    .cta-btn-white { display: inline-flex; align-items: center; gap: 8px; background: white; color: #5b21b6; padding: 12px 24px; border-radius: 10px; font-weight: 700; font-size: 14px; text-decoration: none; }
+    .cta-btn-outline { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.1); border: 1.5px solid rgba(255,255,255,.3); color: white; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 14px; text-decoration: none; }
+
+    @media (max-width: 768px) {
+      .desktop-only { display: none; }
+      .hamburger { display: block; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+      .faq-question { font-size: 14px; }
+    }
+    @media (max-width: 480px) {
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="header.css">
+</head>
+<body>
+<header class="site-header" id="hdr">
+  <div class="hdr">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">H</div>
+      <div class="logo-text">
+        <span class="logo-name">HARVEL</span>
+        <span class="logo-sub">Electric</span>
+      </div>
+    </a>
+    <nav class="nav" id="mainNav">
+      <a href="index.html" class="nav-link" data-page="index">Home</a>
+      <a href="product-1.html" class="nav-link" data-page="product-1">Products</a>
+      <a href="about.html" class="nav-link" data-page="about">About Us</a>
+      <a href="contact.html" class="nav-link" data-page="contact">Contact</a>
+      <a href="faq.html" class="nav-link" data-page="faq">FAQ</a>
+    </nav>
+    <div class="hdr-r">
+      <button class="icon-btn" aria-label="Cart" onclick="window.location='cart.html'">
+        <svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2v2h2l3.6 7.59-1.35 2.44C7.52 18.37 8.48 20 10 20h9v-2h-8.42c-.14 0-.25-.11-.25-.25l.03-.12L11.1 16h5.45c.75 0 1.41-.41 1.75-1.03L21 9H7.42l-.94-2zM7 20a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4z"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <div id="authBtns" style="display:flex;gap:8px">
+        <button class="btn btn-gp btn-sm" onclick="openAuthModal('login')">Login</button>
+        <button class="btn btn-p btn-sm" onclick="openAuthModal('signup')">Sign Up</button>
+      </div>
+      <div id="profileArea" style="display:none">
+        <div class="profile-wrap">
+          <button class="profile-btn" onclick="toggleProfileDropdown()">
+            <div class="profile-avatar" id="profileAvatar">U</div>
+            <span class="profile-name-btn" id="profileNameBtn">User</span>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="pd-header">
+              <div class="pd-name" id="pdName">User Name</div>
+              <div class="pd-email" id="pdEmail">user@email.com</div>
+            </div>
+            <button class="pd-item" onclick="showProfileInfo()">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              My Profile
+            </button>
+            <div class="pd-divider"></div>
+            <button class="pd-item danger" onclick="logoutUser()">
+              <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+      <button class="burger" id="burger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mob" id="mob">
+    <a href="index.html" class="nav-link" data-page="index">Home</a>
+    <a href="product-1.html" class="nav-link" data-page="product-1">Products</a>
+    <a href="about.html" class="nav-link" data-page="about">About Us</a>
+    <a href="contact.html" class="nav-link" data-page="contact">Contact</a>
+    <a href="faq.html" class="nav-link" data-page="faq">FAQ</a>
+    <div class="mob-btns" id="mobAuthBtns">
+      <button class="btn btn-gp" onclick="openAuthModal('login')">Login</button>
+      <button class="btn btn-p" onclick="openAuthModal('signup')">Sign Up</button>
+    </div>
+    <div id="mobProfileArea" style="display:none;margin-top:16px;padding:14px;background:var(--bgs);border-radius:var(--r2)">
+      <div style="font-weight:800;font-size:14px;color:var(--ink)" id="mobPdName">User</div>
+      <div style="font-size:12px;color:var(--inkl);margin-bottom:12px" id="mobPdEmail">email</div>
+      <button class="btn btn-gp btn-sm" style="width:100%;justify-content:center" onclick="logoutUser()">Sign Out</button>
+    </div>
+  </div>
+</header>
+
+<!-- Auth Modal -->
+<div class="auth-overlay" id="authOverlay" onclick="handleOverlayClick(event)">
+  <div class="auth-modal" id="authModal">
+    <div class="auth-modal-head">
+      <button class="auth-close" onclick="closeAuthModal()">&#x2715;</button>
+      <div class="logo-mark" style="width:38px;height:38px;font-size:17px;margin-bottom:14px">H</div>
+      <div class="auth-modal-title" id="authTitle">Welcome <em>back</em></div>
+      <div class="auth-modal-sub" id="authSub">Login to your Harvel Electric account</div>
+    </div>
+    <div class="auth-modal-body" id="authBody"></div>
+  </div>
+</div>
+<div class="auth-overlay" id="profileOverlay" onclick="handleProfileOverlayClick(event)">
+  <div class="auth-modal" id="profileModal">
+    <div class="auth-modal-head" style="background:linear-gradient(135deg,#0f0e24,#2a1060)">
+      <button class="auth-close" onclick="closeProfileModal()">&#x2715;</button>
+      <div class="logo-mark" style="width:38px;height:38px;font-size:17px;margin-bottom:14px" id="profileModalAvatar">U</div>
+      <div class="auth-modal-title">My <em>Profile</em></div>
+      <div class="auth-modal-sub" id="profileModalEmail">user@email.com</div>
+    </div>
+    <div class="auth-modal-body">
+      <div class="auth-field"><div class="auth-label">Full Name</div><div id="piName" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink);font-weight:600"></div></div>
+      <div class="auth-field"><div class="auth-label">Email</div><div id="piEmail" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <div class="auth-field"><div class="auth-label">Phone Number</div><div id="piPhone" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <div class="auth-field"><div class="auth-label">Member Since</div><div id="piDate" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <button class="auth-submit" onclick="logoutUser();closeProfileModal()" style="background:#dc2626;box-shadow:0 6px 22px rgba(220,38,38,.3);margin-top:4px">Sign Out</button>
+    </div>
+  </div>
+</div>
+<div class="hdr-toast" id="hdrToast">
+  <svg viewBox="0 0 24 24" width="16" height="16"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+  <span id="hdrToastMsg"></span>
+</div>
+
+
+<section class="hero-section">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-badge fade-up">
+      <span style="width:6px;height:6px;background:#f59e0b;border-radius:50%;display:inline-block;"></span>
+      We've Got Answers
+    </div>
+    <h1 class="fade-up-1" style="font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;line-height:1.15;margin:0 0 16px;">
+      Frequently Asked <span style="color:#c4b5fd;">Questions</span>
+    </h1>
+    <p class="fade-up-2" style="font-size:1rem;color:#c4b5fd;line-height:1.75;max-width:520px;margin:0;">
+      Find quick answers about our products, warranties, delivery, and support.
+    </p>
+    <div class="search-wrap fade-up-3">
+      <svg width="18" height="18" fill="none" stroke="#9ca3af" stroke-width="2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <input type="search" class="search-input" id="searchInput" placeholder="Search questions..." oninput="filterFAQ()">
+    </div>
+  </div>
+</section>
+
+<section style="padding:60px 24px 80px;background:#f5f4f8;min-height:60vh;">
+  <div style="max-width:1280px;margin:0 auto;">
+
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" onclick="setFilter('All', this)">All</button>
+      <button class="filter-btn" onclick="setFilter('Products', this)">Products</button>
+      <button class="filter-btn" onclick="setFilter('Warranty', this)">Warranty</button>
+      <button class="filter-btn" onclick="setFilter('Shipping', this)">Shipping</button>
+      <button class="filter-btn" onclick="setFilter('Installation', this)">Installation</button>
+      <button class="filter-btn" onclick="setFilter('Returns', this)">Returns</button>
+    </div>
+
+    <div class="faq-list" id="faqList"></div>
+
+    <div class="no-results" id="noResults">
+      <p>No results found</p>
+      <p>Try a different search term or category.</p>
+    </div>
+
+    <div class="cta-box" style="margin-top:60px;">
+      <div class="cta-box-inner">
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;margin:0 0 12px;">Still have questions?</h3>
+        <p style="color:#e9d5ff;font-size:14px;line-height:1.7;margin:0;">Our friendly customer support team is available 6 days a week to help you.</p>
+        <div class="cta-btns">
+          <a href="contact.html" class="cta-btn-white">Contact Support</a>
+          <a href="tel:+923001234567" class="cta-btn-outline">Call +92 300 1234567</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+     <footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <div class="logo-mark">H</div>
+          <span>HARVEL ELECTRIC</span>
+        </div>
+        <p class="footer-desc"> Providing innovative and sustainable electrical appliances for modern living spaces since 1998.</p>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/" class="social-btn" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a4 4 0 0 0-4 4v3H8v4h3v8h4v-8h3l1-4h-4V6a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/" class="social-btn" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-title">Quick Links</h4>
+        <div class="footer-links">
+          <a href="index.html" class="footer-link">Home</a>
+          <a href="product-1.html" class="footer-link">Products</a>
+          <a href="contact.html" class="footer-link">Contact Us</a>
+          <a href="faq.html" class="footer-link">FAQ</a>
+          <a href="reviews.html" class="footer-link">Reviews</a>
+        </div>
+      </div>
+      
+      <div>
+        <h4 class="footer-title">Contact</h4>
+        <div class="footer-contact">
+          <div class="contact-item align-start">
+            <svg class="icon"></svg>
+            North Nazimabad, Karachi, Pakistan
+          </div>
+          <div class="contact-item align-center">
+            <svg class="icon"></svg>
+            +92 (021) 2345-6789
+          </div>
+          <a href="mailto:service@harvelelectric.com" class="contact-item email">
+            <svg class="icon"></svg>
+            service@harvelelectric.com
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Harvel Electric. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="Harvel_Electronics_Full_Pricelist.pdf" download class="footer-link">Download Price List</a>
+      <a href="product detailed list.pdf" download class="footer-link">Download Detailed Products list</a>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+
+<script>
+  
+
+  var faqs = [
+    { category: 'Products', question: 'What types of products does Harvel Electric offer?', answer: 'Harvel Electric offers a wide range of home appliances including ceiling fans, table fans, wall fans, geysers (water heaters), washing machines, refrigerators, televisions, and air conditioners. All products are designed with energy efficiency and durability in mind.' },
+    { category: 'Products', question: 'Are Harvel Electric products energy-efficient?', answer: 'Yes! All our products are designed with energy efficiency as a top priority. Our fans feature energy-saving motors, our geysers use advanced insulation technology, and our ACs come with inverter technology that reduces electricity consumption by up to 60% compared to conventional units.' },
+    { category: 'Products', question: 'Where are Harvel Electric products manufactured?', answer: 'Harvel Electric products are manufactured in state-of-the-art facilities that meet international quality standards. We use premium-grade materials sourced from certified suppliers to ensure consistent quality across all product lines.' },
+    { category: 'Warranty', question: 'What warranty do Harvel Electric products come with?', answer: 'All Harvel Electric products come with comprehensive warranty coverage. Most appliances include a 10+ year warranty on major components. Fans have a 5-year motor warranty, geysers a 7-year tank warranty, and ACs include a 10-year compressor warranty.' },
+    { category: 'Warranty', question: 'How do I claim my product warranty?', answer: 'To claim warranty, you will need your original purchase receipt and the product serial number. Contact our customer support by phone or email. We will schedule an inspection and, if the fault is covered, repair or replace the product at no charge.' },
+    { category: 'Warranty', question: 'Does the warranty cover accidental damage?', answer: 'Our standard warranty covers manufacturing defects under normal usage. Accidental damage, misuse, or power surge damage is not covered. However, we offer extended protection plans that cover accidental damage.' },
+    { category: 'Shipping', question: 'How long does delivery take?', answer: 'Standard delivery within major cities takes 2-3 business days. Deliveries to other areas may take 4-7 business days. For large appliances like refrigerators and washing machines, our team will contact you to schedule a convenient delivery time.' },
+    { category: 'Shipping', question: 'Is there a delivery charge?', answer: 'Free delivery is available on all orders above PKR 10,000 within major cities (Lahore, Karachi, Islamabad, Rawalpindi). For smaller orders or remote areas, a delivery fee may apply.' },
+    { category: 'Installation', question: 'Do you provide installation services?', answer: 'Yes! We provide professional installation for air conditioners, geysers, washing machines, and ceiling fans. Our certified technicians ensure proper installation for safe and optimal performance. Installation is free on selected products.' },
+    { category: 'Installation', question: 'How do I schedule an installation?', answer: 'You can schedule installation at the time of purchase or by calling our customer service. Our team will confirm a time slot convenient for you. Installation is usually done within 48 hours of product delivery.' },
+    { category: 'Returns', question: 'What is your return policy?', answer: 'We offer a 5-year replacement guarantee on all products. Additionally, you can return any product within 15 days of purchase if it has a manufacturing defect. The product must be in its original packaging with all accessories.' },
+    { category: 'Returns', question: 'How long does a refund take?', answer: 'Once your return is approved and the product is received at our warehouse, refunds are processed within 5-7 business days. Bank transfer refunds may take an additional 2-3 business days. We will notify you via SMS at each step.' }
+  ];
+
+  var currentFilter = 'All';
+
+  function renderFAQs() {
+    var search = document.getElementById('searchInput').value.toLowerCase();
+    var list = document.getElementById('faqList');
+    var noResults = document.getElementById('noResults');
+    var filtered = faqs.filter(function(f) {
+      var matchCat = currentFilter === 'All' || f.category === currentFilter;
+      var matchSearch = !search || f.question.toLowerCase().includes(search) || f.answer.toLowerCase().includes(search);
+      return matchCat && matchSearch;
+    });
+
+    if (filtered.length === 0) {
+      list.innerHTML = '';
+      noResults.style.display = 'block';
+      return;
+    }
+    noResults.style.display = 'none';
+    list.innerHTML = filtered.map(function(f, i) {
+      return '<div class="faq-item" id="faq-' + i + '">' +
+        '<button class="faq-question" onclick="toggleFAQ(' + i + ')">' +
+          '<div style="display:flex;align-items:center;gap:10px;flex:1;text-align:left;">' +
+            '<span class="faq-badge">' + f.category + '</span>' +
+            f.question +
+          '</div>' +
+          '<div class="faq-icon">' +
+            '<svg width="14" height="14" fill="none" stroke="#5b21b6" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>' +
+          '</div>' +
+        '</button>' +
+        '<div class="faq-answer" id="ans-' + i + '">' +
+          '<p>' + f.answer + '</p>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function toggleFAQ(i) {
+    var item = document.getElementById('faq-' + i);
+    var ans = document.getElementById('ans-' + i);
+    var isOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-item').forEach(function(el) { el.classList.remove('open'); });
+    document.querySelectorAll('.faq-answer').forEach(function(el) { el.classList.remove('open'); });
+    if (!isOpen) {
+      item.classList.add('open');
+      ans.classList.add('open');
+    }
+  }
+
+  function setFilter(cat, btn) {
+    currentFilter = cat;
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    renderFAQs();
+  }
+
+  function filterFAQ() { renderFAQs(); }
+
+  function openMobileMenu() { document.getElementById('mobileMenu').classList.add('open'); }
+  function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+  renderFAQs();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* old profileIcon dropdown removed */
+
+
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

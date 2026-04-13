@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reviews | Harvel Electric</title>
+  <link rel="stylesheet" href="styl.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #fafafa; color: #1a1a2e; overflow-x: hidden; }
+
+    .hero-section { position: relative; min-height: 300px; background: linear-gradient(135deg,#1e0845 0%,#2d1b69 40%,#4c1d95 100%); overflow: hidden; display: flex; align-items: center; }
+    .hero-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size: 50px 50px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); backdrop-filter: blur(8px); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 600; color: #e9d5ff; letter-spacing: .05em; margin-bottom: 24px; }
+    .hero-inner { max-width: 1280px; margin: 0 auto; padding: 70px 24px; width: 100%; position: relative; z-index: 1; }
+
+    .section-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #7c3aed; margin-bottom: 10px; }
+
+    .rating-summary { background: white; padding: 36px 24px; border-bottom: 1px solid #f0eeff; }
+    .rating-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; gap: 48px; flex-wrap: wrap; }
+    .big-rating { text-align: center; min-width: 120px; }
+    .big-num { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 900; color: #1a1a2e; line-height: 1; }
+    .stars { display: flex; gap: 3px; }
+    .star-filled { color: #f59e0b; font-size: 20px; }
+    .star-empty { color: #e5e7eb; font-size: 20px; }
+    .rating-bars { flex: 1; min-width: 200px; }
+    .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .bar-label { width: 36px; font-size: 13px; color: #6b7280; font-weight: 500; flex-shrink: 0; }
+    .bar-track { flex: 1; height: 8px; background: #f3f0ff; border-radius: 100px; overflow: hidden; }
+    .bar-fill { height: 100%; background: linear-gradient(90deg,#5b21b6,#7c3aed); border-radius: 100px; }
+    .bar-count { width: 24px; font-size: 13px; color: #9ca3af; text-align: right; flex-shrink: 0; }
+
+    .write-form-wrap { background: #f5f4f8; padding: 0 24px 40px; display: none; }
+    .write-form-wrap.open { display: block; }
+    .write-form-card { max-width: 700px; margin: 0 auto; background: white; border-radius: 16px; padding: 32px; border: 1px solid #ede9fe; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .form-group label { font-size: 13px; font-weight: 600; color: #374151; }
+    .form-input { width: 100%; padding: 12px 16px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; transition: border-color .2s; outline: none; background: #fafafa; }
+    .form-input:focus { border-color: #5b21b6; box-shadow: 0 0 0 3px rgba(91,33,182,.12); background: white; }
+    textarea.form-input { resize: vertical; }
+    .star-picker { display: flex; gap: 6px; padding: 8px 0; }
+    .star-picker span { font-size: 28px; cursor: pointer; color: #e5e7eb; transition: color .15s; user-select: none; }
+    .star-picker span.on { color: #f59e0b; }
+
+    .filter-section { padding: 30px 24px 0; background: #f5f4f8; }
+    .filter-inner { max-width: 1280px; margin: 0 auto; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .filter-label { font-size: 13px; font-weight: 600; color: #6b7280; margin-right: 4px; }
+    .filter-btn { padding: 7px 16px; border-radius: 100px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all .2s; border: 1.5px solid #e5e7eb; background: white; color: #6b7280; font-family: 'DM Sans', sans-serif; }
+    .filter-btn:hover { border-color: #5b21b6; color: #5b21b6; }
+    .filter-btn.active { background: #5b21b6; color: white; border-color: #5b21b6; }
+    .filter-count { margin-left: auto; font-size: 13px; color: #9ca3af; }
+
+    .reviews-section { padding: 30px 24px 80px; background: #f5f4f8; }
+    .reviews-grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+    .review-card { background: white; border-radius: 16px; padding: 28px; box-shadow: 0 2px 16px rgba(0,0,0,.06); border: 1px solid #f0eeff; transition: all .3s; }
+    .review-card:hover { box-shadow: 0 12px 40px rgba(91,33,182,.12); transform: translateY(-4px); }
+    .review-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
+    .reviewer-info { display: flex; align-items: center; gap: 12px; }
+    .avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 16px; flex-shrink: 0; }
+    .reviewer-name { font-weight: 700; font-size: 15px; color: #1a1a2e; margin: 0; }
+    .reviewer-meta { color: #9ca3af; font-size: 12px; margin: 2px 0 0; }
+    .product-badge { background: linear-gradient(135deg,#ede9fe,#ddd6fe); color: #5b21b6; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 100px; white-space: nowrap; flex-shrink: 0; }
+    .review-stars { display: flex; gap: 2px; }
+    .review-stars span { font-size: 15px; }
+    .review-text { color: #4b5563; font-size: 14px; line-height: 1.75; margin: 14px 0 0; }
+    .verified { display: flex; align-items: center; gap: 6px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #f3f0ff; font-size: 12px; color: #16a34a; font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .desktop-only { display: none; }
+      .hamburger { display: block; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+      .rating-inner { gap: 24px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .reviews-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="header.css">
+</head>
+<body>
+<header class="site-header" id="hdr">
+  <div class="hdr">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">H</div>
+      <div class="logo-text">
+        <span class="logo-name">HARVEL</span>
+        <span class="logo-sub">Electric</span>
+      </div>
+    </a>
+    <nav class="nav" id="mainNav">
+      <a href="index.html" class="nav-link" data-page="index">Home</a>
+      <a href="product-1.html" class="nav-link" data-page="product-1">Products</a>
+      <a href="about.html" class="nav-link" data-page="about">About Us</a>
+      <a href="contact.html" class="nav-link" data-page="contact">Contact</a>
+      <a href="faq.html" class="nav-link" data-page="faq">FAQ</a>
+    </nav>
+    <div class="hdr-r">
+      <button class="icon-btn" aria-label="Cart" onclick="window.location='cart.html'">
+        <svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2v2h2l3.6 7.59-1.35 2.44C7.52 18.37 8.48 20 10 20h9v-2h-8.42c-.14 0-.25-.11-.25-.25l.03-.12L11.1 16h5.45c.75 0 1.41-.41 1.75-1.03L21 9H7.42l-.94-2zM7 20a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4z"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <div id="authBtns" style="display:flex;gap:8px">
+        <button class="btn btn-gp btn-sm" onclick="openAuthModal('login')">Login</button>
+        <button class="btn btn-p btn-sm" onclick="openAuthModal('signup')">Sign Up</button>
+      </div>
+      <div id="profileArea" style="display:none">
+        <div class="profile-wrap">
+          <button class="profile-btn" onclick="toggleProfileDropdown()">
+            <div class="profile-avatar" id="profileAvatar">U</div>
+            <span class="profile-name-btn" id="profileNameBtn">User</span>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="pd-header">
+              <div class="pd-name" id="pdName">User Name</div>
+              <div class="pd-email" id="pdEmail">user@email.com</div>
+            </div>
+            <button class="pd-item" onclick="showProfileInfo()">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              My Profile
+            </button>
+            <div class="pd-divider"></div>
+            <button class="pd-item danger" onclick="logoutUser()">
+              <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+      <button class="burger" id="burger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mob" id="mob">
+    <a href="index.html" class="nav-link" data-page="index">Home</a>
+    <a href="product-1.html" class="nav-link" data-page="product-1">Products</a>
+    <a href="about.html" class="nav-link" data-page="about">About Us</a>
+    <a href="contact.html" class="nav-link" data-page="contact">Contact</a>
+    <a href="faq.html" class="nav-link" data-page="faq">FAQ</a>
+    <div class="mob-btns" id="mobAuthBtns">
+      <button class="btn btn-gp" onclick="openAuthModal('login')">Login</button>
+      <button class="btn btn-p" onclick="openAuthModal('signup')">Sign Up</button>
+    </div>
+    <div id="mobProfileArea" style="display:none;margin-top:16px;padding:14px;background:var(--bgs);border-radius:var(--r2)">
+      <div style="font-weight:800;font-size:14px;color:var(--ink)" id="mobPdName">User</div>
+      <div style="font-size:12px;color:var(--inkl);margin-bottom:12px" id="mobPdEmail">email</div>
+      <button class="btn btn-gp btn-sm" style="width:100%;justify-content:center" onclick="logoutUser()">Sign Out</button>
+    </div>
+  </div>
+</header>
+
+<!-- Auth Modal -->
+<div class="auth-overlay" id="authOverlay" onclick="handleOverlayClick(event)">
+  <div class="auth-modal" id="authModal">
+    <div class="auth-modal-head">
+      <button class="auth-close" onclick="closeAuthModal()">&#x2715;</button>
+      <div class="logo-mark" style="width:38px;height:38px;font-size:17px;margin-bottom:14px">H</div>
+      <div class="auth-modal-title" id="authTitle">Welcome <em>back</em></div>
+      <div class="auth-modal-sub" id="authSub">Login to your Harvel Electric account</div>
+    </div>
+    <div class="auth-modal-body" id="authBody"></div>
+  </div>
+</div>
+<div class="auth-overlay" id="profileOverlay" onclick="handleProfileOverlayClick(event)">
+  <div class="auth-modal" id="profileModal">
+    <div class="auth-modal-head" style="background:linear-gradient(135deg,#0f0e24,#2a1060)">
+      <button class="auth-close" onclick="closeProfileModal()">&#x2715;</button>
+      <div class="logo-mark" style="width:38px;height:38px;font-size:17px;margin-bottom:14px" id="profileModalAvatar">U</div>
+      <div class="auth-modal-title">My <em>Profile</em></div>
+      <div class="auth-modal-sub" id="profileModalEmail">user@email.com</div>
+    </div>
+    <div class="auth-modal-body">
+      <div class="auth-field"><div class="auth-label">Full Name</div><div id="piName" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink);font-weight:600"></div></div>
+      <div class="auth-field"><div class="auth-label">Email</div><div id="piEmail" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <div class="auth-field"><div class="auth-label">Phone Number</div><div id="piPhone" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <div class="auth-field"><div class="auth-label">Member Since</div><div id="piDate" style="padding:12px 16px;background:var(--bgs);border-radius:var(--r2);font-size:14px;color:var(--ink)"></div></div>
+      <button class="auth-submit" onclick="logoutUser();closeProfileModal()" style="background:#dc2626;box-shadow:0 6px 22px rgba(220,38,38,.3);margin-top:4px">Sign Out</button>
+    </div>
+  </div>
+</div>
+<div class="hdr-toast" id="hdrToast">
+  <svg viewBox="0 0 24 24" width="16" height="16"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+  <span id="hdrToastMsg"></span>
+</div>
+<section class="hero-section">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-badge fade-up">
+      <span style="width:6px;height:6px;background:#f59e0b;border-radius:50%;display:inline-block;"></span>
+      Customer Stories
+    </div>
+    <h1 class="fade-up-1" style="font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;line-height:1.15;margin:0 0 16px;">
+      What Our <span style="color:#c4b5fd;">Customers</span> Say
+    </h1>
+    <p class="fade-up-2" style="font-size:1rem;color:#c4b5fd;line-height:1.75;max-width:520px;margin:0;">
+      Real experiences from thousands of happy homes across Pakistan powered by Harvel Electric.
+    </p>
+  </div>
+</section>
+<div class="rating-summary">
+  <div class="rating-inner">
+    <div class="big-rating">
+      <div class="big-num" id="avgRating">4.8</div>
+      <div class="stars" id="avgStars"></div>
+      <p style="color:#6b7280;font-size:13px;margin-top:8px;" id="reviewCount">Based on 9 reviews</p>
+    </div>
+    <div class="rating-bars" id="ratingBars"></div>
+    <div style="margin-left:auto;">
+      <button class="btn-primary" onclick="toggleForm()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        Write a Review
+      </button>
+    </div>
+  </div>
+</div>
+<div class="write-form-wrap" id="writeFormWrap">
+  <div class="write-form-card">
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:#1a1a2e;margin:0 0 24px;">Share Your Experience</h3>
+    <form id="reviewForm" onsubmit="submitReview(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name *</label>
+          <input class="form-input" id="rName" placeholder="Ahmed Khan" required>
+        </div>
+        <div class="form-group">
+          <label>City</label>
+          <input class="form-input" id="rCity" placeholder="Lahore">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Product *</label>
+          <select class="form-input" id="rProduct" required>
+            <option value="">Select product</option>
+            <option>Ceiling Fan</option>
+            <option>Table Fan</option>
+            <option>Geyser</option>
+            <option>Air Conditioner</option>
+            <option>Washing Machine</option>
+            <option>Refrigerator</option>
+            <option>Television</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Rating *</label>
+          <div class="star-picker" id="starPicker">
+            <span onclick="setRating(1)">★</span>
+            <span onclick="setRating(2)">★</span>
+            <span onclick="setRating(3)">★</span>
+            <span onclick="setRating(4)">★</span>
+            <span onclick="setRating(5)" class="on">★</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Your Review *</label>
+        <textarea class="form-input" id="rText" rows="4" placeholder="Tell others about your experience..." required></textarea>
+      </div>
+      <button type="submit" class="btn-primary">Submit Review</button>
+    </form>
+  </div>
+</div>
+<div class="filter-section">
+  <div class="filter-inner" id="filterBar">
+    <span class="filter-label">Filter by product:</span>
+    <button class="filter-btn active" onclick="setFilter('All', this)">All</button>
+    <button class="filter-btn" onclick="setFilter('Ceiling Fan', this)">Ceiling Fan</button>
+    <button class="filter-btn" onclick="setFilter('Geyser', this)">Geyser</button>
+    <button class="filter-btn" onclick="setFilter('Air Conditioner', this)">Air Conditioner</button>
+    <button class="filter-btn" onclick="setFilter('Washing Machine', this)">Washing Machine</button>
+    <button class="filter-btn" onclick="setFilter('Refrigerator', this)">Refrigerator</button>
+    <button class="filter-btn" onclick="setFilter('Television', this)">Television</button>
+    <button class="filter-btn" onclick="setFilter('Table Fan', this)">Table Fan</button>
+    <span class="filter-count" id="filterCount">9 reviews</span>
+  </div>
+</div>
+<section class="reviews-section">
+  <div class="reviews-grid" id="reviewsGrid"></div>
+  <div style="text-align:center;margin-top:50px;">
+    <p style="color:#6b7280;font-size:15px;margin-bottom:20px;">Have a Harvel product? Share your experience!</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="toggleForm();window.scrollTo({top:0,behavior:'smooth'})">Write a Review</button>
+      <a href="contact.html" style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid #5b21b6;color:#5b21b6;padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;background:transparent;transition:all .2s;text-decoration:none;" onmouseover="this.style.background='#5b21b6';this.style.color='white'" onmouseout="this.style.background='transparent';this.style.color='#5b21b6'">Contact Support</a>
+    </div>
+  </div>
+</section>
+<div class="toast" id="toast">✓ Review submitted! Thank you for your feedback.</div>
+<section>
+     <footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <div class="logo-mark">H</div>
+          <span>HARVEL ELECTRIC</span>
+        </div>
+        <p class="footer-desc"> Providing innovative and sustainable electrical appliances for modern living spaces since 1998.</p>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/" class="social-btn" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a4 4 0 0 0-4 4v3H8v4h3v8h4v-8h3l1-4h-4V6a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/" class="social-btn" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-title">Quick Links</h4>
+        <div class="footer-links">
+          <a href="index.html" class="footer-link">Home</a>
+          <a href="product-1.html" class="footer-link">Products</a>
+          <a href="contact.html" class="footer-link">Contact Us</a>
+          <a href="faq.html" class="footer-link">FAQ</a>
+          <a href="reviews.html" class="footer-link">Reviews</a>
+        </div>
+      </div>
+      
+      <div>
+        <h4 class="footer-title">Contact</h4>
+        <div class="footer-contact">
+          <div class="contact-item align-start">
+            <svg class="icon"></svg>
+            North Nazimabad, Karachi, Pakistan
+          </div>
+          <div class="contact-item align-center">
+            <svg class="icon"></svg>
+            +92 (021) 2345-6789
+          </div>
+          <a href="mailto:service@harvelelectric.com" class="contact-item email">
+            <svg class="icon"></svg>
+            service@harvelelectric.com
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Harvel Electric. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="Harvel_Electronics_Full_Pricelist.pdf" download class="footer-link">Download Price List</a>
+      <a href="product detailed list.pdf" download class="footer-link">Download Detailed Products list</a>
+      </div>
+    </div>
+  </div>
+</footer>
+</section>
+<script>
+  var reviews = [
+    { name:'Ahmed Raza', city:'Lahore', rating:5, product:'Ceiling Fan', date:'March 2025', text:'Absolutely love my Harvel ceiling fan! Runs super quietly and the airflow is incredible. Been running 24/7 for 2 months and not a single issue. The build quality is premium — well worth every rupee.' },
+    { name:'Fatima Malik', city:'Karachi', rating:5, product:'Geyser', date:'February 2025', text:'The geyser heats water incredibly fast and keeps it hot for hours. Installation team was professional and completed the job cleanly. Highly recommend!' },
+    { name:'Muhammad Usman', city:'Islamabad', rating:4, product:'Air Conditioner', date:'January 2025', text:'Great inverter AC — cools the room quickly and electricity bills have noticeably gone down. The cooling performance is flawless.' },
+    { name:'Sara Ahmed', city:'Rawalpindi', rating:5, product:'Washing Machine', date:'March 2025', text:'This washing machine is a game-changer. Multiple wash programs, automatic water level sensing, and incredibly quiet during spin. Super satisfied!' },
+    { name:'Ali Hassan', city:'Faisalabad', rating:5, product:'Refrigerator', date:'February 2025', text:'My Harvel refrigerator has been running for 8 months without any issues. Even cooling throughout and very low energy consumption. Would definitely buy Harvel again.' },
+    { name:'Zainab Khan', city:'Multan', rating:4, product:'Television', date:'January 2025', text:'The display quality is stunning — colors are vivid and the picture is sharp. Smart features work smoothly. Fantastic value TV.' },
+    { name:'Bilal Chaudhry', city:'Lahore', rating:5, product:'Table Fan', date:'December 2024', text:'Bought two table fans for my office. They are powerful, quiet, and look really sleek. Great product for the price — Harvel\'s after-sale support is excellent.' },
+    { name:'Ayesha Siddiqui', city:'Karachi', rating:5, product:'Ceiling Fan', date:'November 2024', text:'I replaced all 4 ceiling fans in my home with Harvel fans. The difference is night and day — so much quieter and the airflow covers the entire room. Beautiful design too!' },
+    { name:'Hamza Tariq', city:'Peshawar', rating:5, product:'Geyser', date:'October 2024', text:'Switched to Harvel geyser and my electricity bills dropped by 30%. Installation was done same day and the technician was very knowledgeable. Best purchase this year!' }
+  ];
+
+  var currentFilter = 'All';
+  var selectedRating = 5;
+
+  function starsHTML(count, size) {
+    var s = size || 16;
+    var html = '<div class="review-stars">';
+    for (var i = 1; i <= 5; i++) {
+      html += '<span style="color:' + (i <= count ? '#f59e0b' : '#e5e7eb') + ';font-size:' + s + 'px;">★</span>';
+    }
+    html += '</div>';
+    return html;
+  }
+
+  function avatarColor(name) {
+    var colors = [
+      ['#5b21b6','#7c3aed'],['#0369a1','#0ea5e9'],['#065f46','#10b981'],
+      ['#92400e','#f59e0b'],['#881337','#f43f5e'],['#1e3a5f','#3b82f6']
+    ];
+    var idx = name.charCodeAt(0) % colors.length;
+    return 'linear-gradient(135deg,' + colors[idx][0] + ',' + colors[idx][1] + ')';
+  }
+
+  function renderReviews() {
+    var filtered = reviews.filter(function(r) { return currentFilter === 'All' || r.product === currentFilter; });
+    document.getElementById('filterCount').textContent = filtered.length + ' review' + (filtered.length !== 1 ? 's' : '');
+    var grid = document.getElementById('reviewsGrid');
+    if (filtered.length === 0) { grid.innerHTML = '<p style="text-align:center;color:#9ca3af;padding:40px;grid-column:1/-1;">No reviews for this product yet. Be the first!</p>'; return; }
+    grid.innerHTML = filtered.map(function(r) {
+      return '<div class="review-card">' +
+        '<div class="review-header">' +
+          '<div class="reviewer-info">' +
+            '<div class="avatar" style="background:' + avatarColor(r.name) + '">' + r.name.charAt(0) + '</div>' +
+            '<div><p class="reviewer-name">' + r.name + '</p><p class="reviewer-meta">' + r.city + ' · ' + r.date + '</p></div>' +
+          '</div>' +
+          '<span class="product-badge">' + r.product + '</span>' +
+        '</div>' +
+        starsHTML(r.rating, 15) +
+        '<p class="review-text">' + r.text + '</p>' +
+        '<div class="verified"><svg width="14" height="14" viewBox="0 0 24 24" fill="#22c55e"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Verified Purchase</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderSummary() {
+    var avg = (reviews.reduce(function(a,b){return a+b.rating;},0) / reviews.length).toFixed(1);
+    document.getElementById('avgRating').textContent = avg;
+    document.getElementById('reviewCount').textContent = 'Based on ' + reviews.length + ' reviews';
+    var starsEl = document.getElementById('avgStars');
+    starsEl.innerHTML = '';
+    for (var i = 1; i <= 5; i++) {
+      var s = document.createElement('span');
+      s.style.color = i <= Math.round(parseFloat(avg)) ? '#f59e0b' : '#e5e7eb';
+      s.style.fontSize = '22px';
+      s.textContent = '★';
+      starsEl.appendChild(s);
+    }
+    var bars = document.getElementById('ratingBars');
+    bars.innerHTML = [5,4,3,2,1].map(function(r) {
+      var c = reviews.filter(function(rev){return rev.rating===r;}).length;
+      var pct = Math.round(c / reviews.length * 100);
+      return '<div class="bar-row"><span class="bar-label">' + r + ' ★</span><div class="bar-track"><div class="bar-fill" style="width:' + pct + '%"></div></div><span class="bar-count">' + c + '</span></div>';
+    }).join('');
+  }
+
+  function setFilter(cat, btn) {
+    currentFilter = cat;
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    renderReviews();
+  }
+
+  function toggleForm() {
+    var wrap = document.getElementById('writeFormWrap');
+    wrap.classList.toggle('open');
+  }
+
+  function setRating(n) {
+    selectedRating = n;
+    var stars = document.querySelectorAll('#starPicker span');
+    stars.forEach(function(s, i) { s.classList.toggle('on', i < n); });
+  }
+
+  function submitReview(e) {
+    e.preventDefault();
+    var name = document.getElementById('rName').value;
+    var city = document.getElementById('rCity').value;
+    var product = document.getElementById('rProduct').value;
+    var text = document.getElementById('rText').value;
+    var now = new Date();
+    var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    reviews.unshift({ name:name, city:city||'Pakistan', rating:selectedRating, product:product, date:months[now.getMonth()]+' '+now.getFullYear(), text:text });
+    document.getElementById('reviewForm').reset();
+    setRating(5);
+    document.getElementById('writeFormWrap').classList.remove('open');
+    renderSummary();
+    setFilter('All', document.querySelector('.filter-btn'));
+    var toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(function(){ toast.classList.remove('show'); }, 4000);
+  }
+
+  function openMobileMenu() { document.getElementById('mobileMenu').classList.add('open'); }
+  function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+  renderSummary();
+  renderReviews();
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* old profileIcon dropdown removed */
+
+
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

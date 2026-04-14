@@ -30,7 +30,7 @@
     .header-cart{display:flex;align-items:center;cursor:pointer;margin-left:10px;position:relative;}
     .header-cart svg{width:24px;height:24px;color:#1a1a2e;transition:color .2s;}
     .header-cart:hover svg{color:#5b21b6;}
-    #cartCount{position:absolute;top:-6px;right:-10px;background:#ff0000;color:#fff;border-radius:50%;padding:2px 6px;font-size:12px;font-weight:bold;display:none;}
+    #cartCount{position:absolute;top:-6px;right:-10px;background:#5b21b6;color:#fff;border-radius:50%;padding:2px 6px;font-size:12px;font-weight:bold;display:none;}
     #profileIcon{width:40px;height:40px;border-radius:50%;background:#5b21b6;color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;cursor:pointer;}
     /* profile-dropdown display handled by header.css */
     .logout-button{border:none;width:100%;padding:5px;border-radius:5px;}
@@ -114,7 +114,24 @@
     .footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
     .footer-bottom p{color:#4b5563;font-size:13px;margin:0;}
     @media(max-width:1024px){.footer-grid{grid-template-columns:1fr 1fr;gap:32px;}}
-    @media(max-width:640px){.footer-grid{grid-template-columns:1fr;gap:32px;}.footer-bottom{flex-direction:column;text-align:center;}}
+    @media(max-width:640px){.footer-grid{grid-template-columns:1fr;gap:32px;}.footer-bottom{flex-direction:column;text-align:center;}
+      .product-section{padding:24px 16px;}
+      .product-name{font-size:1.5rem;}
+      .product-price{font-size:1.5rem;}
+      .specs-grid{grid-template-columns:1fr;}
+      .action-btns{flex-direction:column;}
+      .btn-quickbuy,.btn-addcart{min-width:auto;width:100%;}
+      .trust-row{flex-direction:column;gap:10px;}
+      .gallery-thumbs{justify-content:center;}
+      .thumb{width:56px;height:56px;}
+      .related-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
+    }
+    @media(max-width:400px){
+      .product-name{font-size:1.3rem;}
+      .specs-grid{gap:8px;}
+      .spec-item{padding:10px;}
+      .related-grid{grid-template-columns:1fr;}
+    }
 
     .toast-msg{position:fixed;bottom:28px;right:28px;background:#5b21b6;color:white;padding:14px 24px;border-radius:12px;font-weight:600;font-size:14px;box-shadow:0 8px 32px rgba(91,33,182,.4);z-index:9999;transform:translateY(100px);opacity:0;transition:all .4s cubic-bezier(.175,.885,.32,1.275);}
     .toast-msg.show{transform:translateY(0);opacity:1;}

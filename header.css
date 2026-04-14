@@ -125,14 +125,16 @@
 
 /* Mobile menu */
 .mob {
-  display:none;flex-direction:column;
+  display:flex;flex-direction:column;
   position:absolute;top:70px;left:0;right:0;
   background:rgba(255,255,255,.98);backdrop-filter:blur(20px);
   border-bottom:1px solid rgba(91,33,182,.07);
-  padding:20px 32px 28px;gap:0;
+  padding:0 32px;gap:0;
   box-shadow:0 12px 40px rgba(0,0,0,.1);z-index:499;
+  max-height:0;overflow:hidden;opacity:0;
+  transition:max-height .35s var(--ease),opacity .3s var(--ease),padding .35s var(--ease);
 }
-.mob.open{display:flex}
+.mob.open{max-height:600px;opacity:1;padding:20px 32px 28px}
 .mob .nav-link{padding:14px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:15px}
 .mob .nav-link:last-of-type{border-bottom:none}
 .mob-btns{display:flex;gap:10px;margin-top:16px}
@@ -281,4 +283,6 @@
   .burger{display:flex}
   .hdr{padding:0 20px}
   .mob{padding:16px 20px 24px}
+  #authBtns{display:none !important}
+  #profileArea{display:none !important}
 }

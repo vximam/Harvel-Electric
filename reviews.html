@@ -72,10 +72,21 @@
       .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
       .rating-inner { gap: 24px; }
       .form-row { grid-template-columns: 1fr; }
+      .filter-inner { overflow-x:auto;flex-wrap:nowrap;padding-bottom:8px;-webkit-overflow-scrolling:touch; }
+      .filter-btn { white-space:nowrap;flex-shrink:0; }
+      .filter-label { flex-shrink:0; }
+      .filter-count { flex-shrink:0; }
     }
     @media (max-width: 480px) {
       .footer-grid { grid-template-columns: 1fr; }
       .reviews-grid { grid-template-columns: 1fr; }
+      .rating-inner { flex-direction:column;text-align:center; }
+      .big-num { font-size:3rem; }
+      .rating-bars { min-width:100%; }
+      .review-card { padding:20px; }
+      .review-header { flex-direction:column;gap:10px; }
+      .reviews-section { padding:20px 16px 60px; }
+      .filter-section { padding:20px 16px 0; }
     }
   </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">

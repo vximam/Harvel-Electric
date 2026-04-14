@@ -25,6 +25,14 @@ if(_mob) _mob.querySelectorAll('.nav-link').forEach(function(a){
   });
 });
 
+/* ── Close mobile menu on resize to desktop ── */
+window.addEventListener('resize', function(){
+  if(window.innerWidth > 768){
+    if(_mob) _mob.classList.remove('open');
+    if(_burger) _burger.classList.remove('open');
+  }
+});
+
 /* ── Header raise on scroll ── */
 var _hdrEl = document.getElementById('hdr');
 if(_hdrEl) window.addEventListener('scroll', function(){
